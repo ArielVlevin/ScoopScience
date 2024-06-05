@@ -1,9 +1,9 @@
-// Define the JSON data
+/*
 const recipeData = {
-    recipeId: "123456",
+    id: "1234567",
     recipeName: "Vanilla Ice Cream",
     user: {
-      userID: "user123",
+    id: "user123",
       userName: "John Doe"
     },
     specialMarks: {
@@ -24,7 +24,7 @@ const recipeData = {
       ingredients: [
         [
           {
-            ingredientID: "milk001",
+            id: "milk001",
             name: "Milk",
             category: "milk base",
             fat_percentage: 2.5,
@@ -34,7 +34,7 @@ const recipeData = {
         ],
         [
           {
-            ingredientID: "sugar001",
+            id: "sugar001",
             name: "Sugar",
             category: "sugars",
             fat_percentage: 0.0,
@@ -52,34 +52,42 @@ const recipeData = {
       totalSolid: 108.0
     }
   };
+*/
 
 
 
+const PORT = 3000;
 const express = require('express');
-const  {connectToDatabase, insertData} = require('./db');
+const {insertData} = require('./database/insert');
+const {recipesRouter} = require('./database/Recipes');
+const bodyParser = require('body-parser');
 
-connectToDatabase();
+const cors = require('cors');
+
+
 const app = express();
 
-app.get('/', (req,  res) => {
-    res.send('Hello, World!');
-});
 
-app.get('/recipes/123456', (req,  res) => {
-    res.send(recipeData);
-});
+const corsOptions ={
+  origin:'*', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
 
-insertData(recipeData, 'Recipes');
+app.use(cors(corsOptions)) ;
 
-const PORT = process.env.PORT || 3000;
+app.use(bodyParser.json());
+
+
+recipesRouter(app);
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
 
-
-const { MongoClient } = require('mongodb');
 
 
 

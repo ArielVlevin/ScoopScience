@@ -10,6 +10,7 @@ function RecipeDetailPage(){
 
    const params = useParams();
 
+   
    const [open, setOpen] = useState(false);
    const [loading, setLoading] = useState(false); // Assuming you want to show loading when opening the table
  
@@ -70,6 +71,7 @@ function RecipeDetailPage(){
          loading ? <CircularProgress /> : <IngredientsTable />
       )}
      </Box>
+
    </>
    );
 }

@@ -15,7 +15,7 @@ import { RecipeData } from './recipeType';
 
 
 
-export default function RecipeReviewCard({recipeId, recipeName, recipeIngredient, recipeRating}:RecipeData) {
+export default function RecipeReviewCard({id, recipeName, recipeIngredient, recipeRating}:RecipeData) {
 
    const navigate = useNavigate();
    const [ isHovered, setIsHovered ] = useState(false); 
@@ -29,7 +29,7 @@ export default function RecipeReviewCard({recipeId, recipeName, recipeIngredient
   }
 
   function clickHandle(){
-   navigate("/recipes/" + recipeId);
+   navigate("/recipes/" + id);
   }
 
   return (

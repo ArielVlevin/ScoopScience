@@ -1,3 +1,4 @@
+import IngredientsDataGrid from "../components/newRecipe/RecipeDataGrid";
 
 
 
@@ -6,8 +7,9 @@
 function ProductsPage(){
    return(
       <>
-         <h1>Products</h1>
-         </>
+         <h1>Recipe creation</h1>
+         <IngredientsDataGrid />
+      </>
    );
 }
 

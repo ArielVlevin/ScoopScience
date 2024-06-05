@@ -1,6 +1,6 @@
 
 export type User={
-   userID: string,
+   id: string,
    userName: string,
  };
  
@@ -22,11 +22,11 @@ export type SpecialMarks={
    ratingAmount:number,
  };
 
- type IngredientCategory = 'milk base' | 'sugars' | 'stabilizer' | 'fruits' | 'adding';
+ export type IngredientCategory = 'milk base' | 'sugars' | 'stabilizer' | 'fruits' | 'adding';
 
 
  export type IngredientData={
-   ingredientID: string;
+   id: string;
    name: string;
    category: IngredientCategory;
    fat_percentage: number;
@@ -39,7 +39,7 @@ export type SpecialMarks={
  ];
 
  
-type RecipeKind = 'gelato' | 'ice cream' | 'sorbet' | 'other';
+export type RecipeKind = 'gelato' | 'ice cream' | 'sorbet' | 'other';
 
 
  export type Ingredients={
@@ -56,7 +56,7 @@ type RecipeKind = 'gelato' | 'ice cream' | 'sorbet' | 'other';
 
 
  export type RecipeData = {
-    recipeId: string;
+    id: string;
     recipeName:string,
     user: User,
     specialMarks: SpecialMarks,

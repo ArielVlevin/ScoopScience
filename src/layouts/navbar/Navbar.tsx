@@ -5,6 +5,7 @@ import './Navbar.css'
 import logo_l from '../../assets/logo-black.png'
 
 import { Divider,Box, AppBar, Toolbar, Stack, Button } from '@mui/material'
+import React from 'react'
 
 
 /*
@@ -66,13 +67,15 @@ const Navbar = () => {
 
             <Stack direction='row' sx={{height: '64px', paddingBlock: "15px"}}>
 
-               {pagesNav.map((map)=>(<>
-                  <Button color='inherit'>
-                     <NavLink to={map.href} style={{color:'white' ,textDecoration: "none" }}>{map.text}</NavLink>
-                  </Button>
-                  <Divider orientation="vertical" flexItem sx={{bgcolor:'gray'}} />
-                  </>
-               ))}
+
+            {pagesNav.map((map, index) => (
+            <React.Fragment key={index}>
+              <Button color='inherit'>
+                <NavLink to={map.href} style={{ color: 'white', textDecoration: "none" }}>{map.text}</NavLink>
+              </Button>
+              <Divider orientation="vertical" flexItem sx={{ bgcolor: 'gray' }} />
+            </React.Fragment>
+          ))}
             </Stack>
 
       </Toolbar>
