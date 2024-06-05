@@ -10,6 +10,7 @@ interface EditToolbarProps {
    setRowModesModel: (
      newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
    ) => void;
+   selectedRowIds: string[];
    rows: GridRowsProp;
  }
  
@@ -18,7 +19,7 @@ interface EditToolbarProps {
 
  
  export function Toolbar(props: EditToolbarProps) {
-   const { setRows, setRowModesModel, rows } = props;
+   const { setRows, setRowModesModel,selectedRowIds, rows } = props;
 
 
    function handleAddIngredient(category: string, ingredient: string, ingredientId: string) {
@@ -30,10 +31,11 @@ interface EditToolbarProps {
       setRowModesModel((oldModel) => ({...oldModel, [ingredientId]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
       }))};
    };
-
    function handleClickDelete() {
+    setRows((oldRows) => oldRows.filter((row) => !selectedRowIds.includes(row.id)));
+  }
+
   
-   }
  
    return (
      <GridToolbarContainer>
