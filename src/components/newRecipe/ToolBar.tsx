@@ -1,6 +1,6 @@
-import { Button, Divider, Icon } from "@mui/material";
+import { Button, Divider, Grid } from "@mui/material";
 import { GridRowsProp, GridRowModesModel, GridRowModes, GridToolbarContainer } from "@mui/x-data-grid";
-import CategoryModal from "./AddIngredientModal";
+import AddIngredientModal from "./AddIngredientModal";
 
 
 
@@ -25,7 +25,7 @@ interface EditToolbarProps {
    function handleAddIngredient(category: string, ingredient: string, ingredientId: string) {
       const existingIngredient = rows.find(row => row.id === ingredientId);
       if (existingIngredient) {
-        alert(`The ingredient "${ingredient}" already exists in the "${category}" category.`);
+        alert(`The ingredient "${ingredient}" already exists in the recipe.`);
       }else{
       setRows((oldRows) => [...oldRows, { id: ingredientId, name: ingredient, category, fat_percentage: 0, solids_percentage: 0, weight: 0, isNew: true }]);
       setRowModesModel((oldModel) => ({...oldModel, [ingredientId]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
@@ -38,16 +38,15 @@ interface EditToolbarProps {
   
  
    return (
-    <>
+    <Grid alignItems='center' alignSelf='lefts'  sx={{}} >
      <GridToolbarContainer>
-      <CategoryModal onAdd={handleAddIngredient} />
+      <AddIngredientModal onAdd={handleAddIngredient} />
 
-       <Button variant="contained" onClick={handleClickDelete} sx={{backgroundColor:'darkred'
-       }}>
+       <Button variant="contained" onClick={handleClickDelete} sx={{backgroundColor:'darkred'}}>
          Delete Ingridiant
       </Button>
      </GridToolbarContainer>
      <Divider />
-    </>
+    </Grid>
    );
  }

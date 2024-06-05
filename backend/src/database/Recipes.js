@@ -1,9 +1,7 @@
 
 
 const {getDataByID} = require('./get');
-const {connectToDatabase, closeDatabaseConnection} = require('./connect');
 const {insertData} = require('./insert');
-const recipes = [];
 
 
 async function recipesRouter(app){
@@ -21,7 +19,6 @@ async function recipesRouter(app){
        } catch (error) {
            res.status(500).json({ message: 'Internal Server Error' });
 }})
-
 
 app.post('/recipes', async (req, res) => {
     try {

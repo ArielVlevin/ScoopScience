@@ -56,17 +56,15 @@ const recipeData = {
 
 
 
+
+
 const PORT = 3000;
 const express = require('express');
 const {insertData} = require('./database/insert');
 const {recipesRouter} = require('./database/Recipes');
+const {ingredientsRouter} = require('./database/Ingridients');
 const bodyParser = require('body-parser');
-
 const cors = require('cors');
-
-
-const app = express();
-
 
 const corsOptions ={
   origin:'*', 
@@ -74,13 +72,31 @@ const corsOptions ={
   optionSuccessStatus:200,
 }
 
-app.use(cors(corsOptions)) ;
 
+
+const app = express();
+app.use(cors(corsOptions)) ;
 app.use(bodyParser.json());
 
 
-recipesRouter(app);
+const ingridientData = {
+  id: "m_0003",
+  name: "Milk 3%",
+  category: "milk base",
+  sugar: 4.8,
+  fat: 3,
+  protiens: 3.3,
+  otherSolids: 0.7,
+  totalSolids: 11.8,
+  water: 88.2, 
+  msnf: 8.8,          //milk-solids-not-fat
 
+};
+
+
+
+recipesRouter(app);
+ingredientsRouter(app);
 
 
 app.listen(PORT, () => {

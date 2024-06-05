@@ -8,8 +8,10 @@ import ErrorPage from './pages/Error.tsx';
 import ProductDetailPage from './pages/ProductDetail.tsx';
 import RecipesPage from './pages/Recipes.tsx';
 import RecipeDetailPage from './pages/RecipeDetail.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([{
   path: '/',
@@ -28,9 +30,9 @@ const router = createBrowserRouter([{
 
 
 const App = () => {
-  return  <>
+  return  <QueryClientProvider client={queryClient}>
   <RouterProvider router={router} />
-  </>;
+  </QueryClientProvider>;
 }
 
 export default App

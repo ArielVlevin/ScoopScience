@@ -49,13 +49,10 @@ export const RecipeForm: React.FC = () => {
         },
         body: JSON.stringify(recipes),
       });
-
       console.log("Response received...");
-
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
       const result = await response.json();
       console.log('Recipe submitted successfully:', result);
     } catch (error) {
