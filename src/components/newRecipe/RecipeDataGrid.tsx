@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, GridEventListener, GridRowEditStopReasons, GridRowModel, GridRowModesModel, GridSlots, useGridApiContext } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridEventListener, GridRowEditStopReasons, GridRowModel, GridRowModesModel, GridSlots} from '@mui/x-data-grid';
 import { Toolbar } from './ToolBar';
 
 interface Row {
@@ -11,13 +11,22 @@ interface Row {
   weight: number;
 }
 
-const columns = [
+function precentFormat(value:number){
+  if(!value) 
+    return '0%';
+  else  
+    return `${value}%`
+}
+
+
+const columns :GridColDef[] = [
   { field: 'name', headerName: 'Name', width: 150 },
-  { field: 'id', headerName: 'ID', width: 150 },
+  { field: 'weight', headerName: 'Weight',align:'left', type:'number', editable: true, width: 150},
   { field: 'category', headerName: 'Category', valueOptions: ['milk base', 'sugars', 'stabilizer', 'fruits', 'adding'], width: 150 },
-  { field: 'fat_percentage', headerName: 'Fat Percentage', width: 150 },
-  { field: 'solids_percentage', headerName: 'Solids Percentage', width: 200 },
-  { field: 'weight', headerName: 'Weight', editable: true, width: 150 },
+  { field: 'fat_percentage', headerName: 'Fat Percentage', width: 150, valueFormatter:(value)=>{return precentFormat(value);}},
+  { field: 'solids_percentage', headerName: 'Solids Percentage', width: 200, valueFormatter:(value)=>{return precentFormat(value);}}, 
+  { field: 'id', headerName: 'ID', width: 150 },
+
 ];
 
 const initialRows: Row[] = [
@@ -26,17 +35,18 @@ const initialRows: Row[] = [
   // Add more initial rows as needed
 ];
 
-const calculateTotalWeight = (rows: Row[]): number => {
-  return rows.reduce((total, row) => total + Number(row.weight), 0);
-};
+const calculateTotalWeight = (rows: Row[]): number => { 
+  return rows.reduce((total, row) => total + Number(row.weight), 0);};
 
 const calculateTotalFat = (rows: Row[]): number => {
-  return rows.reduce((total, row) => total + Number(row.fat_percentage)*(Number(row.weight)/Number(100)) , 0);
-};
+  return rows.reduce((total, row) => total + Number(row.fat_percentage)*(Number(row.weight)/Number(100)) , 0);};
 
 const calculateTotalSolid = (rows: Row[]): number => {
-  return rows.reduce((total, row) => total + Number(row.solids_percentage)*(Number(row.weight)/Number(100)) , 0);
-};
+  return rows.reduce((total, row) => total + Number(row.solids_percentage)*(Number(row.weight)/Number(100)) , 0);};
+
+
+
+
 
 export default function IngredientsDataGrid() {
   const [rows, setRows] = React.useState<Row[]>(initialRows);
@@ -65,15 +75,17 @@ export default function IngredientsDataGrid() {
       solids_percentage: newRow.solids_percentage,
       weight: newRow.weight,
     };
+
     setRows((prevRows) => {
       const updatedRows = prevRows.map((row) => (row.id === updatedRow.id ? updatedRow : row));
-      setTotalWeight(calculateTotalWeight(updatedRows)); // Update total weight after row update
+      setTotalWeight(calculateTotalWeight(updatedRows)); 
       setTotalFat(calculateTotalFat(updatedRows));
       setTotalSolid(calculateTotalSolid(updatedRows));
       return updatedRows;
     });
     return updatedRow;
   };
+
   React.useEffect(() => {
     setTotalWeight(calculateTotalWeight(rows));
     setTotalFat(calculateTotalFat(rows));

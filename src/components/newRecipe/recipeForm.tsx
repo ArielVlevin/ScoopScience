@@ -74,7 +74,6 @@ export const RecipeForm: React.FC = () => {
     <div>
       <h1>Recipe Submission</h1>
       <button onClick={sendRecipeToServer}>Submit Recipe</button>
-      
     </div>
   );
 };

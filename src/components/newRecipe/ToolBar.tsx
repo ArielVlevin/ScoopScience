@@ -1,6 +1,6 @@
-import { Button, Icon } from "@mui/material";
+import { Button, Divider, Icon } from "@mui/material";
 import { GridRowsProp, GridRowModesModel, GridRowModes, GridToolbarContainer } from "@mui/x-data-grid";
-import CategoryModal from "./RecipeModal";
+import CategoryModal from "./AddIngredientModal";
 
 
 
@@ -38,12 +38,16 @@ interface EditToolbarProps {
   
  
    return (
+    <>
      <GridToolbarContainer>
       <CategoryModal onAdd={handleAddIngredient} />
 
-       <Button color="primary" startIcon={<Icon />} onClick={handleClickDelete}>
+       <Button variant="contained" onClick={handleClickDelete} sx={{backgroundColor:'darkred'
+       }}>
          Delete Ingridiant
       </Button>
      </GridToolbarContainer>
+     <Divider />
+    </>
    );
  }

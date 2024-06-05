@@ -21,11 +21,11 @@ const ingredientsByCategory: { [key: string]: { id: string, name: string }[] } =
   "adding": [{ id: '9', name: "Chocolate Chips" }, { id: '10', name: "Nuts" }],
 };
 
-interface CategoryModalProps {
+interface AddIngredientModalProps {
   onAdd: (category: string, ingredient: string, id: string) => void;
 }
 
-export default function CategoryModal({ onAdd }: CategoryModalProps) {
+export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
   const [open, setOpen] = React.useState(false);
   const [category, setCategory] = React.useState<string>('');
   const [selectedIngredient, setSelectedIngredient] = React.useState<{ id: string, name: string } | null>(null);
@@ -65,7 +65,7 @@ export default function CategoryModal({ onAdd }: CategoryModalProps) {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleOpen}>Add Ingredient</Button>
+      <Button variant="contained"color="primary" onClick={handleOpen} >Add Ingredient</Button>
       <Modal
         open={open}
         onClose={handleClose}
