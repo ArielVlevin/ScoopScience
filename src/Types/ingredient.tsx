@@ -6,10 +6,10 @@ export type Ingredient={
   name: string;
   category: IngredientCategory;
   calories: number;
+  sugar: number;
   fat: number;
   proteins: number;
   solids_percentage: number;
-  otherSolids: number;
   msnf: number
 };
 
