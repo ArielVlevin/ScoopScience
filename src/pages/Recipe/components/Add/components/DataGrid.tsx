@@ -54,7 +54,6 @@ const IngredientsDataGrid: React.FC<IngredientsDataGridProps> = ({ rows, setRows
       <DataGrid
         rows={rows}
         columns={columns}
-        checkboxSelection
         disableMultipleRowSelection
         hideFooter
         disableColumnMenu

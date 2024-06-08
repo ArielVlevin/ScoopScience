@@ -5,13 +5,6 @@ import { ToolbarProps } from "../../../interfaces/recipe";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-
-
-
-
-
-
- 
  export function Toolbar(props: ToolbarProps) {
    const { setRows, setRowModesModel,selectedRowIds, rows } = props;
 

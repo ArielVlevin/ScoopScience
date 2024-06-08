@@ -8,10 +8,12 @@ type SearchRecipeMenuProps = {
   onFilteredRecipesChange: (recipes: RecipeData[]) => void;
 };
 
+
+//TODO: import this from the server
 const ratingOptions = [1, 3, 3.5, 4, 4.5];
 const typeOptions = ['gelato', 'ice cream', 'sorbet', 'other'];
 const sortOptions = ['recipeName' , 'userName'];
-
+//TODO
 
 const SearchRecipeMenu: React.FC<SearchRecipeMenuProps> = ({ onFilteredRecipesChange }) => {
   const [nameFilter, setNameFilter] = useState('');

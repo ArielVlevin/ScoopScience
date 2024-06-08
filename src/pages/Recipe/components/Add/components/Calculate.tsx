@@ -1,6 +1,22 @@
 import { Row } from "../../../interfaces/recipe";
 
 
+export const currencies = [
+  {
+    value: 'grams',
+    label: 'grams',
+  },
+  {
+    value: 'percent',
+    label: '%',
+  },
+];
+
+export  function formatTotalValue (total: number, totalWeight: number, unit: string) {
+  return unit === 'grams' 
+    ? total.toFixed(2)
+    : ((total / (totalWeight / 100)).toFixed(2));
+};
 
 
 export default function calculateTotals  (rows: Row[]) {
