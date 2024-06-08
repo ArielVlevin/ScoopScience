@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { RecipeData } from '../cards/recipeType';
+import { RecipeData } from '../../../../../Types/recipe';
 
 
 // Sample recipe data
@@ -23,10 +23,36 @@ const recipes: RecipeData = {
   },
   recipeIngredient: {
     ingredients: [
-      [{ id: "1", name: "Milk", category: "milk base", fat_percentage: 2, solids_percentage: 8 }, 500],
-      [{ id: "2", name: "Sugar", category: "sugars", fat_percentage: 0, solids_percentage: 100 }, 200],
+      [
+        {
+          id: "1",
+          name: "Milk",
+          category: "dairy",
+          calories: 42,
+          fat: 2,
+          proteins: 3.4,
+          solids_percentage: 12.5,
+          otherSolids: 9.5,
+          msnf: 8.5,
+        },
+        500,
+      ],
+      [
+        {
+          id: "2",
+          name: "Sugar",
+          category: "sugars",
+          calories: 387,
+          fat: 0,
+          proteins: 0,
+          solids_percentage: 100,
+          otherSolids: 100,
+          msnf: 0,
+        },
+        200,
+      ],
     ],
-    kind: 'ice cream',
+    kind: "ice cream",
     totalWeight: 700,
     butterFat: 10,
     msnf: 20,

@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Box, Button, Typography, Modal, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
+import AddIcon from '@mui/icons-material/Add';
+
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -65,7 +68,9 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
 
   return (
     <div>
-      <Button variant="contained"color="primary" onClick={handleOpen} >Add Ingredient</Button>
+
+      <Button variant="contained"onClick={handleOpen} sx={{bgcolor:'navy'}} startIcon={<AddIcon />}>Add Ingredient</Button>
+
       <Modal
         open={open}
         onClose={handleClose}

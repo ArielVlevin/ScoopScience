@@ -20,8 +20,8 @@ const BreadcrumbNavigation = () => {
 
     // Prepend the homepage link
     breadcrumbs.unshift(
-      <React.Fragment key="home">
-        <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>Home</Link>
+      <React.Fragment key="home" >
+        <Link to="/" style={{ textDecoration: 'none', color: '#000', marginLeft:12 }} >home</Link>
         {' '}
         <span style={{fontSize: '20px', margin: '0 5px' }}> / </span>
       </React.Fragment>

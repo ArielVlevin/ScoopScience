@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import RecipeReviewCard from '../cards/recipeCard';
-import { RecipeData } from '../cards/recipeType';
+import { RecipeData } from '../../../../../Types/recipe';
+import RecipeReviewCard from '../../Card/recipeCard';
 
 interface RecipeListProps {
   recipes: RecipeData[];

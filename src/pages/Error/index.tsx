@@ -1,10 +1,10 @@
 
 
 import { Container } from "@mui/material";
-import Navbar from "../layouts/navbar/Navbar";
+import Navbar from "../../layouts/navbar";
 
 
-function ErrorPage(){
+export default function ErrorPage(){
 
    return(
       <>
@@ -14,6 +14,4 @@ function ErrorPage(){
       </Container>
       </>
       );
-}
-
-export default ErrorPage;
+   }

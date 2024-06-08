@@ -1,3 +1,5 @@
+import { IngredientInfo } from "./ingredient";
+
 
 export type User={
    id: string,
@@ -22,28 +24,12 @@ export type SpecialMarks={
    ratingAmount:number,
  };
 
- export type IngredientCategory = 'milk base' | 'sugars' | 'stabilizer' | 'fruits' | 'adding';
 
-
- export type IngredientData={
-   id: string;
-   name: string;
-   category: IngredientCategory;
-   fat_percentage: number;
-   solids_percentage: number;
- };
- 
-
- export type Ingredient = [
-   ingredientData: IngredientData, weight: number,
- ];
-
- 
 export type RecipeKind = 'gelato' | 'ice cream' | 'sorbet' | 'other';
 
 
  export type Ingredients={
-   ingredients:Ingredient[],
+   ingredients:IngredientInfo[],
    kind:RecipeKind,
    totalWeight: number,
    butterFat:number,

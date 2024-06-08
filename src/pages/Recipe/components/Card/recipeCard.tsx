@@ -6,11 +6,11 @@ import Typography from '@mui/material/Typography';
 import ShareIcon from '@mui/icons-material/Share';
 import { Box, CardActionArea, Grid, Rating, Stack } from '@mui/material';
 
-import exampleimg from "../../assets/icecream-example.jpeg";
+import exampleimg from "../../../../assets/icecream-example.jpeg";
 import { useState } from 'react';
 import { Favorite } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { RecipeData } from './recipeType';
+import { RecipeData } from '../../../../Types/recipe';
 
 
 
@@ -33,8 +33,8 @@ export default function RecipeReviewCard({id, recipeName, recipeIngredient, reci
   }
 
   return (
-
-    <Card elevation={0} sx={{ Width: 350,  Height: 500}}>
+<Box>
+      <Card elevation={0} sx={{ Width: 850,  Height: 500, backgroundColor:'#AD825F'}}>
 
 <CardActionArea onClick={clickHandle}>
       <Box sx={{position: 'relative'}}>
@@ -108,6 +108,8 @@ export default function RecipeReviewCard({id, recipeName, recipeIngredient, reci
       
       
     </Card>
+    </Box>
+
   );
 };
 

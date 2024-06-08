@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import IngredientsTable from "../components/table/table";
 import { useState } from "react";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import { ListItemText, ListItemButton, Box, CircularProgress } from "@mui/material";
+import IngredientsTable from "../../components/table/table";
 
  
 

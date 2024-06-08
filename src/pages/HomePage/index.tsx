@@ -1,9 +1,11 @@
+import { Box } from "@mui/material";
 
 function MainPage(){
 
    return(
       <>
-         <h1>Main Page</h1>
+      <Box>         <h1>Main Page</h1>
+</Box>
       </>
    );
 }

@@ -1,24 +1,18 @@
-import { Button, Divider, Grid } from "@mui/material";
-import { GridRowsProp, GridRowModesModel, GridRowModes, GridToolbarContainer } from "@mui/x-data-grid";
+import { Box, Button, Divider } from "@mui/material";
+import {  GridRowModes, GridToolbarContainer } from "@mui/x-data-grid";
 import AddIngredientModal from "./AddIngredientModal";
+import { ToolbarProps } from "../../../interfaces/recipe";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
 
-interface EditToolbarProps {
-   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-   setRowModesModel: (
-     newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
-   ) => void;
-   selectedRowIds: string[];
-   rows: GridRowsProp;
- }
- 
+
 
 
 
  
- export function Toolbar(props: EditToolbarProps) {
+ export function Toolbar(props: ToolbarProps) {
    const { setRows, setRowModesModel,selectedRowIds, rows } = props;
 
 
@@ -38,15 +32,15 @@ interface EditToolbarProps {
   
  
    return (
-    <Grid alignItems='center' alignSelf='lefts'  sx={{}} >
-     <GridToolbarContainer>
+    <Box >
+     <GridToolbarContainer sx={{ margin:0.8, marginBottom:1.2}} >
       <AddIngredientModal onAdd={handleAddIngredient} />
 
-       <Button variant="contained" onClick={handleClickDelete} sx={{backgroundColor:'darkred'}}>
+       <Button variant="contained" onClick={handleClickDelete} startIcon={<DeleteIcon />} sx={{backgroundColor:'darkred', "&.MuiButton-root:hover":{bgcolor:'red'}}}>
          Delete Ingridiant
       </Button>
      </GridToolbarContainer>
      <Divider />
-    </Grid>
+    </Box>
    );
  }

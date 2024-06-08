@@ -1,96 +1,10 @@
-
-.navbar{
-   min-height: 60px;
-   max-height: 80px;
+body, html {
+   margin: 0;
+   padding: 0;
    width: 100%;
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   padding: 4px 3px;
-   border-radius: 0px;
-   background: rgba(138, 165, 220, 0.725);
-}
-
-.logo{
-   display: flex;
-   min-width: 100px;
-   max-width: 10%;
-   padding-left: 5px;
-   padding-right: 0px;
-}
-.logo img{
+ }
+ 
+ #root {
    width: 100%;
-}
-
-
-ul{
-   width: 15%;
-   max-height: 80%;
-   flex: 0.5;
-   list-style: none;
-   text-align: left;
-   align-items: strech;
-}
-
-ul li{
-   display: inline-block;
-   margin: 10px 20px;
-   font-size: 15px;
-   cursor: pointer;
-   color: white;
-   align-items: strech;
-
-}
-
-li.active{
-   color: darkgrey;
-   align-items: strech;
-
-   background-color: black;
-}
-
-ul a{
-   color: white;
-   text-decoration: none;
-
-}
-ul a:hover{
-   background-color: red;
-
-}
-
-
-
-
-
-
-
-.search-box{
-   display: flex;
-   align-items: center;
-   background: #242424;
-   padding: 10px 20px;
-   border-radius: 50px;
-}
-.search-box input{
-   padding: 6px;
-   background: transparent;
-   border: 0;
-   outline: 0;
-   font-size: 18px;
-   max-width: 200px;
-   color: #fff;
-   max-width: 200px;
-}
-.search-box input::placeholder{
-   color: #fff;
-   cursor: pointer;
-}
-.search-box img{
-   width: 20px;
-}
-.like{
-   display: flex;
-   align-items: center;
-   width: 2%;
-}
+   background-color: #fef4ec;
+ }
