@@ -1,4 +1,3 @@
-import { Ingredient } from "../../../../../Types/ingredient";
 
 
 export const PostIngredient = async (ingredient: any): Promise<any> => {
@@ -18,31 +17,15 @@ export const PostIngredient = async (ingredient: any): Promise<any> => {
 };
 
 
-export const GetIngredient = async (id: string): Promise<Ingredient> => {
-   const header:string = 'ingredients';
-
-   const response = await fetch(`http://localhost:3000/${header}/${id}`, {
-     method: 'GET',
-     headers: {
-       'Content-Type': 'application/json',
-     },
-   });
- 
-   if (!response.ok) {
-     throw new Error('Failed to fetch ingredient');
-   }
- 
-   return response.json();
- };
 
 
- interface  GetRecipeProps {
+ interface  HttpProps {
    header: string;
    id?: string;
    method: 'GET' | 'POST';
 }
 
-export const Http = async ({ header, id , method }: GetRecipeProps): Promise<any> =>  {
+export const Http = async ({ header, id , method}: HttpProps): Promise<any> =>  {
   
    id = id?`/${id}`:'';
    const response = await fetch(`http://localhost:3000/${header}${id}`, {
@@ -50,6 +33,7 @@ export const Http = async ({ header, id , method }: GetRecipeProps): Promise<any
      headers: {
        'Content-Type': 'application/json',
      },
+     //method==='POST'? {body: JSON.stringify({})}:{}
    });
  
    if (!response.ok) {

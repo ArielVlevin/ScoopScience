@@ -6,6 +6,7 @@ import { Box, Button, Divider } from '@mui/material';
 import AddIngredientModal from './Modal';
 
 
+
  export function Toolbar(props: ToolbarProps) {
    const { setRows, setRowModesModel,selectedRowIds, rows } = props;
 
@@ -29,8 +30,8 @@ import AddIngredientModal from './Modal';
             calories: 0,
             sugar: 0,
             fat: 0,
-            proteins: 0,
-            solids_percentage: 0,
+            protein: 0,
+            totalSolid: 0,
             msnf: 0,
             isNew: true,
           },

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Box, Button, Typography, Modal, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
+import useIngredientsArray from '../database/Array';
 
 
 const style = {
@@ -16,19 +17,14 @@ const style = {
   p: 4,
 };
 
-const ingredientsByCategory: { [key: string]: { id: string, name: string }[] } = {
-  "milk base": [{ id: '1', name: "Milk" }, { id: '2', name: "Cream" }],
-  "sugars": [{ id: '3', name: "Sugar" }, { id: '4', name: "Honey" }],
-  "stabilizer": [{ id: '5', name: "Gelatin" }, { id: '6', name: "Pectin" }],
-  "fruits": [{ id: '7', name: "Strawberries" }, { id: '8', name: "Blueberries" }],
-  "adding": [{ id: '9', name: "Chocolate Chips" }, { id: '10', name: "Nuts" }],
-};
 
 interface AddIngredientModalProps {
   onAdd: (category: string, ingredient: string, id: string) => void;
 }
 
 export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
+  const { ingredientsByCategory, loading, error } = useIngredientsArray();
+
   const [open, setOpen] = React.useState(false);
   const [category, setCategory] = React.useState<string>('');
   const [selectedIngredient, setSelectedIngredient] = React.useState<{ id: string, name: string } | null>(null);
@@ -42,6 +38,17 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  //TODO: make the loading and error better(loading inside the modal and not in the button)
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
 
   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     setCategory(event.target.value as string);

@@ -10,8 +10,8 @@ export interface Row {
     calories: number;
     sugar: number;
     fat: number;
-    proteins: number;
-    solids_percentage: number;
+    protein: number;
+    totalSolid: number;
     msnf: number
     weight: number;
  }

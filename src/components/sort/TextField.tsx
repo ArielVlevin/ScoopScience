@@ -1,5 +1,5 @@
 import { FormControl, InputAdornment, MenuItem, Select, TextField, SelectChangeEvent } from '@mui/material';
-import { currencies } from "./Calculate";
+import { currencies } from "../../pages/Recipe/components/Add/components/Calculate";
 
 
 

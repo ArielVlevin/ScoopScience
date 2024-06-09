@@ -20,21 +20,22 @@ function percentFormat(value: number | undefined): string {
    { field: 'calories', headerName: 'Calories', type: 'number', width: 100, },
    { field: 'sugar', headerName: 'Sugar', type: 'number', width: 100, },
    { field: 'fat', headerName: 'Fat', type: 'number', width: 100, },
-   { field: 'proteins', headerName: 'Proteins', type: 'number', width: 100,},
-   { field: 'solids_percentage', headerName: 'Solids Percentage', width: 150, valueFormatter: (value) => percentFormat(value) },
+   { field: 'protein', headerName: 'Proteins', type: 'number', width: 100,},
+   { field: 'totalSolid', headerName: 'Solids Percentage', width: 150, valueFormatter: (value) => percentFormat(value) },
    { field: 'msnf', headerName: 'MSNF', type: 'number', width: 100, valueFormatter: (value) => percentFormat(value) },
    { field: 'id', headerName: 'ID', width: 50, hideable: true, },
  ];
 
 
 
+
  export const initialRows: Row[] = [
   {
-    id: '1', name: 'Milk', weight: 300, category: 'dairy', calories: 42, fat: 3, proteins: 3.4, solids_percentage: 8, msnf: 2.5,
+    id: '1', name: 'Milk', weight: 300, category: 'dairy', calories: 42, fat: 3, protein: 3.4, totalSolid: 8, msnf: 2.5,
     sugar: 0,
   },
   {
-    id: '2', name: 'Sugar', weight: 300, category: 'sugars', calories: 387, fat: 0, proteins: 0, solids_percentage: 100, msnf: 0,
+    id: '2', name: 'Sugar', weight: 300, category: 'sugars', calories: 387, fat: 0, protein: 0, totalSolid: 100, msnf: 0,
     sugar: 100,
   },
 ];

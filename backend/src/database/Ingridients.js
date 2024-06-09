@@ -2,6 +2,7 @@
 
 const {getDataByID, getLastInsertedID} = require('./get');
 const {insertData} = require('./insert');
+const {closeDatabaseConnection, connectToDatabase} = require('./connect');
 
 
 async function ingredientsRouter(app){
@@ -36,6 +37,30 @@ async function ingredientsRouter(app){
         res.status(500).json({ message: 'Internal Server Error' });
   }})
 
+
+
+  app.get('/ingredientsArray', async (req, res) => {
+    try {
+      const db = await connectToDatabase();
+      const ingredients = await db.collection('Ingredients').find({}).toArray();
+  
+      const ingredientsByCategory = ingredients.reduce((acc, ingredient) => {
+        const { category, id, name } = ingredient;
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push({ id, name });
+        return acc;
+      }, {});
+  
+      res.status(200).json(ingredientsByCategory);
+    } catch (error) {
+      console.error('Error fetching ingredients by category:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    } finally {
+      await closeDatabaseConnection();
+    }
+  });
 
 
 app.post('/ingredients', async (req, res) => {

@@ -33,7 +33,7 @@ export  function calculateTotals2  (rows: Row[]) {
    rows.forEach(row => {
      const weight = Number(row.weight);
      const fat = Number(row.fat);
-     const solidsPercentage = Number(row.solids_percentage);
+     const solidsPercentage = Number(row.totalSolid);
  
      totalWeight += weight;
      totalFat += fat;
@@ -57,7 +57,7 @@ export  function calculateTotals2  (rows: Row[]) {
   rows.forEach(row => {
     const weight = Number(row.weight);
     const fat = Number(row.fat);
-    const solidsPercentage = Number(row.solids_percentage);
+    const solidsPercentage = Number(row.totalSolid);
     const calories = Number(row.calories);
     const msnf = Number(row.msnf);
     const sugars = Number(row.sugar);

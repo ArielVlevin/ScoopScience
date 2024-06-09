@@ -2,7 +2,7 @@ import  { useEffect, useState } from 'react';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 
 import { IngredientCategory, ingredientCategoryArray } from '../../../../Types/ingredient';
-import { Http, PostIngredient } from '../../../Recipe/components/Add/server/Http';
+import { Http, PostIngredient } from '../../../../database/Http';
 
 
 const AddIngredientForm = () => {

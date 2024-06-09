@@ -28,8 +28,8 @@ const IngredientsDataGrid: React.FC<IngredientsDataGridProps> = ({ rows, setRows
       category: newRow.category,
       sugar: newRow.sugar,
       fat: newRow.fat,
-      proteins: newRow.proteins,
-      solids_percentage: newRow.solids_percentage,
+      protein: newRow.protein,
+      totalSolid : newRow.totalSolid,
       msnf: newRow.msnf,
       weight: newRow.weight,
     };

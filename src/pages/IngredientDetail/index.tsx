@@ -1,31 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container } from '@mui/material';
-import {  Http } from '../Recipe/components/Add/server/Http';
-import { Ingredient } from '../../Types/ingredient';
+
+import GetIngredient from '../Ingredients/database/get';
 
 const IngredientDetailPage = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
-  const [ingredient, setIngredient] = useState<Ingredient | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchIngredient = async () => {
-      try {
-        setIsLoading(true);
-        const data = await Http({ header: 'ingredients', id: ingredientId , method: 'GET' });
-        setIngredient(data);
-        setIsLoading(false);
-      } catch (err: Error  | any) {
-        setError(err.message);
-        setIsLoading(false);
-      }
-    };
+  const { ingredient, isLoading, error } = GetIngredient(String(ingredientId));
 
-    fetchIngredient();
-  }, [ingredientId]);
 
+  //TODO: WHEN ERROR: IF THE ERROR BECAUSE THE INGREDIENT DOESN'T EXIST, SHOW A MESSAGE THAT THE INGREDIENT DOESN'T EXIST
   if (isLoading) {
     return <div>Loading...</div>;
   }

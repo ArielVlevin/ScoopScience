@@ -1,9 +1,13 @@
 
-import AddIngredientForm from "../Ingredients/components/Add";
 
 function MainPage(){
 
-   return(    <></>   );
-}
 
+   return (
+      <div>
+
+      </div>
+    );
+  };
+  
 export default MainPage;
