@@ -42,7 +42,7 @@ const IngredientsDataGrid: React.FC<IngredientsDataGridProps> = ({ rows, setRows
   };
 
   return (
-    <div style={{ minHeight:100 ,maxHeight: 400, width: '100%', background:'white' }}>
+    <div style={{ minHeight:100 ,maxHeight: 400, width: '100%' }}>
       <DataGrid
         rows={rows} columns={DataGridColumns}
         disableMultipleRowSelection hideFooter disableColumnMenu
@@ -55,9 +55,15 @@ const IngredientsDataGrid: React.FC<IngredientsDataGridProps> = ({ rows, setRows
         slots={{ toolbar: Toolbar as GridSlots['toolbar'], }}
         slotProps={{ toolbar: { setRows, setRowModesModel, selectedRowIds, rows }, }}
         sx={{ boxShadow: 'none',
-          [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: { outline: 'none' },
-          [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: { outline: 'none' },
-          [`& .${gridClasses.row}`]: { boxShadow: 'none' }, }}
+          [`& .${gridClasses.columnHeader}`]: { bgcolor:'#784B26' },
+          [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {bgcolor:'#826044', outline: 'none' },
+          [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: { bgcolor:'#CB8851',outline: 'none' },
+          [`& .${gridClasses.cell}:hover`]: { bgcolor:'#CB8851' },
+          [`& .${gridClasses.row}`]: { boxShadow: 'none', bgcolor:'#CB8851' }, 
+          [`& .${gridClasses.row}:hover, & .${gridClasses.row}:focus, & .${gridClasses.row}:focus-within`]: { bgcolor:'#CB8851',outline: 'none' }, 
+          [`& .${gridClasses.editInputCell}`]: { bgcolor: '#826044' },
+          [`& .${gridClasses.columnSeparator}`]: { color: '#CB8851'},
+           }}
       />
     </div>
   );

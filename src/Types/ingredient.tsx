@@ -1,3 +1,6 @@
+
+export const ingredientCategoryArray = ['dairy', 'sugars', 'stabilizer', 'fruits', 'adding', 'nuts', 'liquid' , 'other'];
+
 export type IngredientCategory = 'dairy' | 'sugars' | 'stabilizer' | 'fruits' | 'adding'| 'nuts';
 
 
@@ -8,8 +11,8 @@ export type Ingredient={
   calories: number;
   sugar: number;
   fat: number;
-  proteins: number;
-  solids_percentage: number;
+  protein: number;
+  totalSolid: number;
   msnf: number
 };
 

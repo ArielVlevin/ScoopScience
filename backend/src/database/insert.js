@@ -10,7 +10,6 @@ async function insertData(data, collectionName) {
       const collection = db.collection(collectionName);
       const result = await collection.insertOne({  _id: data.id, ...data});
       console.log('Inserted data:', result.insertedId);
-      await closeDatabaseConnection();
    } catch (error) {
      console.error('Error inserting data:', error);
    }

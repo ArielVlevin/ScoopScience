@@ -43,6 +43,9 @@ export  function calculateTotals2  (rows: Row[]) {
    return { totalWeight, totalFat, totalSolid };
  };
  
+
+
+ 
  export default function calculateTotals(rows: Row[]) {
   let totalWeight = 0;
   let totalFat = 0;

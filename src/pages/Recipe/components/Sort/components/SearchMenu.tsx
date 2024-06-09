@@ -2,7 +2,7 @@ import { MenuItem, Box, Toolbar, AppBar,  TextField,  SelectChangeEvent } from "
 import { useEffect, useState } from "react";
 import { RecipeData } from "../../../../../Types/recipe";
 import recipes from "../../../../../data";
-import SortSelect from "./SortSelect";
+import SortSelect from "../../../../../components/sort/Select";
 
 type SearchRecipeMenuProps = {
   onFilteredRecipesChange: (recipes: RecipeData[]) => void;

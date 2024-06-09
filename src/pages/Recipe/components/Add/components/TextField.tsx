@@ -25,13 +25,13 @@ export function UnitSelect({value: selectedUnit, onChange: handleUnitChange}: Un
 interface RecipeTextFieldProps {
    label: string;
    value: number | string;
-   unit: string;
+   unit?: string;
    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
    isFocused?: boolean;
  }
  
 
-export default function RecipeTextField({ label: fieldLabel, value: fieldValue, unit: fieldUnit, onChange = () => {}, isFocused = false }: RecipeTextFieldProps) {
+export default function RecipeTextField({ label: fieldLabel, value: fieldValue, unit: fieldUnit = 'grams', onChange = () => {}, isFocused = false }: RecipeTextFieldProps) {
   const endAdornmentUnit = fieldUnit === 'grams' ? 'grams' : '%';
 
   return (

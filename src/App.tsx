@@ -11,6 +11,7 @@ import RecipeCreation from './pages/Recipe/components/Add/index.tsx';
 import IngredientsPage from './pages/Ingredients/index.tsx';
 import IngredientDetailPage from './pages/IngredientDetail/index.tsx';
 import CreationPage from './pages/Creation/index.tsx';
+import AddIngredientForm from './pages/Ingredients/components/Add/index.tsx';
 
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const router = createBrowserRouter([{
     {index: true, element: <MainPage/>},
     {path: 'Creation', element: <CreationPage/>},
     {path: 'Ingredients', element: <IngredientsPage/>},
+    {path: 'Ingredients/add', element: <AddIngredientForm/>},
     {path: 'Ingredients/:ingredientId', element: <IngredientDetailPage/>},
     {path: 'recipes', element: <RecipesPage/>},
     {path: 'recipes/new', element: <RecipeCreation/>},

@@ -1,13 +1,9 @@
-import { Box } from "@mui/material";
+
+import AddIngredientForm from "../Ingredients/components/Add";
 
 function MainPage(){
 
-   return(
-      <>
-      <Box>         <h1>Main Page</h1>
-</Box>
-      </>
-   );
+   return(    <></>   );
 }
 
 export default MainPage;
