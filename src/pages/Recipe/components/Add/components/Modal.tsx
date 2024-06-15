@@ -63,7 +63,7 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
 
   const handleAdd = () => {
     if (selectedIngredient) {
-      // Call the onAdd callback with the selected category, ingredient name, and ingredient ID
+      console.log("Adding ingredient:", category, selectedIngredient.name, selectedIngredient.id);
       onAdd(category, selectedIngredient.name, selectedIngredient.id);
       handleClose(); // Close the modal after adding
     }

@@ -24,7 +24,6 @@ async function ingredientsRouter(app){
 
   app.get('/ingredients/lastid/:category', async(req,  res) => {
     const categoryName = req.params.category;
-    console.log(`category name: ${categoryName}`);
     try{
         const id = await getLastInsertedID(categoryName);
 
@@ -69,7 +68,6 @@ app.post('/ingredients', async (req, res) => {
 
       const insertedID = await insertData(ingredient, 'Ingredients');
       res.status(201).json({ insertedID });
-      console.log('\nRecipe received and inserted:', ingredient);
     } catch (error) {
       console.error('Error inserting ingredient:', error);
       res.status(500).json({ message: 'Internal Server Error' });

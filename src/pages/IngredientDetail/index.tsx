@@ -1,36 +1,30 @@
 import { useParams } from 'react-router-dom';
 import { Container } from '@mui/material';
+import useGetIngredient from '../../hooks/useGetIngredient';
 
-import GetIngredient from '../Ingredients/database/get';
 
 const IngredientDetailPage = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
 
-  const { ingredient, isLoading, error } = GetIngredient(String(ingredientId));
+  const {ingredientData, isLoading, isError, error} = useGetIngredient(String(ingredientId));
 
 
-  //TODO: WHEN ERROR: IF THE ERROR BECAUSE THE INGREDIENT DOESN'T EXIST, SHOW A MESSAGE THAT THE INGREDIENT DOESN'T EXIST
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if(isLoading) return <Container><h2>loading...</h2></Container>
+  if(isError) return<Container><h2>{error?.message}</h2></Container> 
 
   return (
     <Container>
       <h1>Ingredient Detail</h1>
-      {ingredient ? (
+      {ingredientData ? (
         <div>
-          <h2>{ingredient.name}</h2>
-          <p>Category: {ingredient.category}</p>
-          <p>Calories: {ingredient.calories}</p>
-          <p>Fat: {ingredient.fat}</p>
-          <p>Protein: {ingredient.protein}</p>
-          <p>Sugar: {ingredient.sugar}</p>
-          <p>Total Solids: {ingredient.totalSolid}</p>
-          <p>MSNF: {ingredient.msnf}</p>
+          <h2>{ingredientData.name}</h2>
+          <p>Category: {ingredientData.category}</p>
+          <p>Calories: {ingredientData.calories}</p>
+          <p>Fat: {ingredientData.fat}</p>
+          <p>Protein: {ingredientData.protein}</p>
+          <p>Sugar: {ingredientData.sugar}</p>
+          <p>Total Solids: {ingredientData.totalSolids}</p>
+          <p>MSNF: {ingredientData.msnf}</p>
         </div>
       ) : (
         <p>Ingredient not found</p>

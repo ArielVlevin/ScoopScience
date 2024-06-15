@@ -15,7 +15,7 @@ let db = null;
 async function connectToDatabase() {
   try {
       await client.connect();
-      console.log('Connected to MongoDB');
+      //console.log('Connected to MongoDB');
       db = client.db(databaseName);
   } catch (error) {
       console.error('Error connecting to MongoDB:', error);
@@ -28,7 +28,7 @@ async function closeDatabaseConnection() {
   try {
       await client.close();
       db = null;
-      console.log('MongoDB connection closed');
+      //console.log('MongoDB connection closed');
   } catch (error) {
     console.error('Error closing MongoDB connection:', error);
     throw error;

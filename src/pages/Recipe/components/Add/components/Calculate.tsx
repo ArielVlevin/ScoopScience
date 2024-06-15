@@ -1,4 +1,21 @@
-import { Row } from "../../../interfaces/recipe";
+import { Row } from "../../../interfaces/Row";
+
+
+
+
+export const calculateNutritionalValues = (row: Row, newWeight: number): Row => {
+  const factor = newWeight / row.weight;
+  return {
+    ...row,
+    weight: newWeight,
+    calories: row.calories * factor,
+    sugar: row.sugar * factor,
+    fat: row.fat * factor,
+    protein: row.protein * factor,
+    totalSolids: row.totalSolids ,
+    msnf: row.msnf ,
+  };
+};
 
 
 export const currencies = [
@@ -25,31 +42,11 @@ export function formatTotalValue(total: number, totalWeight: number, unit: strin
 };
 
 
-export  function calculateTotals2  (rows: Row[]) {
-   let totalWeight = 0;
-   let totalFat = 0;
-   let totalSolid = 0;
- 
-   rows.forEach(row => {
-     const weight = Number(row.weight);
-     const fat = Number(row.fat);
-     const solidsPercentage = Number(row.totalSolid);
- 
-     totalWeight += weight;
-     totalFat += fat;
-     totalSolid += (solidsPercentage * weight) / 100;
-   });
- 
-   return { totalWeight, totalFat, totalSolid };
- };
- 
 
-
- 
  export default function calculateTotals(rows: Row[]) {
   let totalWeight = 0;
   let totalFat = 0;
-  let totalSolid = 0;
+  let totalSol = 0;
   let totalCalories = 0;
   let totalSugar = 0;
   let totalMSNF = 0;
@@ -57,18 +54,18 @@ export  function calculateTotals2  (rows: Row[]) {
   rows.forEach(row => {
     const weight = Number(row.weight);
     const fat = Number(row.fat);
-    const solidsPercentage = Number(row.totalSolid);
+    const solidsPercentage = Number(row.totalSolids);
     const calories = Number(row.calories);
     const msnf = Number(row.msnf);
     const sugars = Number(row.sugar);
 
     totalWeight += weight;
     totalFat += fat;
-    totalSolid += (solidsPercentage * weight) / 100;
+    totalSol += (solidsPercentage * weight) / 100;
     totalCalories += calories * (weight / 100);
     totalSugar += sugars;
     totalMSNF += (msnf * weight) / 100;
   });
 
-  return { totalWeight, totalFat, totalSolid, totalCalories, totalSugar, totalMSNF };
+  return { totalWeight, totalFat, totalSol, totalCalories, totalSugar, totalMSNF };
 }

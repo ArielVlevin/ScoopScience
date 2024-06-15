@@ -12,7 +12,7 @@ export type Ingredient={
   sugar: number;
   fat: number;
   protein: number;
-  totalSolid: number;
+  totalSolids: number;
   msnf: number
 };
 

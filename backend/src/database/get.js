@@ -3,19 +3,6 @@
 const {connectToDatabase,closeDatabaseConnection, isConnected } = require('./connect');
 
 
-// Function to find data in MongoDB
-async function findData(query, collectionName) {
-   try {
-      const db = await connectToDatabase();
-      const collection = db.collection(collectionName);
-     console.log('Found data:', result);
-   } catch (error) {
-     console.error('Error finding data:', error);
-   }
- }
-
-
-
 
  async function getDataByID(dataID, collectionName) {
   try {
@@ -62,7 +49,6 @@ async function getLastInsertedID(categoryName) {
 
 
  module.exports = {
-   findData,
-   getDataByID,
+  getDataByID,
    getLastInsertedID
  }

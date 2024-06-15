@@ -14,7 +14,13 @@ import CreationPage from './pages/Creation/index.tsx';
 import AddIngredientForm from './pages/Ingredients/components/Add/index.tsx';
 
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 60,
+    },
+  },
+});
 
 const router = createBrowserRouter([{
   path: '/',

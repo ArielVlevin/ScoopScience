@@ -37,7 +37,7 @@ export default function Navbar(props: Props){
 
   return (
    <HideOnScroll {...props}>
-      <AppBar position="sticky" elevation={0} sx={{ maxHeight: '64px', bgcolor:'#784B26'}}>
+      <AppBar position="sticky" elevation={0} sx={{ maxHeight: '64px', bgcolor:'#C3712A'}}>
          <Toolbar>
 
 
@@ -52,7 +52,7 @@ export default function Navbar(props: Props){
             {pagesNav.map((map, index) => (
                <React.Fragment key={index}>
                <Button color='inherit'>
-                  <NavLink to={map.href} style={{ color: 'white', textDecoration: "none" }}>{map.text}</NavLink>
+                  <NavLink to={map.href} style={{ color: 'white', textDecoration: "none",  }}>{map.text}</NavLink>
                </Button>
                <Divider orientation="vertical" flexItem sx={{ bgcolor: 'gray' }} />
                </React.Fragment>

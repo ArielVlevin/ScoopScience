@@ -6,7 +6,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useState } from "react";
 import SortSelect from "../../../../components/sort/Select";
 import RecipeTextField, { UnitSelect } from "../../../../components/sort/TextField";
-import { Row } from "../../interfaces/recipe";
+import { Row } from "../../interfaces/Row";
 import { initialRows } from "./data/DataGrid";
 
 
@@ -45,7 +45,7 @@ export default function RecipeCreation() {
   };
 
   const totalFatValue = formatTotalValue(totals.totalFat, totals.totalWeight, unit);
-  const totalSolidValue = formatTotalValue(totals.totalSolid, totals.totalWeight, unit);
+  const totalSolidValue = formatTotalValue(totals.totalSol, totals.totalWeight, unit);
   const totalCaloriesValue = formatTotalValue(totals.totalCalories, totals.totalWeight, 'grams');
   const totalSugarValue = formatTotalValue(totals.totalSugar, totals.totalWeight, unit);
   const totalMSNFValue = formatTotalValue(totals.totalMSNF, totals.totalWeight, unit);
