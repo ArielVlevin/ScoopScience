@@ -4,8 +4,8 @@ import { Box, Button, Divider } from '@mui/material';
 import AddIngredientModal from './Modal';
 import { useEffect, useState } from 'react';
 import useGetIngredient from '../../../../../hooks/useGetIngredient';
-import { Ingredient } from '../../../../../Types/ingredient';
-import NewIngredientModal from '../../../../Ingredients/components/Add/Modal';
+import { recipeValues } from '../../../../../Types/globalVar';
+
 
 
 export interface ToolbarProps {
@@ -36,7 +36,7 @@ export function Toolbar(props: ToolbarProps) {
           protein: ingredientData.protein,
           totalSolids: ingredientData.totalSolids,
           msnf: ingredientData.msnf,
-          weight: 100,
+          weight: recipeValues.defaultWeightRecipe,
           isNew: true,
         },
       ]);
@@ -63,6 +63,7 @@ export function Toolbar(props: ToolbarProps) {
     if (existingIngredient) {
       alert(`The ingredient "${ingredientName}" already exists in the recipe.`);
     } else {
+      alert(`Adding ${ingredientName} from ${category}`);
       setIngredientId(ingredientId); 
     }
   }

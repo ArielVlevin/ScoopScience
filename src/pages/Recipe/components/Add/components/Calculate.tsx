@@ -1,4 +1,4 @@
-import { Row } from "../../../interfaces/Row";
+import { Row } from "../../../../../Types/ingredient";
 
 
 

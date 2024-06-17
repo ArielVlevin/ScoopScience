@@ -17,9 +17,29 @@ export type Ingredient={
 };
 
 
+export type Row ={
+  id: string;
+  name: string;
+  category: IngredientCategory;
+  calories: number;
+  sugar: number;
+  fat: number;
+  protein: number;
+  totalSolids: number;
+  msnf: number;
+  weight: number;
+};
+
+
+
 export type IngredientInfo = [
   ingredientData: Ingredient, weight: number,
 ];
 
 
 export type IngredientsArray ={ [key: string]: { id: string, name: string }[] };
+
+
+
+
+

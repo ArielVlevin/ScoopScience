@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Box, Button, Typography, Modal, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Toolbar } from '@mui/material';
+import { Box, Button, Typography, Modal, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 import { useGetIngredientsArray } from '../../../../../hooks/useGetIngredient';
-import NewIngredientModal from '../../../../Ingredients/components/Add/Modal';
 
 
 const style = {
@@ -55,7 +54,6 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
   const handleAdd = () => {
     if (selectedIngredient) {
       onAdd(category, selectedIngredient.name, selectedIngredient.id);
-      
       handleClose(); // Close the modal after adding
     }
   };
@@ -69,11 +67,11 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
   //TODO: make the loading and error better(loading inside the modal and not in the button)
 
   if (isLoading) {
-    return <div>Modal Loading...</div>;
+    return <div>modal Loading...</div>;
   }
 
   if (isError && error) {
-    return <div>Modal Error: {error.message}</div>;
+    return <div>modal Error: {error.message}</div>;
   }
 
 
@@ -88,16 +86,10 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        
         <Box sx={style}>
-          
-          <Toolbar sx={{ justifyContent: "space-between", mb: 4 }}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Select Category
-            </Typography>
-            <NewIngredientModal />
-          </Toolbar>
-
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Select Category
+          </Typography>
           <FormControl fullWidth sx={{ mt: 2 }}>
             <InputLabel id="category-select-label">Category</InputLabel>
             <Select
@@ -115,7 +107,8 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
 
           {category && (
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="ingredient-select-label">Ingredient</InputLabel>              <Select
+              <InputLabel id="ingredient-select-label">Ingredient</InputLabel>
+              <Select
                 labelId="ingredient-select-label"
                 id="ingredient-select"
                 value={selectedIngredient?.id || ''}

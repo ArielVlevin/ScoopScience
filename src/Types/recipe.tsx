@@ -25,7 +25,10 @@ export type SpecialMarks={
  };
 
 
-export type RecipeKind = 'gelato' | 'ice cream' | 'sorbet' | 'other';
+export type RecipeKind = 'gelato' | 'iceCream' | 'sorbet' | 'other';
+
+export const typeOptions = ['gelato', 'iceCream', 'sorbet', 'other'];
+
 
 
  export type Ingredients={
@@ -49,3 +52,7 @@ export type RecipeKind = 'gelato' | 'ice cream' | 'sorbet' | 'other';
     recipeRating:RecipeRating,
     recipeIngredient :Ingredients,
  };
+
+
+
+ 

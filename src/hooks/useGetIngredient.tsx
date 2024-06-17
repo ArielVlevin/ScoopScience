@@ -1,7 +1,7 @@
 
-import getData from "../api/Get";
+import getData, { getProps } from "../api/Get";
 import { useQuery } from "@tanstack/react-query";
-import { Ingredient, IngredientsArray } from "../Types/ingredient";
+import { Ingredient, IngredientCategory, IngredientsArray } from "../Types/ingredient";
 
 
 
@@ -27,15 +27,36 @@ import { Ingredient, IngredientsArray } from "../Types/ingredient";
 
 
 
+
+
+//TODO::: converte those 2 to 1 function
 export function useGetIngredientsArray() {
 
   const ingredientsQuary = useQuery({
-    queryKey: ['ingredientsArray'],
-    queryFn: () => getData({ header: 'ingredientsArray' }),    
+    queryKey: ['ingredientsArrayTotal'],
+    queryFn: () => getData({ header: 'ingredientsArrayTotal' }),    
   })
 
   return{
     ingredientsByCategory: ingredientsQuary.data as IngredientsArray ?? {},
+    isLoading: ingredientsQuary.isLoading,
+    isError: ingredientsQuary.isError,
+    error: ingredientsQuary.error, 
+  };
+};
+
+
+
+
+export function useGetIngredientsArray2({header, id}: getProps) {
+
+  const ingredientsQuary = useQuery({  
+    queryKey: [header, id],
+    queryFn: () => getData({ header, id}),
+  });
+
+  return{
+    ingredients: (ingredientsQuary.data ?? []) as Ingredient[],
     isLoading: ingredientsQuary.isLoading,
     isError: ingredientsQuary.isError,
     error: ingredientsQuary.error, 

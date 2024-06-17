@@ -2,13 +2,14 @@ import * as React from 'react';
 import { DataGrid, GridEventListener, GridRowEditStopReasons, GridRowModel, GridRowModesModel, GridSlots, gridClasses } from '@mui/x-data-grid';
 import { Toolbar } from './ToolBar';
 import { DataGridColumns } from '../data/DataGrid';
-import { Row } from '../../../interfaces/Row';
 import { calculateNutritionalValues } from './Calculate';
+import { Row } from '../../../../../Types/ingredient';
 
 export interface IngredientsDataGridProps {
   rows: Row[];
   setRows: React.Dispatch<React.SetStateAction<Row[]>>;
   setTotals: (totals: { totalWeight: number; totalFat: number; totalSol: number, totalSugar: number, totalMSNF: number, totalCalories: number}) => void;
+
 }
 
 

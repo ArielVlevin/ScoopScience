@@ -38,7 +38,7 @@ async function ingredientsRouter(app){
 
 
 
-  app.get('/ingredientsArray', async (req, res) => {
+  app.get('/ingredientsArrayTotal', async (req, res) => {
     try {
       const db = await connectToDatabase();
       const ingredients = await db.collection('Ingredients').find({}).toArray();
@@ -56,10 +56,36 @@ async function ingredientsRouter(app){
     } catch (error) {
       console.error('Error fetching ingredients by category:', error);
       res.status(500).json({ message: 'Internal Server Error' });
-    } finally {
-      await closeDatabaseConnection();
-    }
+    };
   });
+
+  app.get('/ingredientsArray/:recipe', async (req, res) => {
+
+    const recipeName = req.params.recipe;
+    console.log('recipeName: ', recipeName);
+    let ingredientIds = ['510001'];
+    if(recipeName === 'gelato'){
+      ingredientIds = ['510001', '520001'];
+    }else if(recipeName === 'iceCream'){
+      ingredientIds = ['510001', '520001', '580001'];
+    }else if(recipeName === 'sorbet'){
+      ingredientIds = ['570001', '520001', '540001'];
+    }else if(recipeName === 'other'){
+      ingredientIds = ['570001', '520001', '560001'];
+    }
+
+    try {
+      const db = await connectToDatabase();
+      
+      const ingredients = await db.collection('Ingredients').find({
+        id: { $in: ingredientIds }
+      }).toArray();
+  
+      res.status(200).json(ingredients);
+    } catch (error) {
+      console.error('Error fetching basic gelato ingredients:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+}});
 
 
 app.post('/ingredients', async (req, res) => {

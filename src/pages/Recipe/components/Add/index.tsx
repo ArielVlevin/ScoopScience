@@ -6,32 +6,50 @@ import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useState } from "react";
 import SortSelect from "../../../../components/sort/Select";
 import RecipeTextField, { UnitSelect } from "../../../../components/sort/TextField";
-import { Row } from "../../interfaces/Row";
-import { initialRows } from "./data/DataGrid";
+import { Ingredient, Row } from "../../../../Types/ingredient";
+import { useGetIngredientsArray2 } from "../../../../hooks/useGetIngredient";
+import { recipeValues } from "../../../../Types/globalVar";
+import { typeOptions } from "../../../../Types/recipe";
 
 
-const typeOptions = ['gelato', 'ice cream', 'sorbet', 'other'];
 
-export default function RecipeCreation() {
-  const [typeFilter, setTypeFilter] = useState<string>('');
-  const [weight, setWeight] = useState(calculateTotals(initialRows).totalWeight);
-  const [rows, setRows] = useState<Row[]>(initialRows);
-  const [totals, setTotals] = useState(calculateTotals(initialRows));
+
+
+
+export default function NewRecipe() {
+  const [typeFilter, setTypeFilter] = useState<string>('gelato');
+  const [rows, setRows] = useState<Row[]>([]);
+  const [weight, setWeight] = useState<number>(calculateTotals([]).totalWeight);
+  const [totals, setTotals] = useState(calculateTotals([]));
   const [unit, setUnit] = useState('grams');
 
-  const handleTypeFilterChange = (event: SelectChangeEvent<typeof typeFilter>) => {
-    setTypeFilter(event.target.value);
-  };
+  const { ingredients, isLoading, isError, error } = useGetIngredientsArray2({ header: 'ingredientsArray', id: typeFilter });
+
+
+  useEffect(() => {
+    if (ingredients && ingredients.length > 0) {
+      const newRows = ingredients.map((ingredient: Ingredient) => ({
+        ...ingredient,
+        weight: recipeValues.defaultWeightRecipe,
+      }));
+      setRows(newRows);
+    }
+  }, [ingredients, typeFilter]);
+
 
   useEffect(() => {
     setTotals(calculateTotals(rows));
     setWeight(calculateTotals(rows).totalWeight);
   }, [rows]);
 
+  const handleTypeFilterChange = (event: SelectChangeEvent<typeof typeFilter>) => {
+    setTypeFilter(event.target.value);
+  };
+
   const handleWeightChange = (newTotalWeight: number) => {
     const currentTotalWeight = totals.totalWeight;
     if (currentTotalWeight === 0) return;
-    const minimumWeight = 1;
+    const minimumWeight = recipeValues.minValueRecipe;
     const adjustedTotalWeight = Math.max(minimumWeight, newTotalWeight);
     const scalingFactor = adjustedTotalWeight / currentTotalWeight;
 
@@ -74,8 +92,10 @@ export default function RecipeCreation() {
           <Button variant="contained" sx={{ bgcolor: 'green', "&.MuiButton-root:hover": { bgcolor: 'greenyellow' } }} startIcon={<SendIcon />}>Send</Button>
         </Toolbar>
 
-
-
+       {/**
+                  // TODO: MAKE IT ONE FUNCTION:
+                **/ }
+          
 
         <Toolbar sx={{ justifyContent: "space-between", mt: 4, mb: 2 }}>
 
@@ -101,7 +121,6 @@ export default function RecipeCreation() {
           <RecipeTextField label='Total Calories' value={totalCaloriesValue} isFocused />
 
           <UnitSelect onChange={handleUnitChange} />
-
         </Toolbar>
 
 

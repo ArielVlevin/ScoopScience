@@ -28,13 +28,12 @@ export const Http = async ({ header, id , method}: HttpProps): Promise<any> =>  
 */
 
 
-interface  HttpProps {
+export type getProps = {
   header: string;
   id?: string;
- // method: 'GET' | 'POST';
-}
+};
 
- export default function getData({ header, id}: HttpProps){  
+ export default function getData({ header, id}: getProps){  
   const newHeader = id?`${header}/${id}`:header;
   console.log('::from api/get.tsx::  newHeader:', newHeader);
   return axios.get('http://localhost:3000/' + newHeader).then((response) => response.data);
