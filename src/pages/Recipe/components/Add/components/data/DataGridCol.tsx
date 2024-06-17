@@ -1,7 +1,7 @@
 import { GridColDef } from "@mui/x-data-grid";
-import { ingredientCategoryArray} from "../../../../../Types/ingredient";
 import { TextField } from "@mui/material";
-import { recipeValues } from "../../../../../Types/globalVar";
+import { recipeValues } from "../../../../../../Types/globalVar";
+import { ingredientCategoryArray } from "../../../../../../Types/ingredient";
 
 
 
@@ -30,7 +30,7 @@ function percentFormat(value: number | undefined): string {
       />
     ),
   },
-  { field: 'category', headerName: 'Category', width: 100, valueOptions: ingredientCategoryArray, },
+  { field: 'category', headerName: 'Category', width: 100, valueOptions: Array.from(ingredientCategoryArray), },
   { field: 'calories', headerName: 'Calories', type: 'number', width: 100, headerAlign: 'left', },
   { field: 'sugar', headerName: 'Sugar', type: 'number', width: 100, headerAlign: 'left', },
   { field: 'fat', headerName: 'Fat', type: 'number', width: 100, headerAlign: 'left',},

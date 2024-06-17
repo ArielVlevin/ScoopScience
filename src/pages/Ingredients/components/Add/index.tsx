@@ -46,7 +46,8 @@ const AddIngredientForm = () => {
   })
 
   const onSubmit = (data: Ingredient) => {
-    console.log(data);
+    // TODO: delete console log
+    //console.log(data);
     addIngredientMutation.mutate(data);
   };
 

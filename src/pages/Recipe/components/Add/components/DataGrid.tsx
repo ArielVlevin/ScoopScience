@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { DataGrid, GridEventListener, GridRowEditStopReasons, GridRowModel, GridRowModesModel, GridSlots, gridClasses } from '@mui/x-data-grid';
 import { Toolbar } from './ToolBar';
-import { DataGridColumns } from '../data/DataGrid';
 import { calculateNutritionalValues } from './Calculate';
 import { Row } from '../../../../../Types/ingredient';
+import { DataGridColumns } from './data/DataGridCol';
 
 export interface IngredientsDataGridProps {
   rows: Row[];

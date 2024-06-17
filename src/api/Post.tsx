@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Ingredient } from "../Types/ingredient";
+import { RecipeData } from "../Types/recipe";
 
 
 export async function postIngredient (data: Ingredient) {
@@ -10,22 +11,13 @@ export async function postIngredient (data: Ingredient) {
 
 
 
-/*
-export const PostIngredient = async (ingredient: any): Promise<any> => {
-   const response = await fetch('http://localhost:3000/ingredients', {
-     method: 'POST',
-     headers: {
-       'Content-Type': 'application/json',
-     },
-     body: JSON.stringify(ingredient),
-   });
- 
-   if (!response.ok) {
-     throw new Error('Failed to post ingredient');
-   }
- 
-   return response.json();
- };
- */
- 
- 
+export async function postRecipe (data: RecipeData) {
+  const { data: response } = await axios.post('http://localhost:3000/recipes', data);
+  return response.data;
+  };
+
+
+
+
+
+

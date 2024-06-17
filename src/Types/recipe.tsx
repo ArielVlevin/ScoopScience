@@ -1,4 +1,4 @@
-import { IngredientInfo } from "./ingredient";
+import { IngredientWithWeight } from "./ingredient";
 
 
 export type User={
@@ -25,14 +25,15 @@ export type SpecialMarks={
  };
 
 
-export type RecipeKind = 'gelato' | 'iceCream' | 'sorbet' | 'other';
 
-export const typeOptions = ['gelato', 'iceCream', 'sorbet', 'other'];
+export const typeOptions = ['gelato', 'iceCream', 'sorbet', 'other'] as const;
+export type RecipeKind = typeof typeOptions[number];    // = 'gelato' | 'iceCream' | 'sorbet' | 'other';
+
 
 
 
  export type Ingredients={
-   ingredients:IngredientInfo[],
+   ingredients:IngredientWithWeight[],
    kind:RecipeKind,
    totalWeight: number,
    butterFat:number,
@@ -47,7 +48,8 @@ export const typeOptions = ['gelato', 'iceCream', 'sorbet', 'other'];
  export type RecipeData = {
     id: string;
     recipeName:string,
-    user: User,
+    //TODO:: add user when login exists
+    //user: User,
     specialMarks: SpecialMarks,
     recipeRating:RecipeRating,
     recipeIngredient :Ingredients,
