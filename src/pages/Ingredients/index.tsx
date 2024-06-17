@@ -1,18 +1,18 @@
 import { Box, Container, Grid, List, ListItem, ListItemText, Typography } from "@mui/material";
-import useIngredientsArray from "../Recipe/components/Add/database/Array";
 import { Link } from "react-router-dom";
+import { useGetIngredientsArray } from "../../hooks/useGetIngredient";
 
 
 
 export default function IngredientsPage(){
 
-   const { ingredientsByCategory, loading, error } = useIngredientsArray();
+   const { ingredientsByCategory, isLoading, isError, error } = useGetIngredientsArray();
 
-   if (loading) {
+   if (isLoading) {
      return <div>Loading...</div>;
    }
  
-   if (error) {
+   if (isError && error) {
      return <div>Error: {error.message}</div>;
    }
    

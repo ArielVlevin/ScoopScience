@@ -4,13 +4,15 @@ import useGetIngredient from '../../hooks/useGetIngredient';
 
 
 const IngredientDetailPage = () => {
+
+
   const { ingredientId } = useParams<{ ingredientId: string }>();
 
-  const {ingredientData, isLoading, isError, error} = useGetIngredient(String(ingredientId));
+  const {ingredientData, isLoading, isError, error} = useGetIngredient(ingredientId || "");
 
 
-  if(isLoading) return <Container><h2>loading...</h2></Container>
-  if(isError) return<Container><h2>{error?.message}</h2></Container> 
+  //if(isLoading) return <div><h2>loading...</h2></div>
+  //if(isError&& error) return<div><h2>{error?.message}</h2></div> 
 
   return (
     <Container>

@@ -1,3 +1,4 @@
+import MyModal from "../../components/Modal";
 
 
 function MainPage(){
@@ -5,7 +6,7 @@ function MainPage(){
 
    return (
       <div>
-
+        <MyModal title="Modal Title" />
       </div>
     );
   };

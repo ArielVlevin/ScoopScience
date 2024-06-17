@@ -1,4 +1,4 @@
-import { Box, Button, Container, InputAdornment, MenuItem, SelectChangeEvent, TextField } from "@mui/material";
+import { Box, Button, Container, Grid, InputAdornment, MenuItem, SelectChangeEvent, TextField, Toolbar } from "@mui/material";
 import calculateTotals, { formatTotalValue } from "./components/Calculate";
 import IngredientsDataGrid from "./components/DataGrid";
 import SendIcon from '@mui/icons-material/Send';
@@ -57,7 +57,70 @@ export default function RecipeCreation() {
   return (
     <Box sx={{ m: 2 }}>
       <Container>
-        <Box sx={{ m: 2 }}>
+
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Grid >
+          <TextField required variant="outlined" label='Recipe Name' sx={{ mr: 4}}/>
+          <SortSelect
+            id="Type"
+            value={typeFilter}
+            onChangeHandler={handleTypeFilterChange}
+            options={typeOptions.map((option, index) => (
+              <MenuItem key={index} value={option}>{option}</MenuItem>
+            ))}
+          />
+          </Grid>
+          <div />
+          <Button variant="contained" sx={{ bgcolor: 'green', "&.MuiButton-root:hover": { bgcolor: 'greenyellow' } }} startIcon={<SendIcon />}>Send</Button>
+        </Toolbar>
+
+
+
+
+        <Toolbar sx={{ justifyContent: "space-between", mt: 4, mb: 2 }}>
+
+                {/**
+                  // TODO: change thks to recipe textfield too 
+                **/ }
+          <TextField label="Total Weight" type='number' sx={{ m: 1, width: '23ch' }} value={weight}
+              onChange={e => { handleWeightChange(Number(e.target.value)) }}
+              InputProps={{ endAdornment: <InputAdornment position="end">grams</InputAdornment>, }}
+            />
+
+          <RecipeTextField label='Total Fat' value={totalFatValue} unit={unit} isFocused />
+          <RecipeTextField label='Total Solid' value={totalSolidValue} unit={unit} isFocused />
+          <RecipeTextField label='Total Sugar' value={totalSugarValue} unit={unit} isFocused />
+          <RecipeTextField label='Total MSNF' value={totalMSNFValue} unit={unit} isFocused />
+        </Toolbar>
+
+        <Toolbar sx={{ justifyContent: "space-between", mb: 4 }}>
+
+                {/**
+                // TODO: change to kkl
+              **/ }
+          <RecipeTextField label='Total Calories' value={totalCaloriesValue} isFocused />
+
+          <UnitSelect onChange={handleUnitChange} />
+
+        </Toolbar>
+
+
+
+        <IngredientsDataGrid rows={rows} setRows={setRows} setTotals={setTotals} />
+
+
+        
+      </Container>
+    </Box>
+  );
+}
+
+
+/* old:
+        <Box sx={{ m: 2 }} display="flex" flexDirection="row"  >
+
+          <Box display="flex" flexDirection="row" alignItems='left'>
+
           <TextField required variant="outlined" label='Recipe Name' sx={{ mr: 2 }} />
 
           <SortSelect
@@ -68,34 +131,18 @@ export default function RecipeCreation() {
               <MenuItem key={index} value={option}>{option}</MenuItem>
             ))}
           />
-        </Box>
-
-        <IngredientsDataGrid rows={rows} setRows={setRows} setTotals={setTotals} />
-
-        <Box sx={{ marginTop: 4 }}>
-          {/**
-            // TODO: change thks to recipe textfield too 
-           **/ }
-          <TextField label="Total Weight" type='number' sx={{ m: 1, width: '25ch' }} value={weight}
-            onChange={e => { handleWeightChange(Number(e.target.value)) }}
-            InputProps={{ endAdornment: <InputAdornment position="end">grams</InputAdornment>, }}
-          />
-
-          <RecipeTextField label='Total Fat' value={totalFatValue} unit={unit} isFocused />
-          <RecipeTextField label='Total Solid' value={totalSolidValue} unit={unit} isFocused />
-          <RecipeTextField label='Total Sugar' value={totalSugarValue} unit={unit} isFocused />
-            {/**
-            // TODO: change to kkl
-           **/ }
-          <RecipeTextField label='Total Calories' value={totalCaloriesValue} isFocused />
-          <RecipeTextField label='Total MSNF' value={totalMSNFValue} unit={unit} isFocused />
-          <UnitSelect onChange={handleUnitChange} />
-
-          <Box display="flex" flexDirection="column" alignItems='end'>
-            <Button variant="contained" sx={{ mr: 4, mt: 4, bgcolor: 'green', "&.MuiButton-root:hover": { bgcolor: 'greenyellow' } }} startIcon={<SendIcon />}>Send</Button>
           </Box>
+
+          <Box display="flex" flexDirection="row" alignItems='right'>
+            <Button variant="contained" sx={{ bgcolor: 'green', "&.MuiButton-root:hover": { bgcolor: 'greenyellow' } }} startIcon={<SendIcon />}>Send</Button>
+          </Box>
+
         </Box>
-      </Container>
-    </Box>
-  );
-}
+
+
+
+
+                <Box sx={{ marginTop: 4 }}>
+
+
+        */

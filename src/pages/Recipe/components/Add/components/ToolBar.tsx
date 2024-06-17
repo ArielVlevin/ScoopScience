@@ -4,6 +4,8 @@ import { Box, Button, Divider } from '@mui/material';
 import AddIngredientModal from './Modal';
 import { useEffect, useState } from 'react';
 import useGetIngredient from '../../../../../hooks/useGetIngredient';
+import { Ingredient } from '../../../../../Types/ingredient';
+import NewIngredientModal from '../../../../Ingredients/components/Add/Modal';
 
 
 export interface ToolbarProps {
@@ -18,7 +20,7 @@ export interface ToolbarProps {
 export function Toolbar(props: ToolbarProps) {
   const { setRows, setRowModesModel, selectedRowIds, rows } = props;
   const [ingredientId, setIngredientId] = useState<string | null>(null);
-  const { ingredientData, isLoading, error } = useGetIngredient(ingredientId || "");
+  const { ingredientData, isLoading, isError, error } = useGetIngredient(ingredientId as string);
 
   useEffect(() => {
     if (ingredientData && !isLoading && !error) {
@@ -69,10 +71,19 @@ export function Toolbar(props: ToolbarProps) {
     setRows((oldRows) => oldRows.filter((row) => !selectedRowIds.includes(row.id)));
   }
 
+  if(isLoading) {
+    return <div>ToolBar Loading...</div>
+  }
+  if(isError && error) {
+    return <div>ToolBar Error: {error.message}</div>
+  }
+
   return (
     <Box>
       <GridToolbarContainer sx={{display: 'flex', margin: 0.8, marginBottom: 1.2}}>
+
         <AddIngredientModal onAdd={handleAddIngredient} />
+        
         <Button
           variant="contained"
           onClick={handleClickDelete}
@@ -83,8 +94,6 @@ export function Toolbar(props: ToolbarProps) {
         </Button>
       </GridToolbarContainer>
       <Divider />
-      {isLoading && <div>Loading...</div>}
-      {error && <div>Error: {error}</div>}
     </Box>
   );
 }

@@ -20,3 +20,6 @@ export type Ingredient={
 export type IngredientInfo = [
   ingredientData: Ingredient, weight: number,
 ];
+
+
+export type IngredientsArray ={ [key: string]: { id: string, name: string }[] };

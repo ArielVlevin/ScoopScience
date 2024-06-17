@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Box, Button, Typography, Modal, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { Box, Button, Typography, Modal, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Toolbar } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
-import useIngredientsArray from '../database/Array';
+import { useGetIngredientsArray } from '../../../../../hooks/useGetIngredient';
+import NewIngredientModal from '../../../../Ingredients/components/Add/Modal';
 
 
 const style = {
@@ -23,7 +24,7 @@ interface AddIngredientModalProps {
 }
 
 export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
-  const { ingredientsByCategory, loading, error } = useIngredientsArray();
+  const { ingredientsByCategory, isLoading, isError, error } = useGetIngredientsArray();
 
   const [open, setOpen] = React.useState(false);
   const [category, setCategory] = React.useState<string>('');
@@ -39,16 +40,6 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
     setOpen(false);
   };
 
-  //TODO: make the loading and error better(loading inside the modal and not in the button)
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
 
   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     setCategory(event.target.value as string);
@@ -63,8 +54,8 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
 
   const handleAdd = () => {
     if (selectedIngredient) {
-      console.log("Adding ingredient:", category, selectedIngredient.name, selectedIngredient.id);
       onAdd(category, selectedIngredient.name, selectedIngredient.id);
+      
       handleClose(); // Close the modal after adding
     }
   };
@@ -72,6 +63,19 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
   const handleCancel = () => {
     handleClose();
   };
+
+
+
+  //TODO: make the loading and error better(loading inside the modal and not in the button)
+
+  if (isLoading) {
+    return <div>Modal Loading...</div>;
+  }
+
+  if (isError && error) {
+    return <div>Modal Error: {error.message}</div>;
+  }
+
 
   return (
     <div>
@@ -84,10 +88,16 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Select Category
-          </Typography>
+          
+          <Toolbar sx={{ justifyContent: "space-between", mb: 4 }}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Select Category
+            </Typography>
+            <NewIngredientModal />
+          </Toolbar>
+
           <FormControl fullWidth sx={{ mt: 2 }}>
             <InputLabel id="category-select-label">Category</InputLabel>
             <Select
@@ -105,8 +115,7 @@ export default function AddIngredientModal({ onAdd }: AddIngredientModalProps) {
 
           {category && (
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="ingredient-select-label">Ingredient</InputLabel>
-              <Select
+              <InputLabel id="ingredient-select-label">Ingredient</InputLabel>              <Select
                 labelId="ingredient-select-label"
                 id="ingredient-select"
                 value={selectedIngredient?.id || ''}
