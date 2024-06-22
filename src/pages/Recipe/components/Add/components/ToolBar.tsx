@@ -1,10 +1,11 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { GridRowModes, GridRowModesModel, GridRowsProp, GridToolbarContainer } from '@mui/x-data-grid';
-import { Box, Button, Divider } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Divider } from '@mui/material';
 import AddIngredientModal from './Modal';
 import { useEffect, useState } from 'react';
 import useGetIngredient from '../../../../../hooks/useGetIngredient';
 import { recipeValues } from '../../../../../Types/globalVar';
+import Loading from '../../../../../layouts/loading';
 
 
 
@@ -73,7 +74,7 @@ export function Toolbar(props: ToolbarProps) {
   }
 
   if(isLoading) {
-    return <div>ToolBar Loading...</div>
+   return <Loading isLoading={isLoading}/>
   }
   if(isError && error) {
     return <div>ToolBar Error: {error.message}</div>

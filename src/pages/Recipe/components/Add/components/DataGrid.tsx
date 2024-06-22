@@ -58,20 +58,25 @@ const IngredientsDataGrid: React.FC<IngredientsDataGridProps> = ({ rows, setRows
         slots={{ toolbar: Toolbar as GridSlots['toolbar'], }}
         slotProps={{ toolbar: { setRows, setRowModesModel, selectedRowIds, rows}, }}
         sx={{ boxShadow: 'none', outline: 'none', bgcolor: '#CB8851',
+
           [`& .${gridClasses.columnHeader}`]: { bgcolor:'#784B26' },
           [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {bgcolor:'#826044', outline: 'none' },
-          [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: { bgcolor:'#CB8851',outline: 'none' },
-          [`& .${gridClasses.cell}:hover`]: { bgcolor:'#CB8851' },
-
-          [`& .${gridClasses.row}`]: { boxShadow: 'none', bgcolor:'#CB8851' }, 
-          [`& .${gridClasses.row}:hover, & .${gridClasses.row}:focus, & .${gridClasses.row}:focus-within`]: { bgcolor:'#CB8851',outline: 'none' }, 
           [`& .${gridClasses.columnSeparator}`]: { color: '#CB8851'},
-          [`& .${gridClasses.row}:Separator`]: { color: 'red', bgcolor:'red'},
-          '& .MuiDataGrid-row': {backgroundColor: '#CB8851', '&.Mui-selected': { backgroundColor: '#CB8851', '&:hover': {backgroundColor: '#CB8851',},}, 
-            '&.MuiDataGrid-row--editing': {backgroundColor: '#CB8851', '& .MuiDataGrid-cell': { backgroundColor: '#CB8851',   },  },  },        }}
+
+
+          [`& .${gridClasses.row}, .${gridClasses.row}:focus-within`]: { boxShadow: 'none', bgcolor:'#D59C6C' }, 
+          [`& .${gridClasses.row}:hover`]: { bgcolor:'#D59C6C', outline: 'none' }, 
+          [`& .${gridClasses.row}:focus`]: { bgcolor:'#D59C6C', outline: 'none' }, 
+         '& .MuiDataGrid-row': {backgroundColor: '#D59C6C', '&.Mui-selected': { backgroundColor: '#D59C6C', '&:hover': {backgroundColor: '#D59C6C',},}, 
+           '&.MuiDataGrid-row--editing': {backgroundColor: '#D59C6C', '& .MuiDataGrid-cell': { backgroundColor: '#D59C6C',   },  },  },      
+          }}
       />
     </div>
   );
 };
 
 export default IngredientsDataGrid;
+
+
+
+//& .${gridClasses.row}:focus, & .${gridClasses.row}:focus-within

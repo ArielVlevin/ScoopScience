@@ -1,6 +1,11 @@
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
+
+
+
+import './App.css';
+
 import RootLayout from './pages/Root.tsx'
 import MainPage from './pages/HomePage/index.tsx';
 import ErrorPage from './pages/Error/index.tsx';
@@ -42,9 +47,12 @@ const router = createBrowserRouter([{
 
 
 const App = () => {
-  return  <QueryClientProvider client={queryClient}>
-  <RouterProvider router={router} />
-  </QueryClientProvider>;
+  
+  return ( 
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App

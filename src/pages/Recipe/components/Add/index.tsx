@@ -4,7 +4,6 @@ import { Box, Button, Container, Grid, MenuItem, SelectChangeEvent, TextField, T
 import calculateTotals from "./components/Calculate";
 import IngredientsDataGrid from "./components/DataGrid";
 import SendIcon from '@mui/icons-material/Send';
-import SortSelect from "../../../../components/sort/Select";
 import { useGetIngredientsArray2 } from "../../../../hooks/useGetIngredient";
 import { RecipeData, RecipeKind, typeOptions } from "../../../../Types/recipe";
 import { recipeValues } from "../../../../Types/globalVar";
@@ -17,6 +16,13 @@ import { postRecipe } from "../../../../api/Post";
 
 export default function NewRecipe() {
 
+  const [activeTab, setActiveTab] = useState<number>(1);
+
+
+  function handleTabChange(event: React.SyntheticEvent, newValue: number) {
+    setActiveTab(newValue);
+  }
+
   //  recipe data
   const [typeFilter, setTypeFilter] = useState<string>('gelato');
   const [recipeName, setRecipeName] = useState<string>('');
@@ -28,7 +34,7 @@ export default function NewRecipe() {
 
   //  ingredients
   const [rows, setRows] = useState<Row[]>([]);
-  const { ingredients, isLoading, isError, error } = useGetIngredientsArray2({ header: 'ingredientsArray', id: typeFilter });
+  const { ingredients, isLoading, isError, error } = useGetIngredientsArray2({ header: 'ingredients/ingredientsArray', id: typeFilter });
 
 
   //  when user change the type
@@ -105,10 +111,18 @@ export default function NewRecipe() {
   };
 
 
+
   return (
     <Box sx={{ m: 2 }}>
       <Container>
-        
+
+        <div role="tablist" className="tabs tabs-bordered mt-4 mb-8">
+          <a id="tab-1" role="tab"  onClick={()=> {setActiveTab(1)}}  className={activeTab===1?"tab tab-active":"tab"}>Recipe Details</a>
+          <a id="tab-2" role="tab"  onClick={()=> {setActiveTab(2)}}  className={activeTab===2?"tab tab-active":"tab"}>Ingredients Table</a>
+          <a id="tab-3" role="tab"  onClick={()=> {setActiveTab(3)}}  className={activeTab===3?"tab tab-active":"tab"}>Charts</a>
+        </div>
+
+        {activeTab===1?        
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Grid>
           <TextField
@@ -119,6 +133,7 @@ export default function NewRecipe() {
               value={recipeName}
               onChange={(e) => setRecipeName(e.target.value)}
             />
+            {/*
             <SortSelect
               id="Type"
               value={typeFilter}
@@ -127,6 +142,7 @@ export default function NewRecipe() {
                 <MenuItem key={index} value={option}>{option}</MenuItem>
               ))}
             />
+            */}
           </Grid>
 
           <div />
@@ -135,8 +151,10 @@ export default function NewRecipe() {
             Send
           </Button>
         </Toolbar>
+        : null}
 
-
+        {activeTab===2||activeTab===3?  
+        <div>
         <RecipeToolbar
           weight={weight}
           setWeight={setWeight}
@@ -147,13 +165,14 @@ export default function NewRecipe() {
           unit={unit}
           setUnit={setUnit}
         />
-
-
         <IngredientsDataGrid 
           rows={rows} 
           setRows={setRows} 
           setTotals={setTotals} 
         />
+        </div> 
+        : null
+        }
 
       </Container>
     </Box>

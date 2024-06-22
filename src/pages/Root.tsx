@@ -1,18 +1,19 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../layouts/navbar";
 import {Box, Divider } from "@mui/material";
-import BreadcrumbNavigation from "../layouts/BreadCrumbNav";
+import Footer from "../layouts/footer";
+import { ThemeProvider } from "../layouts/ThemeProvider";
 
 function RootLayout(){
    return <>
-   <Navbar>
-      <></>
-   </Navbar>
-   <Box sx={{minHeight:'800px'}}>
-   <BreadcrumbNavigation />
+   <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+   <Navbar />
+   <Box >
    <Divider />
    <Outlet/>
+   <Footer />
    </Box>
+   </ThemeProvider>
    </>;
 }
 

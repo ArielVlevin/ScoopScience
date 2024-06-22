@@ -1,19 +1,25 @@
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import IconButton from '@mui/material/IconButton';
+//import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import ShareIcon from '@mui/icons-material/Share';
-import { Box, CardActionArea, Grid, Rating, Stack } from '@mui/material';
+//import ShareIcon from '@mui/icons-material/Share';
+import { Box, CardActionArea, Grid, Rating, Toolbar } from '@mui/material';
 
-import exampleimg from "../../../../assets/icecream-example.jpeg";
+import exampleimg from "../../../../../assets/icecream-example.jpeg";
 import { useState } from 'react';
-import { Favorite } from '@mui/icons-material';
+//import { Favorite } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { RecipeData } from '../../../../Types/recipe';
+import { RecipeData } from '../../../../../Types/recipe';
 
 
-
+[  { isActive: true, name: "hi1" },
+   { isActive: false, name: "hi2" },
+   { isActive: true, name: "hi3" },
+   { isActive: true, name: "hi4" },
+   { isActive: true, name: "hi6" },
+   { isActive: true, name: "hi7" },
+] 
 
 export default function RecipeReviewCard({id, recipeName, recipeIngredient, recipeRating}:RecipeData) {
 
@@ -31,6 +37,52 @@ export default function RecipeReviewCard({id, recipeName, recipeIngredient, reci
   function clickHandle(){
    navigate("/recipes/" + id);
   }
+
+  return (
+<Box sx={{width: '100%'}}>
+   <Card elevation={0} sx={{ minHeight: '20s0px',maxHeight: '250px', backgroundColor:'#AD825F'}}>
+   <CardActionArea  onClick={clickHandle}
+         onMouseOver={ handleMouseOver }
+         onMouseOut={ handleMouseOut }
+      >
+   <Toolbar sx={{height: '100%'}}>      
+         
+      <CardMedia component="img"  sx={{padding: '2px', maxWidth: '25%', maxHeight: '25%'}} loading='lazy' image={exampleimg} alt={recipeName}/>
+
+      <Grid container height={'100%  50px'} justifyContent={'space-between'} alignSelf={'start'}>
+
+      <CardContent sx={{width: '100%'}} >
+      <Typography variant="body2" color="text.secondary">{recipeIngredient.kind}</Typography>
+      <Typography variant="body1" sx={{fontSize:'20px', fontWeight: 'bold' }}>{recipeName}</Typography>
+      <Grid container justifyContent="flex-end">
+      <Rating name="half-rating-read" value={recipeRating.ratingValue} defaultValue={5} precision={0.5} readOnly />
+      </Grid>
+      </CardContent> 
+
+
+      </Grid>
+      </Toolbar>
+      </CardActionArea>
+   </Card>
+    </Box>
+
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
 
   return (
 <Box>
@@ -111,95 +163,5 @@ export default function RecipeReviewCard({id, recipeName, recipeIngredient, reci
     </Box>
 
   );
-};
-
-
-/*
-
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-      </CardActions>
-
-
-
-
- <Box
-      sx={{
-        position: 'absolute',
-        bottom: '200px',
-        left: '0px',
-        width: '5px',
-      }}
-    >  
-    <CardActions>   <IconButton aria-label="share">
-    <ShareIcon />
-  </IconButton>
-  </CardActions>
-    </Box>
-    <Box
-      sx={{
-        position: 'absolute',
-        bottom: '200px',
-        left: '40px',
-        width: '5px',
-      }}
-    >  
-    <CardActions>   <IconButton aria-label="share">
-    <ShareIcon />
-  </IconButton>
-  </CardActions>
-    </Box>      <Box
-      sx={{
-        position: 'absolute',
-        bottom: '200px',
-        left: '80px',
-        width: '5px',
-      }}
-    >  
-    <CardActions>   <IconButton aria-label="share">
-    <ShareIcon />
-  </IconButton>
-  </CardActions>
-    </Box>
-    <Box
-      sx={{
-        position: 'absolute',
-        bottom: '200px',
-        left: '120px',
-        width: '5px',
-      }}
-    >  
-    <CardActions>   <IconButton aria-label="share">
-    <ShareIcon />
-  </IconButton>
-  </CardActions>
-    </Box>
-    
-
-
-
-
-      <Box
-      sx={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        bgcolor: 'rgba(0, 0, 0, 0.54)',
-        color: 'white',
-        padding: '10px',
-      }}
-    >
-      <Typography variant="h6">{recipeName}</Typography>
-      <Typography variant="body2">{kind}</Typography>
-    </Box>
-
-
-
-
+}; 
 */

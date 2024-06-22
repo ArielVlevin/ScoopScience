@@ -1,7 +1,6 @@
 // RecipeToolbar.tsx
 import React from 'react';
 import { Toolbar, TextField, InputAdornment, SelectChangeEvent } from "@mui/material";
-import RecipeTextField, { UnitSelect } from "../../../../components/sort/TextField";
 import { recipeValues } from "../../../../Types/globalVar";
 import { Row } from "../../../../Types/ingredient";
 import { formatTotalValue } from "./components/Calculate";
@@ -65,6 +64,7 @@ const RecipeToolbar: React.FC<RecipeToolbarProps> = ({
           onChange={e => { handleWeightChange(Number(e.target.value)) }}
           InputProps={{ endAdornment: <InputAdornment position="end">grams</InputAdornment> }}
         />
+        {/*
         <RecipeTextField label='Total Fat' value={totalFatValue} unit={unit} isFocused />
         <RecipeTextField label='Total Solid' value={totalSolidValue} unit={unit} isFocused />
         <RecipeTextField label='Total Sugar' value={totalSugarValue} unit={unit} isFocused />
@@ -72,7 +72,7 @@ const RecipeToolbar: React.FC<RecipeToolbarProps> = ({
       </Toolbar>
       <Toolbar sx={{ justifyContent: "space-between", mb: 4 }}>
         <RecipeTextField label='Total Calories' value={totalCaloriesValue} isFocused />
-        <UnitSelect onChange={handleUnitChange} />
+        <UnitSelect onChange={handleUnitChange} /> */}
       </Toolbar>
     </>
   );

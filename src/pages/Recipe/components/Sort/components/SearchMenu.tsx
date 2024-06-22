@@ -1,8 +1,7 @@
 import { MenuItem, Box, Toolbar, AppBar,  TextField,  SelectChangeEvent } from "@mui/material";
 import { useEffect, useState } from "react";
 import { RecipeData } from "../../../../../Types/recipe";
-import recipes from "../../../../../data";
-import SortSelect from "../../../../../components/sort/Select";
+import { useGetRecipes } from "../../../../../hooks/useGetIngredient";
 
 type SearchRecipeMenuProps = {
   onFilteredRecipesChange: (recipes: RecipeData[]) => void;
@@ -21,8 +20,18 @@ const SearchRecipeMenu: React.FC<SearchRecipeMenuProps> = ({ onFilteredRecipesCh
   const [sortOption, setSortOption] = useState<'recipeName' | 'userName'>('recipeName');
   const [ratingFilter, setRatingFilter] = useState(1);
 
+  const [recipeArray, setRecipeArray] = useState<RecipeData[]>([]);
+  const { recipes, isLoading, isError, error } = useGetRecipes();
+
+
+
+
   useEffect(() => {
-    const filteredRecipes = recipes
+    if(isLoading) return;
+    if(isError && error) return;
+    if(!recipes) return;
+    setRecipeArray(recipes);
+    const filteredRecipes = recipeArray
       .filter(recipe => 
         recipe.recipeName.toLowerCase().includes(nameFilter.toLowerCase()) &&
         recipe.recipeRating.ratingValue >= ratingFilter &&
@@ -31,28 +40,27 @@ const SearchRecipeMenu: React.FC<SearchRecipeMenuProps> = ({ onFilteredRecipesCh
       .sort((a, b) => 
         sortOption === 'recipeName' 
           ? a.recipeName.localeCompare(b.recipeName) 
-          : a.user.userName.localeCompare(b.user.userName)
+          : a.recipeName.localeCompare(b.recipeName) // change
       );
     onFilteredRecipesChange(filteredRecipes);
-  }, [nameFilter, typeFilter, sortOption, ratingFilter, onFilteredRecipesChange]);
+  }, [recipes, nameFilter, typeFilter, sortOption, ratingFilter, onFilteredRecipesChange]);
 
 
 
   function handleSortOptionChange(event: SelectChangeEvent<'recipeName' | 'userName'>) {
     setSortOption(event.target.value as 'recipeName' | 'userName');
-  };
+  }
 
   function handleRatingFilterChange(event: SelectChangeEvent<number>) {
     setRatingFilter(event.target.value as number);
-  };
+  }
 
   function handleTypeFilterChange(event: SelectChangeEvent<typeof typeFilter>) {
     const { target: { value } } = event;
     setTypeFilter(typeof value === 'string' ? value.split(',') : value);
-  };
+  }
 
   return (
-    <Box>
       <AppBar position="static" elevation={0} sx={{ maxHeight: '65px', bgcolor: '#C38555D5' }}>
         <Toolbar>
 
@@ -64,6 +72,7 @@ const SearchRecipeMenu: React.FC<SearchRecipeMenuProps> = ({ onFilteredRecipesCh
             onChange={e => setNameFilter(e.target.value)}
             sx={{ maxWidth: 200, marginLeft: 2, marginRight: 8 }}
           />
+          {/*
 
           <SortSelect 
             id="Sort by" 
@@ -93,31 +102,22 @@ const SearchRecipeMenu: React.FC<SearchRecipeMenuProps> = ({ onFilteredRecipesCh
                 <MenuItem key={index} value={option}>{option}</MenuItem>))}  
             multi
           />
+          */}
         </Toolbar>
-      </AppBar>
-    </Box>
+      </AppBar>  
   );
 };
 
 export default SearchRecipeMenu;
 
-
-/*       
-
-<FormControl variant="outlined" sx={{ minWidth:100,maxWidth: 200, marginRight: 2 }}>
-<InputLabel htmlFor="type-filter">Type</InputLabel>
-<Select
-  id="type-filter"
-  value={typeFilter}
-  multiple
-  onChange={handleTypeFilterChange}
-  label="Type"
->
-  {typeOptions.map((option, index) => (
-    <MenuItem key={index} value={option}>{option}</MenuItem>
-  ))}
-</Select>
-</FormControl>
+  /*const { recipes, isLoading, isError, error } = useGetRecipes();
 
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError && error) {
+    return <div>Error: {error.message}</div>;
+  }
 */
+  //setRecipeArray(recipes);

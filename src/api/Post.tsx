@@ -4,7 +4,7 @@ import { RecipeData } from "../Types/recipe";
 
 
 export async function postIngredient (data: Ingredient) {
-   const { data: response } = await axios.post('http://localhost:3000/ingredients', data);
+   const { data: response } = await axios.post('http://localhost:3000/post/ingredients', data);
    return response.data;
    };
 
@@ -12,7 +12,7 @@ export async function postIngredient (data: Ingredient) {
 
 
 export async function postRecipe (data: RecipeData) {
-  const { data: response } = await axios.post('http://localhost:3000/recipes', data);
+  const { data: response } = await axios.post('http://localhost:3000/post/recipes', data);
   return response.data;
   };
 

@@ -11,7 +11,7 @@ interface ErrorPageProps
 export default function ErrorPage({error='error'}: ErrorPageProps){
    return(
       <>
-      <Navbar><></></Navbar>
+      <Navbar/>
       <Container>
          <h1>Error Page</h1>
          <p>{error}</p>

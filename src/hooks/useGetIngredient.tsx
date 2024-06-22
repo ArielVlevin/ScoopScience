@@ -1,7 +1,8 @@
 
 import getData, { getProps } from "../api/Get";
 import { useQuery } from "@tanstack/react-query";
-import { Ingredient, IngredientCategory, IngredientsArray } from "../Types/ingredient";
+import { Ingredient, IngredientsArray } from "../Types/ingredient";
+import { RecipeData } from "../Types/recipe";
 
 
 
@@ -10,7 +11,7 @@ import { Ingredient, IngredientCategory, IngredientsArray } from "../Types/ingre
 
   const ingredientQuary = useQuery({
     queryKey: ['ingredients', ingredientId],
-    queryFn: () => getData({ header: 'ingredients', id: ingredientId! }),
+    queryFn: () => getData({ header: 'ingredient', id: ingredientId! }),
     enabled: !!ingredientId,
   })
 
@@ -27,6 +28,25 @@ import { Ingredient, IngredientCategory, IngredientsArray } from "../Types/ingre
 
 
 
+export function useGetRecipes() {
+
+  const recipesQuary = useQuery({
+    queryKey: ['recipesArrayTotal'],
+    queryFn: () => getData({ header: 'recipes/recipesArray' }),    
+  })
+
+  return{
+    recipes: (recipesQuary.data as RecipeData[]) ?? [],
+    isLoading: recipesQuary.isLoading,
+    isError: recipesQuary.isError,
+    error: recipesQuary.error, 
+  };
+};
+
+
+
+
+
 
 
 //TODO::: converte those 2 to 1 function
@@ -34,7 +54,7 @@ export function useGetIngredientsArray() {
 
   const ingredientsQuary = useQuery({
     queryKey: ['ingredientsArrayTotal'],
-    queryFn: () => getData({ header: 'ingredientsArrayTotal' }),    
+    queryFn: () => getData({ header: 'ingredients/ingredientsArray' }),    
   })
 
   return{
