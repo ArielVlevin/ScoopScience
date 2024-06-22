@@ -11,6 +11,7 @@ import { Ingredient, Row } from "../../../../Types/ingredient";
 import RecipeToolbar from "./toolbar";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postRecipe } from "../../../../api/Post";
+import NewRecipeTable from "./table/newRecipeTable/table";
 
 
 
@@ -114,6 +115,13 @@ export default function NewRecipe() {
 
   return (
     <Box sx={{ m: 2 }}>
+
+      
+      <NewRecipeTable className="border rounded-lg w-full border-gray-300 mt-8 mb-12" />
+  
+
+
+
       <Container>
 
         <div role="tablist" className="tabs tabs-bordered mt-4 mb-8">
