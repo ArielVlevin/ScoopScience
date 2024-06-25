@@ -54,12 +54,13 @@ type NewRecipeTableAddIngredientRowProps = {
    setNewWeight : React.Dispatch<React.SetStateAction<number>>;
    handleSaveEdit: () => void;
    handleClose: () => void;
-   isPopoverOpen2: boolean;
+   isEditingWeight: boolean;
  
 }
 
 
-export function NewRecipeTableCells({row, selectedRow, setNewWeight, handleSaveEdit, handleClose, isPopoverOpen2}: NewRecipeTableAddIngredientRowProps) {
+export function NewRecipeTableCells({row, selectedRow, setNewWeight, handleSaveEdit, handleClose, isEditingWeight}: NewRecipeTableAddIngredientRowProps) {
+
   return(
     <>
     <TableCell className="text-center flex items-center gap-2">
@@ -80,14 +81,13 @@ export function NewRecipeTableCells({row, selectedRow, setNewWeight, handleSaveE
     </TableCell>
     
     <TableCell className="text-center text-foreground">
-                  {selectedRow && selectedRow.id === row.id && isPopoverOpen2 ? (
+                  {selectedRow && selectedRow.id === row.id && isEditingWeight ? (
                     <div className="flex items-center gap-2">
                       <Input
                         id="weight"
                         type="number"
-                        placeholder="Enter weight"
-                        value={row.weight}
-                        onChange={(e) => setNewWeight(parseInt(e.target.value))} //todo: maybe save the previous value and change back if there is an error 
+                        placeholder={String(row.weight)}
+                        onChange={(e) => setNewWeight(Number(e.target.value))}
                       />
                       <Button
                         variant="ghost"

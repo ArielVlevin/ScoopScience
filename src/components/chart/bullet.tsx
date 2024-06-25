@@ -1,37 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AgChartsReact } from "ag-charts-react";
 import { AgChartOptions } from "ag-charts-enterprise";
 import "ag-charts-enterprise";
 
-export function BulletExample() {
 
+
+type BulletProps = {
+  title?: string;
+  subTitle?: string;
+  direction?: "vertical" | "horizontal";
+  data: { currectValue: number; objective: number };
+}
+
+export function Bullet({ title, subTitle, direction = "horizontal", data }: BulletProps) {
+  
   const [options, setOptions] = useState<AgChartOptions>({
-    title: { text: "Income" },
-    subtitle: { text: "USD" },
-    data: [{ income: 12500, objective: 10000 }],
+    title: { text: title},
+    subtitle: { text: subTitle},
+    data: [data],
+    height: 140,
     series: [
       {
         type: "bullet",
-        direction: "horizontal",
-        valueKey: "income",
+        direction: direction,
+        stroke: "gray",
+        strokeWidth: 0.2,
+        strokeOpacity: 0.6,
+        tooltip: {
+          enabled: false, 
+        },
+        valueKey: "currectValue",
         valueName: "Actual income",
-        targetKey: "objective",
+        targetKey: "currectValue",
         targetName: "Target income",
-        scale: { max: 15000 },
-        fill: "#000000",
-        target: { stroke: "#3B3B3B" },
+
+        scale: { max: 100, },
+        fill: "white",
+        fillOpacity: 0.6,
+        target: { stroke: "#3B3B3B", strokeWidth: 3 },
         colorRanges: [
-          { color: "#FFB6C1" /* Light Pink */, stop: 8000 },
-          { color: "#FFFACD" /* Light Yellow */, stop: 13000 },
-          { color: "#B6FBB6" /* Light Green */ },
+          { color: "#FFB6C1" /* Light Pink */, stop: 40 },
+          { color: "#B6FBB6" /* Light Yellow */, stop: 80 },
+          { color: "#FFB6C1" /* Light Green */ },
         ],
       },
     ],
-    height: 150,
   });
+  
+  useEffect(() => {
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      data: [data],
+    }));
+  }, [data]);
 
   return (
     <AgChartsReact options={options} />
 )
-
 }

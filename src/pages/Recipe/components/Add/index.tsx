@@ -12,6 +12,7 @@ import RecipeToolbar from "./toolbar";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postRecipe } from "../../../../api/Post";
 import NewRecipeTable from "./table/newRecipeTable/table";
+import { BulletChartsContainer } from "./table/chart/bullet";
 
 
 
@@ -119,7 +120,9 @@ export default function NewRecipe() {
       
       <NewRecipeTable className="border rounded-lg w-full border-gray-300 mt-8 mb-12" />
   
-
+      <div className="container">
+      <BulletChartsContainer />
+            </div>
 
 
       <Container>
@@ -173,6 +176,8 @@ export default function NewRecipe() {
           unit={unit}
           setUnit={setUnit}
         />
+
+
         <IngredientsDataGrid 
           rows={rows} 
           setRows={setRows} 

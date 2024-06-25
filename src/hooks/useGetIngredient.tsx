@@ -24,7 +24,7 @@ import { RecipeData } from "../Types/recipe";
     error: ingredientQuary.error,
   };
 
-};
+}
 
 
 
@@ -41,7 +41,7 @@ export function useGetRecipes() {
     isError: recipesQuary.isError,
     error: recipesQuary.error, 
   };
-};
+}
 
 
 
@@ -63,7 +63,7 @@ export function useGetIngredientsArray() {
     isError: ingredientsQuary.isError,
     error: ingredientsQuary.error, 
   };
-};
+}
 
 
 
@@ -81,7 +81,7 @@ export function useGetIngredientsArray2({header, id}: getProps) {
     isError: ingredientsQuary.isError,
     error: ingredientsQuary.error, 
   };
-};
+}
 
 
 

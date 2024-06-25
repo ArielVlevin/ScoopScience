@@ -6,75 +6,106 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { PlusIcon } from "@/components/icons/icon"
-import { IngredientCategory, Row } from "@/Types/ingredient"
+import React, { useEffect } from "react"
+import useGetIngredient, { useGetIngredientsArray } from "@/hooks/useGetIngredient"
+import { Ingredient } from '../../../../../../Types/ingredient';
 
 type NewRecipeTableAddIngredientRowProps = {
-  isPopoverOpen: boolean;
-  setIsPopoverOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  newRow: Row;
-  setNewRow: React.Dispatch<React.SetStateAction<Row>>;
-  handleSaveRow: (newRowData: Row) => void;
+  isAddingIngredient: boolean;
+  setIsAddingIngredient: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSaveNewRow: (newRowData: Ingredient | null, weight: number) => void;
 }
 
-export function NewRecipeTableAddIngredientRow({ isPopoverOpen, setIsPopoverOpen, newRow, setNewRow, handleSaveRow } : NewRecipeTableAddIngredientRowProps) {
+export function NewRecipeTableAddIngredientRow({ isAddingIngredient, setIsAddingIngredient, handleSaveNewRow } : NewRecipeTableAddIngredientRowProps) {
+
+  const [category, setCategory] = React.useState<string>('');
+  const [selectedIngredient, setSelectedIngredient] = React.useState<string>('');
+  const [weight, setWeight] = React.useState<number>(100);
+  const [ingredient, setIngredient] = React.useState<Ingredient | null >(null);
+
+  const { ingredientsByCategory } = useGetIngredientsArray();
+  const {ingredientData} = useGetIngredient(selectedIngredient);
+
+
+
+  useEffect(() => {
+    // get the ingredient from backend
+    setIngredient(ingredientData);
+  }, [selectedIngredient, ingredientData]);
+
+
+
   return(
     <TableRow>
       <TableCell className="text-center" colSpan={9}>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} >
+              <Popover open={isAddingIngredient} onOpenChange={setIsAddingIngredient} >
                 <PopoverTrigger>
                   <PlusIcon className="w-4 h-4" />
                   <span className="sr-only">Add row</span>
                 </PopoverTrigger>
                 <PopoverContent className="w-[400px] p-4 grid gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="ingredients" className="text-foreground">Ingredients</Label>
-                    <Select onValueChange={(value) => setNewRow({ ...newRow, name: value })}>
+
+
+
+                <div className="grid gap-2">
+                    <Label htmlFor="category" className="text-foreground">Category</Label>
+                    <Select onValueChange={ (e)=>setCategory(e) }>
+
+
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select ingredients" />
+                        <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="milk">Milk</SelectItem>
-                        <SelectItem value="sugar">Sugar</SelectItem>
-                        <SelectItem value="cocoa">Cocoa Powder</SelectItem>
-                        <SelectItem value="flour">Flour</SelectItem>
-                        <SelectItem value="eggs">Eggs</SelectItem>
-                        <SelectItem value="butter">Butter</SelectItem>
-                        <SelectItem value="chicken">Chicken</SelectItem>
-                        <SelectItem value="broccoli">Broccoli</SelectItem>
-                        <SelectItem value="rice">Rice</SelectItem>
+
+                        {Object.keys(ingredientsByCategory).map((categoryKey) => (
+                          <SelectItem key={categoryKey} value={categoryKey}>{categoryKey}</SelectItem>
+                        ))}
+
                       </SelectContent>
                     </Select>
                   </div>
+
+                  {category && ( 
+                  <div>
                   <div className="grid gap-2">
+                    <Label htmlFor="ingredients" className="text-foreground">Ingredients</Label>
+                    <Select onValueChange = { (e)=> setSelectedIngredient(e) } >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select ingredients" />
+                      </SelectTrigger>
+
+                      <SelectContent>
+
+                        {ingredientsByCategory[category].map((ingredient, index) => (
+                          <SelectItem key={index} value={ingredient.id}>{ingredient.name}</SelectItem>
+                        ))}
+
+                      </SelectContent>
+
+                    </Select>
+                  </div>
+                  
+
+                  <div className="grid gap-2 mt-4">
                     <Label htmlFor="weight" className="text-foreground">Weight</Label>
                     <Input
                       id="weight"
                       type="number"
                       placeholder="Enter weight"
-                      value={newRow.weight}
-                      onChange={(e) => setNewRow({ ...newRow, weight: parseInt(e.target.value) })}
+                      onChange={(e) => setWeight(parseFloat(e.target.value))}
                     />
                   </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="category" className="text-foreground">Category</Label>
-                    <Select onValueChange={(value:IngredientCategory) => setNewRow({ ...newRow, category: value })}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="dairy">Dairy</SelectItem>
-                        <SelectItem value="dairy">Baked Goods</SelectItem>
-                        <SelectItem value="dairy">Entree</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+
                   <div className="flex justify-end gap-2">
-                    <Button variant="outline" onClick={() => setIsPopoverOpen(false)}>Cancel</Button>
-                    <Button onClick={() => handleSaveRow(newRow)}>Add</Button>
+                    <Button variant="outline" onClick={() => setIsAddingIngredient(false)}>Cancel</Button>
+                    <Button onClick={() => handleSaveNewRow(ingredient, weight) }>Add</Button>
                   </div>
+                  </div>
+                  )}
+
                 </PopoverContent>
               </Popover>
             </TooltipTrigger>
