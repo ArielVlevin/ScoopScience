@@ -1,8 +1,8 @@
 
 import getData, { getProps } from "../api/Get";
 import { useQuery } from "@tanstack/react-query";
-import { Ingredient, IngredientsArray } from "../Types/ingredient";
-import { RecipeData } from "../Types/recipe";
+import { Ingredient, IngredientsArray } from "../types/ingredient";
+import { RecipeData } from "../types/recipe";
 
 
 

@@ -27,6 +27,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "@"],
+  "include": ["src", "@", ".old/Sort", ".old/toolbar.tsx", ".old/Sort", ".old/Modal.tsx", ".old/data", ".old/components"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

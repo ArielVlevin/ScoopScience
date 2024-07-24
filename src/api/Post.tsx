@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Ingredient } from "../Types/ingredient";
-import { RecipeData } from "../Types/recipe";
+import { Ingredient } from "../types/ingredient";
+import { RecipeData } from "../types/recipe";
 
 
 export async function postIngredient (data: Ingredient) {
