@@ -1,4 +1,3 @@
-import  { useEffect } from 'react';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Ingredient, IngredientCategory, ingredientCategoryArray } from '../../../../types/ingredient';
@@ -12,9 +11,8 @@ import getData from '../../../../api/Get';
 const AddIngredientForm = () => {
 
 
-  const { control, handleSubmit, setValue, watch} = useForm<Ingredient>({
+  const { control, handleSubmit} = useForm<Ingredient>({
     defaultValues: {
-      id : '',
       name: '',
       category: 'dairy' as IngredientCategory,
       calories: 0,
@@ -26,33 +24,29 @@ const AddIngredientForm = () => {
     },
   });
 
-  const category = watch('category');
-
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const addIngredientMutation = useMutation({
     mutationFn: postIngredient,
-    onSuccess: (variables) => {
-      queryClient.setQueryData(['ingredients', watch('id')], variables);
-      queryClient.invalidateQueries({ queryKey: ['ingredients'] }, );
-      alert(`Ingredient  ${watch('name')}   added successfully!`);
-      return navigate('/ingredients/' + watch('id'));
+    onSuccess: (data) => {
+      queryClient.setQueryData(['ingredients', data._id], data);
+      queryClient.invalidateQueries({ queryKey: ['ingredients'] });
+      alert(`Ingredient ${data.name} added successfully!`);
+      navigate(`/ingredients/${data._id}`);
     },
-    onError(error) {
-      alert(`Error adding ingredient:  ${watch('name')} \n${error.message}`);
+    onError: (error) => {
+      alert(`Error adding ingredient: ${error.message}`);
     },
-  })
+  });
 
   const onSubmit = (data: Ingredient) => {
-    // TODO: delete console log
-    //console.log(data);
     addIngredientMutation.mutate(data);
   };
 
 
-
+/*
 
   useEffect(() => {
     const useGetID = async () => {
@@ -69,7 +63,7 @@ const AddIngredientForm = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useGetID();
   }, [category, setValue, watch, handleSubmit]);
-
+*/
 
 
 

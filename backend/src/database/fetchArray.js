@@ -65,7 +65,7 @@ const ingridientData = [{
    msnf: 0,
  },
  {
-   id: "570001",
+   id: 570001,
    name: "Water",
    category: "liquid",
    calories: 0,
@@ -76,7 +76,7 @@ const ingridientData = [{
    msnf: 0,
  },
  {
-   id: "580001",
+   id: 580001,
    name: "Vanilla Extract",
    category: "other",
    calories: 288,

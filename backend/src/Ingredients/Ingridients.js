@@ -1,7 +1,7 @@
 
 
-const { getIngredients } = require('./get');
-const { postIngredients } = require('./post');
+const { getIngredients } = require('./newget');
+const { postIngredients } = require('./newpost');
 
 
 async function ingredientsRouter(app){

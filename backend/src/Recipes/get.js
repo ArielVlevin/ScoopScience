@@ -1,5 +1,5 @@
 
-
+/*
 
 const {getDataByID} = require('../database/get');
 const {connectToDatabase} = require('../database/connect');
@@ -30,7 +30,7 @@ app.get('/get/recipes/recipesArray', async (req, res) => {
    } catch (error) {
      console.error('Error finding recipes:', error);
      res.status(500).json({ message: 'Internal Server Error' });
-   };
+   }
    });
 
 
@@ -38,3 +38,5 @@ app.get('/get/recipes/recipesArray', async (req, res) => {
 }//getRecipes//
 
 module.exports = {getRecipes}
+
+*/

@@ -1,42 +1,34 @@
-
-
-
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 
 const databaseName = 'Gelato';
-const uri = "mongodb+srv://arielvlevin:izoehktcEV1puuVl@ariel.vhe225s.mongodb.net/?retryWrites=true&w=majority&appName=Ariel";
-const options = {
-  //maxPoolSize: 10 // Example pool size, adjust as needed
-};
-const client = new MongoClient(uri, options);
-let db = null;
+const uri = "mongodb+srv://arielvlevin:izoehktcEV1puuVl@ariel.vhe225s.mongodb.net/${databaseName}?retryWrites=true&w=majority&appName=Ariel";
 
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
 
 async function connectToDatabase() {
   try {
-      await client.connect();
-      //console.log('Connected to MongoDB');
-      db = client.db(databaseName);
+    await mongoose.connect(uri, options);
+    console.log('Connected to MongoDB with Mongoose');
   } catch (error) {
-      console.error('Error connecting to MongoDB:', error);
-      throw error;
-  }
-  return db;
-}
-
-async function closeDatabaseConnection() {
-  try {
-      await client.close();
-      db = null;
-      //console.log('MongoDB connection closed');
-  } catch (error) {
-    console.error('Error closing MongoDB connection:', error);
+    console.error('Error connecting to MongoDB with Mongoose:', error);
     throw error;
   }
 }
 
+async function closeDatabaseConnection() {
+  try {
+    await mongoose.disconnect();
+    console.log('MongoDB connection closed with Mongoose');
+  } catch (error) {
+    console.error('Error closing MongoDB connection with Mongoose:', error);
+    throw error;
+  }
+}
 
 module.exports = {
   connectToDatabase,
   closeDatabaseConnection,
-}
+};

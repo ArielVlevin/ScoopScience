@@ -1,7 +1,6 @@
 
-
-const {getRecipes} = require('./get');
-const {postRecipes} = require('./post');
+const {getRecipes} = require('./newget');
+const {postRecipes} = require('./newpost');
 
 
 async function recipesRouter(app){
@@ -12,3 +11,4 @@ async function recipesRouter(app){
 }
 
 module.exports = {recipesRouter}
+

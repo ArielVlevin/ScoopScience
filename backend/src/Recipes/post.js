@@ -1,6 +1,6 @@
 
 
-
+/*
 const {insertData} = require('../database/insert');
 
 
@@ -21,3 +21,5 @@ async function postRecipes(app){
 
 
 module.exports = {postRecipes}
+
+*/
