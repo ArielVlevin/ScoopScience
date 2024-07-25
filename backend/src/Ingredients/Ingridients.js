@@ -1,16 +1,13 @@
 
 
-const { getIngredients } = require('./newget');
-const { postIngredients } = require('./newpost');
+import getIngredients from './get.js';
+import postIngredients from './post.js';
 
 
-async function ingredientsRouter(app){
+export default async function ingredientsRouter(app){
 
 getIngredients(app);
 postIngredients(app);
 
 
 }
-
-
-module.exports = {ingredientsRouter}

@@ -5,7 +5,6 @@ import { postIngredient } from '../../../../api/Post';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
-import getData from '../../../../api/Get';
 
 
 const AddIngredientForm = () => {
@@ -44,28 +43,6 @@ const AddIngredientForm = () => {
   const onSubmit = (data: Ingredient) => {
     addIngredientMutation.mutate(data);
   };
-
-
-/*
-
-  useEffect(() => {
-    const useGetID = async () => {
-      try {
-        const lastId = await getData({ header: 'ingredients/lastid', id: watch('category') });
-        const newId = Number(lastId) + 1;
-        setValue('id', String(newId));
-        console.log('id:', watch('id') )
-      } catch (error) {
-        console.error('Error fetching ID:', error);
-      }
-    };
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useGetID();
-  }, [category, setValue, watch, handleSubmit]);
-*/
-
-
 
 
   return (

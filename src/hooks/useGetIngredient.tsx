@@ -15,10 +15,8 @@ import { RecipeData } from "../types/recipe";
     enabled: !!ingredientId,
   })
 
-
-  //TODO::::maybe need remove the .json()
   return{
-    ingredientData: ingredientQuary.data as Ingredient,    
+    ingredientData: ingredientQuary.data ,    
     isLoading: ingredientQuary.isLoading,
     isError: ingredientQuary.isError,
     error: ingredientQuary.error,
@@ -50,11 +48,15 @@ export function useGetRecipes() {
 
 
 //TODO::: converte those 2 to 1 function
+
+
+
 export function useGetIngredientsArray() {
 
   const ingredientsQuary = useQuery({
     queryKey: ['ingredientsArrayTotal'],
-    queryFn: () => getData({ header: 'ingredients/ingredientsArray' }),    
+    queryFn: () => getData({ header: 'ingredients/ingredientsArray' }),
+    refetchInterval: 2 * 60 * 1000, // refetch every 2 minutes    
   })
 
   return{

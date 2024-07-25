@@ -1,10 +1,10 @@
 // crudOperations.js
 
-const mongoose = require('mongoose');
-const Ingredient = require('../models/Ingredient');
-const Recipe = require('../models/Recipe');
+import { model } from 'mongoose';
+import {Ingredient} from '../models/Ingredient.js';
+import {Recipe} from '../models/Recipe.js';
 
-async function getDataByID(dataID, collectionName) {
+export async function getDataByID(dataID, collectionName) {
    try {
      if (collectionName === 'Ingredients') {
        const result = await Ingredient.findById(dataID);
@@ -21,10 +21,9 @@ async function getDataByID(dataID, collectionName) {
    }
  }
 
-async function getLastInsertedID(categoryName) {
+ export async function getLastInsertedID(categoryName) {
   try {
     const result = await Ingredient.findOne({ category: categoryName }).sort({ _id: -1 }).exec();
-    console.log('@@@@@@@@@Last inserted ID:', result._id);
     return result?._id || 0;
 
   } catch (error) {
@@ -33,9 +32,9 @@ async function getLastInsertedID(categoryName) {
   }
 }
 
-async function insertData(data, collectionName) {
+export async function insertData(data, collectionName) {
   try {
-    const Model = mongoose.model(collectionName);
+    const Model = model(collectionName);
     const newData = new Model(data);
     const result = await newData.save();
     console.log('Inserted data:', result._id);
@@ -47,9 +46,9 @@ async function insertData(data, collectionName) {
   }
 }
 
-async function updateData(filter, update, collectionName) {
+export async function updateData(filter, update, collectionName) {
   try {
-    const Model = mongoose.model(collectionName);
+    const Model = model(collectionName);
     const result = await Model.updateOne(filter, { $set: update });
     console.log('Updated data:', result.nModified);
     return result.nModified;
@@ -60,9 +59,9 @@ async function updateData(filter, update, collectionName) {
   }
 }
 
-async function deleteData(filter, collectionName) {
+export async function deleteData(filter, collectionName) {
   try {
-    const Model = mongoose.model(collectionName);
+    const Model = model(collectionName);
     const result = await Model.deleteOne(filter);
     console.log('Deleted data:', result.deletedCount);
     return result.deletedCount;
@@ -72,11 +71,3 @@ async function deleteData(filter, collectionName) {
     throw new Error('Failed to delete data');
   }
 }
-
-module.exports = {
-  getDataByID,
-  getLastInsertedID,
-  insertData,
-  updateData,
-  deleteData
-};

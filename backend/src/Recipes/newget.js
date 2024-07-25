@@ -1,6 +1,6 @@
-const Recipe = require('../models/Recipe'); 
+import {Recipe} from '../models/Recipe.js'; 
 
-async function getRecipes(app) {
+export default async function getRecipes(app) {
   app.get('/get/recipe/:id', async (req, res) => {
     const recipeID = req.params.id;
     try {
@@ -27,4 +27,3 @@ async function getRecipes(app) {
   });
 }
 
-module.exports = { getRecipes };

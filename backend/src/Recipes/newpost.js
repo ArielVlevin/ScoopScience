@@ -1,6 +1,6 @@
-const { insertData } = require('../database/crud');
+import { insertData } from '../database/crud.js';
 
-async function postRecipes(app) {
+export default async function postRecipes(app) {
   app.post('/post/recipes', async (req, res) => {
     try {
       const recipe = req.body;
@@ -14,5 +14,3 @@ async function postRecipes(app) {
     }
   });
 }
-
-module.exports = { postRecipes };

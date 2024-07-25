@@ -1,8 +1,8 @@
-const Ingredient = require('../models/Ingredient');
+import {Ingredient} from '../models/Ingredient.js';
 
-const {  getLastInsertedID } = require('../database/crud');
+import { getLastInsertedID } from '../database/crud.js';
 
-async function postIngredients(app) {
+export default async function postIngredients(app) {
 
   app.post('/post/ingredients', async (req, res) => {
     try {
@@ -20,7 +20,7 @@ async function postIngredients(app) {
       totalSolids,
       msnf,
       protein,
-      image: '../../assets/ingredients/vanila.jpg',
+      image: '/ingredients/vanila.jpg',
     });
 
     await newIngredient.save();
@@ -32,7 +32,3 @@ async function postIngredients(app) {
     }
   });
 }
-
-module.exports = { postIngredients };
-
-

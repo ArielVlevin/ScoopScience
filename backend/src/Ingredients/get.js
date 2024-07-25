@@ -1,7 +1,7 @@
-const { getDataByID, getLastInsertedID } = require('../database/crud');
-const Ingredient = require('../models/Ingredient');
+import { getDataByID, getLastInsertedID } from '../database/crud.js';
+import { Ingredient } from '../models/Ingredient.js';
 
-async function getIngredients(app) {
+export default async function getIngredients(app) {
 
   app.get('/get/ingredient/:id', async (req, res) => {
     const ingredientsID = req.params.id;
@@ -69,7 +69,7 @@ async function getIngredients(app) {
     }
 
     try {
-      const ingredients = await Ingredient.find({ id: { $in: ingredientIds } });
+      const ingredients = await find({ id: { $in: ingredientIds } });
 
       res.status(200).json(ingredients);
     } catch (error) {
@@ -80,4 +80,3 @@ async function getIngredients(app) {
 
 }
 
-module.exports = { getIngredients };
