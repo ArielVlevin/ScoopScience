@@ -1,8 +1,13 @@
 // RecipeToolbar.tsx
-import React from 'react';
-import { Toolbar, TextField, InputAdornment, SelectChangeEvent } from "@mui/material";
+import React from "react";
+import {
+  Toolbar,
+  TextField,
+  InputAdornment,
+  SelectChangeEvent,
+} from "@mui/material";
 import { recipeValues } from "../src/types/globalVar";
-import { Row } from "../src/types/ingredient";
+import { Row } from "../src/types/ingredientTypes";
 import { formatTotalValue } from "./components/Calculate";
 
 interface RecipeToolbarProps {
@@ -26,7 +31,6 @@ const RecipeToolbar: React.FC<RecipeToolbarProps> = ({
   unit,
   setUnit,
 }) => {
-
   const handleWeightChange = (newTotalWeight: number) => {
     const currentTotalWeight = totals.totalWeight;
     if (currentTotalWeight === 0) return;
@@ -34,20 +38,40 @@ const RecipeToolbar: React.FC<RecipeToolbarProps> = ({
     const adjustedTotalWeight = Math.max(minimumWeight, newTotalWeight);
     const scalingFactor = adjustedTotalWeight / currentTotalWeight;
 
-    const updatedRows = rows.map(row => ({
+    const updatedRows = rows.map((row) => ({
       ...row,
-      weight: parseFloat((row.weight * scalingFactor).toFixed(2))
+      weight: parseFloat((row.weight * scalingFactor).toFixed(2)),
     }));
 
     setRows(updatedRows);
     setWeight(adjustedTotalWeight);
   };
 
-  const totalFatValue = formatTotalValue(totals.totalFat, totals.totalWeight, unit);
-  const totalSolidValue = formatTotalValue(totals.totalSol, totals.totalWeight, unit);
-  const totalCaloriesValue = formatTotalValue(totals.totalCalories, totals.totalWeight, 'grams');
-  const totalSugarValue = formatTotalValue(totals.totalSugar, totals.totalWeight, unit);
-  const totalMSNFValue = formatTotalValue(totals.totalMSNF, totals.totalWeight, unit);
+  const totalFatValue = formatTotalValue(
+    totals.totalFat,
+    totals.totalWeight,
+    unit
+  );
+  const totalSolidValue = formatTotalValue(
+    totals.totalSol,
+    totals.totalWeight,
+    unit
+  );
+  const totalCaloriesValue = formatTotalValue(
+    totals.totalCalories,
+    totals.totalWeight,
+    "grams"
+  );
+  const totalSugarValue = formatTotalValue(
+    totals.totalSugar,
+    totals.totalWeight,
+    unit
+  );
+  const totalMSNFValue = formatTotalValue(
+    totals.totalMSNF,
+    totals.totalWeight,
+    unit
+  );
 
   const handleUnitChange = (event: SelectChangeEvent<string>) => {
     setUnit(event.target.value as string);
@@ -58,11 +82,15 @@ const RecipeToolbar: React.FC<RecipeToolbarProps> = ({
       <Toolbar sx={{ justifyContent: "space-between", mt: 4, mb: 2 }}>
         <TextField
           label="Total Weight"
-          type='number'
-          sx={{ m: 1, width: '23ch' }}
+          type="number"
+          sx={{ m: 1, width: "23ch" }}
           value={weight}
-          onChange={e => { handleWeightChange(Number(e.target.value)) }}
-          InputProps={{ endAdornment: <InputAdornment position="end">grams</InputAdornment> }}
+          onChange={(e) => {
+            handleWeightChange(Number(e.target.value));
+          }}
+          InputProps={{
+            endAdornment: <InputAdornment position="end">grams</InputAdornment>,
+          }}
         />
         {/*
         <RecipeTextField label='Total Fat' value={totalFatValue} unit={unit} isFocused />

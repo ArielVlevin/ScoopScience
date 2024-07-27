@@ -1,13 +1,7 @@
+import getRecipes from "./newget.js";
+import postRecipes from "./newpost.js";
 
-import  getRecipes  from './newget.js';
-import  postRecipes from './newpost.js';
-
-
-export default async function recipesRouter(app){
-
+export default async function recipesRouter(app) {
   getRecipes(app);
   postRecipes(app);
-
 }
-
-

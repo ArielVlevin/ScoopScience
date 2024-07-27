@@ -1,8 +1,8 @@
-import React from 'react';
-import Grid from '@mui/material/Grid';
-import { RecipeData } from '../../../src/types/recipe';
-import RecipeReviewCard from '../../card/old/recipeCard';
-import { List, ListItem } from '@mui/material';
+import React from "react";
+import Grid from "@mui/material/Grid";
+import { RecipeData } from "../../../src/types/recipeTypes";
+import RecipeReviewCard from "../../card/old/recipeCard";
+import { List, ListItem } from "@mui/material";
 
 interface RecipeListProps {
   recipes: RecipeData[];
@@ -10,9 +10,9 @@ interface RecipeListProps {
 
 const RecipeList: React.FC<RecipeListProps> = ({ recipes }) => {
   return (
-    <List sx={{ width: '100%' }} >
+    <List sx={{ width: "100%" }}>
       {recipes.map((recipe) => (
-        <ListItem key={recipe.id} sx={{ width: '100%' }} >
+        <ListItem key={recipe.id} sx={{ width: "100%" }}>
           <RecipeReviewCard {...recipe} />
         </ListItem>
       ))}

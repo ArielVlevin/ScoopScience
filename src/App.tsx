@@ -1,26 +1,18 @@
-
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-
-
-
-
-import './App.css';
-
-import RootLayout from './pages/Root.tsx'
-import MainPage from './pages/HomePage/index.tsx';
-import ErrorPage from './pages/Error/index.tsx';
-import RecipesPage from './pages/recipeSearch/index.tsx';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import RecipeDetailPage from './pages/recipePage/index.tsx';
-import NewRecipe from './pages/addRecipe/index.tsx';
-import IngredientsPage from './pages/Ingredients/index.tsx';
-import IngredientDetailPage from './pages/Ingredients/Details/index.tsx';
-import CreationPage from './pages/Creation/index.tsx';
-import AddIngredientForm from './pages/Ingredients/components/Add/index.tsx';
-import LandingPage from './pages/addRecipe/landingPage.tsx';
-import ContactUs from './pages/contact/index.tsx';
-import IngredientsCategoryPage from './pages/Ingredients/Details/category/index.tsx';
-
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import "./App.css";
+import RootLayout from "./Root.tsx";
+import RecipesPage from "./features/recipes/pages/recipes.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import IngredientsPage from "./features/ingredients/pages/ingredients.tsx";
+import IngredientDetailPage from "./features/ingredients/pages/ingredientDetails.tsx";
+import AddIngredientForm from "./features/ingredients/pages/newIngredients.tsx";
+import ContactUs from "./pages/contact.tsx";
+import IngredientsCategoryPage from "./features/ingredients/pages/IngredientsCategories.tsx";
+import ErrorPage from "./pages/error.tsx";
+import NewRecipe from "./features/recipes/pages/newRecipe.tsx";
+import RecipeDetailPage from "./features/recipes/pages/recipeDetail.tsx";
+import LandingPage from "./features/recipes/pages/landingPage.tsx";
+import HomePage from "@/pages/homePage.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,35 +22,35 @@ const queryClient = new QueryClient({
   },
 });
 
-const router = createBrowserRouter([{
-  path: '/',
-  errorElement: <ErrorPage />,
-  element: <RootLayout />,
-  children: [
-    {index: true, element: <MainPage/>},
-    {path: 'Creation', element: <CreationPage/>},
-    {path: 'Ingredients', element: <IngredientsPage/>},
-    {path: 'newIngredients', element: <AddIngredientForm/>},
-    {path: 'Ingredients/:ingredientId', element: <IngredientDetailPage/>},
-    {path: 'IngredientsCategory/:category', element: <IngredientsCategoryPage />},
-    {path: 'recipes', element: <RecipesPage/>},
-    {path: 'recipes/new', element: <NewRecipe />},
-    {path: 'recipes/:recipeId', element: <RecipeDetailPage/>},
-    {path: 'recipes/newRecipeLanding', element: <LandingPage/>},
-    {path: 'contact', element: <ContactUs/>},
-
-  ],
-},
+const router = createBrowserRouter([
+  {
+    path: "/",
+    errorElement: <ErrorPage />,
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "Ingredients", element: <IngredientsPage /> },
+      { path: "newIngredients", element: <AddIngredientForm /> },
+      { path: "Ingredients/:ingredientId", element: <IngredientDetailPage /> },
+      {
+        path: "IngredientsCategory/:category",
+        element: <IngredientsCategoryPage />,
+      },
+      { path: "recipes", element: <RecipesPage /> },
+      { path: "newRecipe", element: <NewRecipe /> },
+      { path: "recipes/:recipeId", element: <RecipeDetailPage /> },
+      { path: "recipes/newRecipeLanding", element: <LandingPage /> },
+      { path: "contact", element: <ContactUs /> },
+    ],
+  },
 ]);
 
-
 const App = () => {
-  
-  return ( 
+  return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
-}
+};
 
-export default App
+export default App;
