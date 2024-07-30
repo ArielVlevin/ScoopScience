@@ -9,7 +9,7 @@ import AddIngredientForm from "./features/ingredients/pages/newIngredients.tsx";
 import ContactUs from "./pages/contact.tsx";
 import IngredientsCategoryPage from "./features/ingredients/pages/IngredientsCategories.tsx";
 import ErrorPage from "./pages/error.tsx";
-import NewRecipe from "./features/recipes/pages/newRecipe.tsx";
+import NewRecipe from "./features/recipes/features/newRecipe/components/handleTable.tsx";
 import RecipeDetailPage from "./features/recipes/pages/recipeDetail.tsx";
 import LandingPage from "./features/recipes/pages/landingPage.tsx";
 import HomePage from "@/pages/homePage.tsx";

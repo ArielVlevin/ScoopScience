@@ -9,7 +9,6 @@ export default function RecipesPage() {
       <div className="w-11/12 mx-auto">
         <SortRecipesBar />
       </div>
-
       {/* ----Cards----- */}
       <RecipeCard />
     </Page>

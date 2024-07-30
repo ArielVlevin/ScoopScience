@@ -1,6 +1,7 @@
 import { Row } from "@/types";
+import { Totals } from "../types/totalsTypes";
 
-export default function calculateTotals(rows: Row[]) {
+export default function calculateTotals(rows: Row[]): Totals {
   let totalWeight = 0;
   let totalFat = 0;
   let totalSol = 0;
@@ -24,12 +25,16 @@ export default function calculateTotals(rows: Row[]) {
     totalMSNF += (msnf * weight) / 100;
   });
 
+  //maybe need changes
   return {
     totalWeight,
     totalFat,
-    totalSol,
+    totalSolidPercentage: totalSol,
     totalCalories,
     totalSugar,
-    totalMSNF,
+    totalMsnf: totalMSNF,
+
+    totalFatPercentage: totalFat,
+    totalSugarPercentage: totalSugar,
   };
 }

@@ -117,6 +117,8 @@ export default function LandingPage() {
               <h2 className="text-2xl font-bold mb-4">
                 You selected {selectedFlavor} {iceCreamType}!
               </h2>
+
+              {/* TODO: change to new Recipe dialog */}
               <Link
                 to="../recipes/new"
                 state={{ type: iceCreamType, flavor: selectedFlavor }}

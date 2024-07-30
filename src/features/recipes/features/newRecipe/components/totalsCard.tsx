@@ -2,8 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, XIcon } from "@/components/icons/icon";
-import { Totals } from "../../types/totalsTypes";
 import { roundToTwoDecimalPlaces } from "@/utils/math";
+import { Totals } from "@/features/recipes/types/totalsTypes";
 
 type TotalsCardProps = {
   className?: string;

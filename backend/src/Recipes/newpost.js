@@ -1,13 +1,20 @@
-import { insertData } from "../database/crud.js";
+import { Recipe } from "../models/Recipe.js";
 
 export default async function postRecipes(app) {
   app.post("/post/recipes", async (req, res) => {
     try {
-      const recipe = req.body;
+      const { recipeData, recipeRating, recipeIngredient } = req.body;
 
-      const insertedId = await insertData(recipe, "Recipes");
+      console.log("data:", recipeData, recipeRating, recipeIngredient);
+      const newRecipe = new Recipe({
+        recipeData,
+        recipeRating,
+        recipeIngredient,
+      });
 
-      res.status(201).json({ insertedId });
+      await newRecipe.save();
+
+      res.status(201).json(newRecipe);
     } catch (error) {
       console.error("Error inserting recipe:", error);
       res.status(500).json({ message: "Internal Server Error" });

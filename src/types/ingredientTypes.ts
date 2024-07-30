@@ -1,5 +1,5 @@
 export type Ingredient = {
-  _id: string;
+  _id: number;
   name: string;
   category: IngredientCategory;
   calories: number;

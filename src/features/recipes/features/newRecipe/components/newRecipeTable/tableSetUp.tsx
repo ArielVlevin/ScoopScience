@@ -11,6 +11,16 @@ import { Row } from "@/types";
 import { Input } from "@/components/ui/input";
 
 export function NewRecipeTableHeads() {
+  const tableHeader = [
+    "Weight",
+    "Category",
+    "Calories",
+    "Sugar",
+    "Fat",
+    "Solid Percentage",
+    "MSNF",
+    "Actions",
+  ];
   return (
     <TableRow>
       <TableHead className="text-center flex items-center gap-2">
@@ -29,18 +39,11 @@ export function NewRecipeTableHeads() {
           <span className="text-foreground">Ingredients</span>
         </TooltipProvider>
       </TableHead>
-      <TableHead className="text-center text-foreground">Weight</TableHead>
-      <TableHead className="text-center text-foreground">Category</TableHead>
-      <TableHead className="text-center text-foreground">Calories</TableHead>
-      <TableHead className="text-center text-foreground">Sugar</TableHead>
-      <TableHead className="text-center text-foreground">Fat</TableHead>
-      <TableHead className="text-center text-foreground">
-        Solid Percentage
-      </TableHead>
-      <TableHead className="text-center text-foreground">MSNF</TableHead>
-      <TableHead className="flex justify-center items-center text-muted-foreground">
-        Actions
-      </TableHead>
+      {tableHeader.map((header) => (
+        <TableHead key={header} className="text-center text-foreground">
+          {header}
+        </TableHead>
+      ))}
     </TableRow>
   );
 }
@@ -82,7 +85,7 @@ export default function TableCells({
       </TableCell>
 
       <TableCell className="text-center text-foreground">
-        {selectedRow && selectedRow.id === row.id && isEditingWeight ? (
+        {selectedRow && selectedRow._id === row._id && isEditingWeight ? (
           <div className="flex items-center gap-2">
             <Input
               id="weight"

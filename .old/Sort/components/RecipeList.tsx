@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import { RecipeData } from "../../../src/types/recipeTypes";
+import { RecipeData } from "../../../src/features/recipes/types/recipeTypes";
 import RecipeReviewCard from "../../card/old/recipeCard";
 import { List, ListItem } from "@mui/material";
 

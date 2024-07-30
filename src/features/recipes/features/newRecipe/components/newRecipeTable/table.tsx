@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Row } from "@/types";
-import AddRow from "./newRow";
 import NewRecipeTableCells, { NewRecipeTableHeads } from "./tableSetUp";
 import { FilePenIcon, TrashIcon } from "@/components/icons/icon";
 import { roundToTwoDecimalPlaces } from "@/utils/math";
 
-import calculateTotals from "../../utils/calculateTotals";
+import AddIngredientToTable from "./AddIngredientToTable";
+import calculateTotals from "@/features/recipes/utils/calculateTotals";
 
 type NewRecipeTableProops = {
   className?: string;
@@ -135,54 +135,20 @@ export default function NewRecipeTable({
                   {/*---------/--- Actions--------- */}
                 </TableRow>
               ))}
-
-              <AddRow
-                rows={rows}
-                setRows={setRows}
-                setIsAddingIngredient={setIsAddingIngredient}
-                isAddingIngredient={isAddingIngredient}
-              />
             </TableBody>
           </Table>
         </div>
       </div>
       {/* -----/--- TABLE ----- */}
+      {/* ----- ADD NEW INGREDIENT ----- */}
+      <div className="flex justify-center w-full mt-2">
+        <AddIngredientToTable
+          rows={rows}
+          setRows={setRows}
+          setIsAddingIngredient={setIsAddingIngredient}
+          isAddingIngredient={isAddingIngredient}
+        />
+      </div>
     </div>
   );
 }
-
-/*
-
-                                <div className="flex justify-center items-center">
-                                {(isPopoverOpen2&&selectedRow && selectedRow.id === row.id) &&(
-
-<Popover open={isPopoverOpen2} onOpenChange={setIsPopoverOpen2}>
-<PopoverTrigger>
- {isPopoverOpen2}
-</PopoverTrigger>
-<PopoverContent className="w-[400px] p-4 grid gap-4" >
-  <div className="grid gap-2">
-    <Label htmlFor="weight" className="text-foreground">
-      Weight
-    </Label>
-    <Input
-      id="weight"
-      type="number"
-      placeholder="Enter weight"
-      value={selectedRow.weight}
-      onChange={(e) => setNewWeight(parseInt(e.target.value))}
-    />
-  </div>
-  <div className="flex justify-end gap-2">
-    <Button variant="outline" onClick={() => setIsPopoverOpen2(false)}>
-      Cancel
-    </Button>
-    <Button onClick={handleSaveEdit}>Add</Button>
-
-  </div>
-</PopoverContent>
-</Popover>
-)}
-        </div>
-
-        */

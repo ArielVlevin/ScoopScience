@@ -12,7 +12,6 @@ const ingredientSchema = new Schema(
     msnf: { type: Number, required: true },
     protein: { type: Number, required: true },
     image: { type: String, required: true },
-    // other fields...
   },
   { timestamps: true }
 );
