@@ -1,4 +1,5 @@
 # .gitignore
 
 # Environment variables
-.env
+frontend/.env
+backend/.env
