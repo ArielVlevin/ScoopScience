@@ -1,35 +1,12 @@
-import { connect, disconnect } from "mongoose";
+import { connect } from "mongoose";
+import config from "../config/config.js";
 
-const databaseName = "Gelato";
-const uri =
-  "mongodb+srv://arielvlevin:izoehktcEV1puuVl@ariel.vhe225s.mongodb.net/${databaseName}?retryWrites=true&w=majority&appName=Ariel";
-
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
-
-async function connectToDatabase() {
+export default async function connectDB() {
   try {
-    await connect(uri, options);
-    console.log("Connected to MongoDB with Mongoose");
+    await connect(config.mongoUri);
+    console.log("Connected to MongoDB");
   } catch (error) {
-    console.error("Error connecting to MongoDB with Mongoose:", error);
-    throw error;
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1); // Exit process with failure
   }
 }
-
-async function closeDatabaseConnection() {
-  try {
-    await disconnect();
-    console.log("MongoDB connection closed with Mongoose");
-  } catch (error) {
-    console.error("Error closing MongoDB connection with Mongoose:", error);
-    throw error;
-  }
-}
-
-export default {
-  connectToDatabase,
-  closeDatabaseConnection,
-};

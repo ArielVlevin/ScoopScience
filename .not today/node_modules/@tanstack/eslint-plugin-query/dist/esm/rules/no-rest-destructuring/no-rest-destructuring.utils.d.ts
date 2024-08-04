@@ -1,0 +1,5 @@
+import { TSESTree } from '@typescript-eslint/utils';
+
+export declare const NoRestDestructuringUtils: {
+    isObjectRestDestructuring(node: TSESTree.Node): boolean;
+};

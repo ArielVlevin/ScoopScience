@@ -69,6 +69,7 @@ const recipeRatingSchema = new Schema({
 // Main recipe schema
 const recipeSchema = new Schema(
   {
+    _id: { type: Number },
     recipeData: { type: recipeDataSchema, required: true },
     recipeRating: { type: recipeRatingSchema, required: true },
     recipeIngredient: { type: ingredientsSchema, required: true },
