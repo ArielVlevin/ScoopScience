@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AppleIcon, ChromeIcon, GithubIcon } from "lucide-react";
 import { useAuthCard } from "../hooks/useAuthCard";
+import { Link } from "react-router-dom";
+import Grid from "@/components/class/grid";
 
 export default function AuthCard() {
   const { formData, error, setActiveTab, handleInputChange, handleSubmit } =
@@ -94,37 +96,48 @@ export default function AuthCard() {
               Enter your email and password to access your account.
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline">
-                <ChromeIcon className="mr-2 h-4 w-4" />
-                Sign in with Google
-              </Button>
-              <Button variant="outline">
-                <AppleIcon className="mr-2 h-4 w-4" />
-                Sign in with Apple
-              </Button>
-            </div>
+          <CardContent>
+            <Grid gap={4}>
+              <Grid gap={2}>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+
+              <Grid gap={2}>
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                  <Link
+                    to="#"
+                    className="ml-auto inline-block text-sm underline"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+              <Grid gap={4} mdcols={2}>
+                <Button variant="outline">
+                  <ChromeIcon className="mr-2 h-4 w-4" />
+                  Sign in with Google
+                </Button>
+                <Button variant="outline">
+                  <AppleIcon className="mr-2 h-4 w-4" />
+                  Sign in with Apple
+                </Button>
+              </Grid>
+            </Grid>
           </CardContent>
           <CardFooter>
             <Button className="w-full" onClick={handleSubmit}>

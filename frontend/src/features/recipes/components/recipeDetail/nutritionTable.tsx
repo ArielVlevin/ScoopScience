@@ -5,14 +5,15 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui";
+import { Recipe } from "@/types";
 
 export interface NutritionTableProps {
-  header?: string;
+  recipe: Recipe;
 }
-export default function NutritionTable({ header }: NutritionTableProps) {
+export default function NutritionTable({ recipe }: NutritionTableProps) {
   return (
-    <div className=" mx-auto p-4 ">
-      {header ? <h1 className="text-2xl font-bold">Nutrition Table</h1> : null}
+    <div className="bg-muted rounded-lg mx-auto p-6  hover:scale-105 duration-500">
+      <h2 className="text-xl font-bold ">Nurtional Table</h2>
       <div className="mt-2">
         <label htmlFor="serving-size" className="block text-sm font-medium">
           Serving Size

@@ -1,4 +1,4 @@
-import { Ingredient } from "@/types/ingredientTypes";
+import { Ingredient } from "@/features/ingredients/types/ingredientTypes";
 import { useFetchData } from "@/hooks/useFetchData";
 
 export default function useGetIngredient(ingredientId: string | undefined) {

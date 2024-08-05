@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { IceCreamConeIcon } from "@/components/icons/icon";
-import NewRecipeDialog from "@/features/recipes/features/newRecipe/components/newRecipeDialog";
 
-import "./navbar/style/navbarBtn.css";
-import UserDropDownMenu from "./navbar/components/userDropDownMenu";
+import "./navbarBtn.css";
+import UserDropDownMenu from "../components/navbar/userDropDownMenu";
 import Search from "@/components/class/search";
-import { useAuth } from "@/contexts/AuthContext";
-import { ModeToggle } from "@/layouts/navbar/components/modeToggle";
+import { ModeToggle } from "@/components/navbar/modeToggle";
+import NewRecipeDialog from "@/features/recipes/components/newRecipe/newRecipe";
 
 export default function NavBar() {
-  const { user, logout, isAuthenticated } = useAuth();
-
   const [activeTab, setActiveTab] = useState<"create" | "discovery">("create");
 
   const pagesNav = [

@@ -1,10 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/PlkVGQs0ObK
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { RecipeKind } from "@/types";

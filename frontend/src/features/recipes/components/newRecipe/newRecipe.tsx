@@ -22,8 +22,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { RecipeKind, typeOptions } from "@/types";
 import { useLocation } from "react-router-dom";
-import HandleTable from "./handleTable";
-import { useRecipeForm } from "../hooks/useRecipeForm";
+import { useRecipeForm } from "../../hooks/useRecipeForm";
+import HandleTable from "../recipeTable/handleTable";
 
 export default function NewRecipeDialog() {
   //
@@ -38,6 +38,7 @@ export default function NewRecipeDialog() {
     handleBack,
     formData,
     handleInputChange,
+    handleFileChange,
     handleSelectChange,
     handleSwitchChange,
     handleSubmit,
@@ -196,10 +197,7 @@ export default function NewRecipeDialog() {
                   <Label htmlFor="photo" className="text-xl font-medium">
                     Photo
                   </Label>
-                  <Input
-                    id="photo"
-                    /* type="string" */ onChange={handleInputChange}
-                  />
+                  <input type="file" id="photo" onChange={handleFileChange} />
                 </div>
               </div>
               <DialogFooter>

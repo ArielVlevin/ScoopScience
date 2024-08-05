@@ -1,5 +1,5 @@
 import { Totals } from "@/features/recipes/types/totalsTypes";
-import { IngredientWithWeight } from "../../../types/ingredientTypes";
+import { IngredientWithWeight } from "../../ingredients/types/ingredientTypes";
 import { RecipeRating } from "./recipeRating";
 import { SpecialMarks } from "./specialMarks";
 

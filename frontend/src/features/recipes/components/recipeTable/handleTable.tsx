@@ -5,12 +5,13 @@ import { recipeValues } from "@/types/globalVar";
 import { useGetIngredientsArray2 } from "@/features/ingredients/hooks/useGetIngredientArray2";
 import Loading from "@/pages/loading";
 import ErrorPage from "@/pages/error";
-import { calculateAndRound } from "../../../utils/calculateAndRound";
-import { Totals } from "../../../types/totalsTypes";
+import { calculateAndRound } from "../../utils/calculateAndRound";
+import { Totals } from "../../types/totalsTypes";
 import { Label } from "@/components/ui/label";
-import TotalsCard from "./totalsCard";
-import NewRecipeTable from "./newRecipeTable/table";
+
 import BulletChart from "@/components/chart/bulletChart";
+import NewRecipeTable from "./table";
+import TotalsCard from "../newRecipe/totalsCard";
 
 type HanldeIngredientProps = {
   recipeKind?: RecipeKind;

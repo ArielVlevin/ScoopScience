@@ -1,2 +1,2 @@
 export * from "../features/recipes/types";
-export * from "./ingredientTypes";
+export * from "../features/ingredients/types/ingredientTypes";

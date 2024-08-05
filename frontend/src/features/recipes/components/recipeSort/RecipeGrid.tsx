@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "~/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { RecipeCard } from "./RecipeCard";
 import Page from "@/components/class/page";
 import Grid from "@/components/class/grid";

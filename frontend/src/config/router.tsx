@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "@/Layout";
+import Layout from "@/components/layout/Layout";
 import ErrorPage from "@/pages/error";
 import AuthPage from "@/features/auth/pages/auth";
 import Loading from "@/pages/loading";
@@ -22,6 +22,7 @@ const IngredientsCategoryPage = lazy(
   () => import("@/features/ingredients/pages/IngredientsCategories")
 );
 const RecipesPage = lazy(() => import("@/features/recipes/pages/recipes"));
+
 const RecipeDetailPage = lazy(
   () => import("@/features/recipes/pages/recipeDetail")
 );

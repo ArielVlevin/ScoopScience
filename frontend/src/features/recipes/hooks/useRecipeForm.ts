@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { RecipeKind, Row, Recipe } from "@/types";
-import calculateTotals from "../../../utils/calculateTotals";
-import { Totals } from "../../../types/totalsTypes";
-import { postRecipe } from "@/features/recipes/services/recipeService";
+import calculateTotals from "../utils/calculateTotals";
+import { Totals } from "@/types";
+import { postRecipe } from "@/features/recipes/services/postRecipe";
 
 export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"
 ) {
+  const [rows, setRows] = useState<Row[]>([]);
+  const [totals, setTotals] = useState<Totals>(calculateTotals(rows));
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -16,13 +19,11 @@ export function useRecipeForm(
     instructions: "",
     cookingTime: "",
     prepTime: "",
-    photo: "",
+    image: "",
     isPublic: true,
     ingredients: undefined as Row[] | undefined,
     totals: undefined as Totals | undefined,
   });
-  const [rows, setRows] = useState<Row[]>([]);
-  const [totals, setTotals] = useState<Totals>(calculateTotals(rows));
 
   useEffect(() => {
     setFormData((prevData) => ({
@@ -38,7 +39,7 @@ export function useRecipeForm(
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { id, value, type, files } = e.target as HTMLInputElement; // Cast e.target to HTMLInputElement
+    const { id, value, type, files } = e.target as HTMLInputElement;
     setFormData((prevData) => ({
       ...prevData,
       [id]: type === "file" ? files?.[0] || null : value,
@@ -59,6 +60,12 @@ export function useRecipeForm(
     }));
   };
 
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -70,7 +77,7 @@ export function useRecipeForm(
         instructions: formData.instructions,
         cookingTime: parseInt(formData.cookingTime),
         prepTime: parseInt(formData.prepTime),
-        photo: " ",
+        photo: "",
         isPublic: formData.isPublic,
       },
       recipeRating: {
@@ -92,9 +99,16 @@ export function useRecipeForm(
       },
     };
 
-    console.log("Transformed Recipe Data:", newRecipe);
+    //TODO: remove
+    console.log(
+      "Transformed Recipe Data:\n",
+      newRecipe,
+      "\nfile:\n",
+      selectedFile
+    );
+
     try {
-      postRecipe(newRecipe);
+      postRecipe(newRecipe, selectedFile);
     } catch (error) {
       console.error("Error posting recipe:", error);
     }
@@ -111,6 +125,7 @@ export function useRecipeForm(
     handleInputChange,
     handleSelectChange,
     handleSwitchChange,
+    handleFileChange,
     handleSubmit,
     rows,
     setRows,
