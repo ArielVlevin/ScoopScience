@@ -1,9 +1,0 @@
-{
-  "files.exclude": {
-    "settings.json": false,
-    "**/*.json": true,
-    "**/node_modules": true,
-    "**/*.config.js": true,
-    "**/*.config.ts": true
-  }
-}

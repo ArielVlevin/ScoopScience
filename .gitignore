@@ -25,3 +25,6 @@ dist-ssr
 **/.env
 frontend/.env
 backend/.env
+.vscode
+uploads/
+**/uploads/
