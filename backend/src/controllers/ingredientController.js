@@ -7,7 +7,7 @@ const getLastIngredientID = async (category) => {
   return lastIngredient ? lastIngredient._id : 0;
 };
 
-export const createIngredient = async (req, res) => {
+export const createIngredient = async (req, res, next) => {
   try {
     const { name, category, calories, sugar, fat, totalSolids, msnf, protein } =
       req.body;
@@ -31,11 +31,11 @@ export const createIngredient = async (req, res) => {
     res.status(201).json(newIngredient);
   } catch (error) {
     console.error("Error inserting ingredient:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getIngredient = async (req, res) => {
+export const getIngredient = async (req, res, next) => {
   const ingredientsID = req.params.id;
   try {
     const ingredient = await Ingredient.findById(ingredientsID).exec();
@@ -46,11 +46,11 @@ export const getIngredient = async (req, res) => {
       res.status(404).json({ message: "Ingredient not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getAllIngredients = async (req, res) => {
+export const getAllIngredients = async (req, res, next) => {
   try {
     const ingredients = await Ingredient.find({});
 
@@ -65,22 +65,21 @@ export const getAllIngredients = async (req, res) => {
 
     res.status(200).json(ingredientsByCategory);
   } catch (error) {
-    console.error("Error fetching ingredients by category:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getIngredientsByRecipe = async (req, res) => {
+export const getIngredientsByRecipe = async (req, res, next) => {
   const recipeName = req.params.recipe;
 
   // TODO:make an array of ingredient IDs based on the recipe
   // TODO: add more recipes
   // TODO: the array should be with ingredient with weight
-  let ingredientIds = [50001];
+  let ingredientIds = [51001];
   if (recipeName === "gelato") {
-    ingredientIds = [50001, 52001];
+    ingredientIds = [51001, 52001];
   } else if (recipeName === "iceCream") {
-    ingredientIds = [50001, 52001, 58001];
+    ingredientIds = [51001, 52001, 58001];
   } else if (recipeName === "sorbet") {
     ingredientIds = [57001, 52001, 54001];
   } else if (recipeName === "other") {
@@ -92,7 +91,6 @@ export const getIngredientsByRecipe = async (req, res) => {
 
     res.status(200).json(ingredients);
   } catch (error) {
-    console.error("Error fetching basic ingredients:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };

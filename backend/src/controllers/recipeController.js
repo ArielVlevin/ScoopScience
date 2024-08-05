@@ -1,3 +1,4 @@
+import { randomBytes } from "crypto";
 import { Recipe } from "../models/Recipe.js";
 
 const getLastRecipeID = async () => {
@@ -5,25 +6,44 @@ const getLastRecipeID = async () => {
   return lastRecipe ? lastRecipe._id : 0;
 };
 
-export const createRecipe = async (req, res) => {
+export const createRecipe = async (req, res, next) => {
   try {
-    const data = req.body;
-    const newID = (await getLastRecipeID()) + 1;
-    const newRecipe = new Recipe({
-      _id: newID,
-      ...data,
-    });
+    const new_id = (await getLastRecipeID()) + 1;
+
+    const data = JSON.parse(req.body.recipeData);
+    const recipeRating = JSON.parse(req.body.recipeRating);
+    const recipeIngredient = JSON.parse(req.body.recipeIngredient);
+
+    const photoPath = req.file ? req.file.path : null;
+
+    const newRecipeData = {
+      _id: new_id,
+      recipeData: {
+        ...data,
+        photo: photoPath,
+      },
+      recipeRating,
+      recipeIngredient,
+    };
+
+    const newRecipe = new Recipe(newRecipeData);
 
     await newRecipe.save();
 
     res.status(201).json(newRecipe);
+    console.log(
+      "\nNew Recipe created successfully:\nid: ",
+      newRecipe._id,
+      ", name:",
+      newRecipe.recipeData.recipeName,
+      "\n"
+    );
   } catch (error) {
-    console.error("Error inserting recipe:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getRecipe = async (req, res) => {
+export const getRecipe = async (req, res, next) => {
   const recipeID = req.params.id;
   try {
     const recipe = await Recipe.findById(recipeID).exec();
@@ -33,17 +53,15 @@ export const getRecipe = async (req, res) => {
       res.status(404).json({ message: "Recipe not found" });
     }
   } catch (error) {
-    console.error("Error retrieving recipe:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getAllRecipes = async (req, res) => {
+export const getAllRecipes = async (req, res, next) => {
   try {
     const recipes = await Recipe.find({}).exec();
     res.status(200).json(recipes);
   } catch (error) {
-    console.error("Error finding recipes:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
