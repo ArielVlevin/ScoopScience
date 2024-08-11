@@ -1,4 +1,3 @@
-import { randomBytes } from "crypto";
 import { Recipe } from "../models/Recipe.js";
 
 const getLastRecipeID = async () => {
@@ -79,5 +78,38 @@ export const getRecipesByKind = async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  }
+};
+
+export const setRate = async (req, res) => {
+  const { user_id, ratingValue } = req.body;
+  const recipeId = req.params.id;
+
+  try {
+    const recipe = await Recipe.findById(recipeId);
+    const existingRating = recipe.recipeRating.ratingUsers.find(
+      (rating) => rating.user_id === user_id
+    );
+
+    if (existingRating) {
+      existingRating.ratingValue = ratingValue;
+    } else {
+      recipe.recipeRating.ratingUsers.push({ user_id, ratingValue });
+    }
+
+    const totalRatingValue = recipe.recipeRating.ratingUsers.reduce(
+      (acc, rating) => acc + rating.ratingValue,
+      0
+    );
+
+    recipe.recipeRating.ratingValue =
+      totalRatingValue / recipe.recipeRating.ratingUsers.length;
+
+    recipe.recipeRating.ratingAmount = recipe.recipeRating.ratingUsers.length;
+
+    await recipe.save();
+    res.status(200).json({ message: "Rating updated", recipe });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

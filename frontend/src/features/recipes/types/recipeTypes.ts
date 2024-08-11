@@ -1,10 +1,13 @@
-import {
-  RecipeRating,
-  IngredientWithWeight,
-  Totals,
-  Allergies,
-  RecipeKind,
-} from "@/types";
+import { RecipeRating, IngredientWithWeight, Totals, Allergies } from "@/types";
+
+export const typeOptions = [
+  "gelato",
+  "iceCream",
+  "custard",
+  "sorbet",
+  "other",
+] as const;
+export type RecipeKind = (typeof typeOptions)[number]; // = 'gelato' | 'iceCream' | 'sorbet' | 'other';
 
 export type Ingredients = {
   recipeType: RecipeKind;

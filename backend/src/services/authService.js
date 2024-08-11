@@ -17,6 +17,7 @@ export const register = async ({ username, email, password }) => {
     password: hashedPassword,
   });
   await user.save();
+
   return user;
 };
 
@@ -36,5 +37,13 @@ export const login = async ({ email, password }) => {
   const token = jwt.sign({ _id: user._id }, config.jwtSecret, {
     expiresIn: "1h",
   });
-  return token;
+
+  return {
+    token,
+    user: {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+  };
 };

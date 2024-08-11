@@ -1,8 +1,12 @@
 import api from "@/config/api";
 
 interface LoginResponse {
+  user: {
+    _id: string;
+    username: string;
+    email: string;
+  };
   token: string;
-  // Include any other fields returned in the response
 }
 
 export async function login(
@@ -14,8 +18,9 @@ export async function login(
       email,
       password,
     });
-    const { token } = response.data;
+    const { user, token } = response.data;
     localStorage.setItem("token", token);
+    localStorage.setItem("user_id", user._id);
     return response.data;
   } catch (error) {
     console.error("Error logging in:", error);

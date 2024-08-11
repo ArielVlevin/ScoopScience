@@ -9,13 +9,31 @@ import {
   BeanIcon,
   NutIcon,
 } from "@/components/icons/icon";
+import { postData } from "@/services/apiFunctions";
+import { useAuth } from "@/contexts/AuthContext";
 
 type RecipeHeaderProps = {
   recipe: Recipe;
 };
 export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
-  // TODO: ADD the change to the rating system
+  //
+  const { user, isAuthenticated } = useAuth();
+  //
   const [rating, setRating] = useState(recipe.recipeRating.ratingValue);
+
+  const handleRating = async (value: number) => {
+    if (!isAuthenticated) return alert("You must be logged in to rate recipes");
+
+    setRating(value);
+    try {
+      await postData(`/recipes/id/${recipe._id}/rate`, {
+        user_id: user?._id,
+        ratingValue: value,
+      });
+    } catch (error) {
+      console.error("Failed to submit rating:", error);
+    }
+  };
 
   return (
     <div className="bg-muted  rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
@@ -26,7 +44,14 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
         {recipe?.recipeData.recipeName}
       </div>
       <div className="flex justify-center ">
-        <Rating style={{ maxWidth: 100 }} value={rating} onChange={setRating} />
+        <Rating
+          style={{ maxWidth: 100 }}
+          value={rating}
+          onChange={(star: number) => {
+            handleRating(star);
+          }}
+        />
+        ({recipe?.recipeRating.ratingAmount})
       </div>
       <div className="flex justify-center text-muted-foreground mb-4">
         {recipe?.recipeData.description}

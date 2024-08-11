@@ -12,8 +12,8 @@ import {
   logout as logoutUser,
 } from "@/features/auth/services/index.ts";
 
-// Define the types for user and auth context
 interface User extends JwtPayload {
+  _id: string;
   username: string;
 }
 
