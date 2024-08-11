@@ -19,7 +19,7 @@ export default function calculateTotals(rows: Row[]): Totals {
 
     totalWeight += weight;
     totalFat += fat;
-    totalSol += (solidsPercentage * weight) / 100;
+    totalSol += solidsPercentage;
     totalCalories += calories * (weight / 100);
     totalSugar += sugars;
     totalMSNF += (msnf * weight) / 100;
@@ -29,12 +29,12 @@ export default function calculateTotals(rows: Row[]): Totals {
   return {
     totalWeight,
     totalFat,
-    totalSolidPercentage: totalSol,
     totalCalories,
     totalSugar,
     totalMsnf: totalMSNF,
+    totalSolidPercentage: totalSol,
 
-    totalFatPercentage: totalFat,
-    totalSugarPercentage: totalSugar,
+    totalFatPercentage: (totalFat / totalWeight) * 100,
+    totalSugarPercentage: (totalSugar / totalWeight) * 100,
   };
 }

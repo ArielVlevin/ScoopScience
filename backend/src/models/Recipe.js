@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { allergiesSchema } from "./Ingredient.js";
 
 // Schema for ingredient with weight
 const ingredientWithWeightSchema = new Schema({
@@ -12,6 +13,7 @@ const ingredientWithWeightSchema = new Schema({
   msnf: { type: Number, required: true },
   protein: { type: Number, required: true },
   image: { type: String, required: true },
+  allergies: { type: allergiesSchema, default: {} },
   weight: { type: Number, required: true },
 });
 
@@ -27,15 +29,6 @@ const totalsSchema = new Schema({
   totalMsnf: { type: Number, required: true },
 });
 
-// Schema for special marks
-const specialMarksSchema = new Schema({
-  highSugar: { type: Boolean, required: true },
-  subSugar: { type: Boolean, required: true },
-  highFat: { type: Boolean, required: true },
-  vegan: { type: Boolean, required: true },
-  withEggs: { type: Boolean, required: true },
-});
-
 // Enum for recipe types
 const recipeKindEnum = ["gelato", "iceCream", "custard", "sorbet", "other"];
 
@@ -44,7 +37,7 @@ const ingredientsSchema = new Schema({
   recipeType: { type: String, enum: recipeKindEnum, required: true },
   ingredients: [ingredientWithWeightSchema],
   totalData: totalsSchema,
-  specialMarks: specialMarksSchema,
+  allergies: { type: allergiesSchema, default: {} },
 });
 
 // Schema for recipe data

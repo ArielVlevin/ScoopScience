@@ -27,11 +27,12 @@ export default function RecipeGrid({ recipes }: RecipeGridProps) {
         {displayedRecipes.map((recipe) => (
           <RecipeCard
             _id={recipe._id as number}
+            recipeName={recipe.recipeData.recipeName}
             recipeKind={recipe.recipeData.recipeKind}
             description={recipe.recipeData.description}
             rating={recipe.recipeRating.ratingValue}
             isLiked={false}
-            marks={recipe.recipeIngredient.specialMarks}
+            allergies={recipe.recipeIngredient.allergies}
           />
         ))}
       </Grid>

@@ -2,22 +2,21 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import cardImgExmpl from "@/assets/icecream-example.jpeg";
 import { HeartIcon, StarIcon } from "@/components/icons/icon";
-import RecipeCardIcons from "./RecipeCardIcons";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { RecipeKind } from "@/types";
-import { SpecialMarks } from "@/features/recipes/types/specialMarks";
+import { Allergies, RecipeKind } from "@/types";
 import { useNavigate } from "react-router-dom";
+import RecipeCardIcons from "./RecipeCardIcons";
 
 //TODO:: change to real RecipedData
 export type cardInfo = {
   _id: number;
+  recipeName: string;
   recipeKind: RecipeKind;
   description: string;
   rating: number;
   isLiked: boolean;
-
-  marks: SpecialMarks;
+  allergies: Allergies;
 };
 
 export type cardsInfo = cardInfo[];
@@ -26,11 +25,12 @@ export type cardsInfo = cardInfo[];
 
 export function RecipeCard({
   _id,
+  recipeName,
   recipeKind,
   description,
   rating,
   isLiked,
-  marks,
+  allergies,
 }: cardInfo) {
   const navigate = useNavigate();
   const [isHeartFilled, setIsHeartFilled] = useState(isLiked);
@@ -61,18 +61,22 @@ export function RecipeCard({
           </button>
         </div>
         <CardContent className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{recipeKind}</h2>
+          <div className="flex justify-between items-center ">
+            <h2 className="text-sm font-bold">{recipeKind}</h2>
+
             <div className="flex items-center">
               <StarIcon className="text-yellow-500 w-5 h-5 mr-1" />
               <span className="text-gray-700">{rating.toFixed(1)}</span>
             </div>
           </div>
-          <p className="text-gray-700 mb-6">{description}</p>
-          <RecipeCardIcons
-            className="flex space-x-2 mb-6 justify-center "
-            marks={marks}
-          />
+          <h1 className="text-3xl font-bold justify-center flex">
+            {recipeName}
+          </h1>
+
+          <p className="text-gray-700 mb-2 justify-center flex">
+            {description}
+          </p>
+          <RecipeCardIcons allergies={allergies} />
           <Button
             className="w-full"
             variant="default"

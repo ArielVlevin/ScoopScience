@@ -2,7 +2,13 @@ import { useState } from "react";
 
 import { Recipe } from "@/types";
 import { Rating } from "@smastrom/react-rating";
-import { LeafIcon, MilkIcon } from "@/components/icons/icon";
+import {
+  EggIcon,
+  MilkIcon,
+  WheatIcon,
+  BeanIcon,
+  NutIcon,
+} from "@/components/icons/icon";
 
 type RecipeHeaderProps = {
   recipe: Recipe;
@@ -25,27 +31,38 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
       <div className="flex justify-center text-muted-foreground mb-4">
         {recipe?.recipeData.description}
       </div>
+
       <div className="flex justify-center gap-4">
-        <div className="flex items-center gap-2">
-          <LeafIcon className="w-5 h-5 text-green-500" />
-          <span className="text-muted-foreground">Vegan</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <MilkIcon className="w-5 h-5 text-orange-500" />
-          <span className="text-muted-foreground">Dairy</span>
-        </div>{" "}
-        <div className="flex items-center gap-2">
-          <MilkIcon className="w-5 h-5 text-orange-500" />
-          <span className="text-muted-foreground">Dairy</span>
-        </div>{" "}
-        <div className="flex items-center gap-2">
-          <MilkIcon className="w-5 h-5 text-orange-500" />
-          <span className="text-muted-foreground">Dairy</span>
-        </div>{" "}
-        <div className="flex items-center gap-2">
-          <MilkIcon className="w-5 h-5 text-orange-500" />
-          <span className="text-muted-foreground">Dairy</span>
-        </div>
+        {recipe.recipeIngredient.allergies.nuts ? (
+          <div className="flex items-center gap-2">
+            <NutIcon className="w-5 h-5 text-orange-800" />
+            <span className="text-muted-foreground">Nuts</span>
+          </div>
+        ) : null}
+        {recipe.recipeIngredient.allergies.milk ? (
+          <div className="flex items-center gap-2">
+            <MilkIcon className="w-5 h-5 text-blue-200" />
+            <span className="text-muted-foreground">Milk</span>
+          </div>
+        ) : null}
+        {recipe.recipeIngredient.allergies.egg ? (
+          <div className="flex items-center gap-2">
+            <EggIcon className="w-5 h-5  " />
+            <span className="text-muted-foreground">eggs</span>
+          </div>
+        ) : null}
+        {recipe.recipeIngredient.allergies.soy ? (
+          <div className="flex items-center gap-2">
+            <BeanIcon className="w-5 h-5 text-green-500" />
+            <span className="text-muted-foreground">Soy</span>
+          </div>
+        ) : null}
+        {recipe.recipeIngredient.allergies.wheat ? (
+          <div className="flex items-center gap-2">
+            <WheatIcon className="w-5 h-5 text-yellow-300" />
+            <span className="text-muted-foreground">Dairy</span>
+          </div>
+        ) : null}
       </div>
     </div>
   );

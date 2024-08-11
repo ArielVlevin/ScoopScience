@@ -65,3 +65,19 @@ export const getAllRecipes = async (req, res, next) => {
     next(error);
   }
 };
+export const getRecipesByKind = async (req, res, next) => {
+  const recipeKind = req.params.kind;
+
+  try {
+    const recipes = await Recipe.find({
+      "recipeData.recipeKind": recipeKind,
+    }).exec();
+    if (recipes.length > 0) {
+      res.status(200).json(recipes);
+    } else if (recipes.length === 0) {
+      res.status(200).json([]);
+    }
+  } catch (error) {
+    next(error);
+  }
+};

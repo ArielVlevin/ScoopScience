@@ -1,5 +1,13 @@
 import { Schema, model } from "mongoose";
 
+export const allergiesSchema = new Schema({
+  milk: { type: Boolean, default: false },
+  nuts: { type: Boolean, default: false },
+  egg: { type: Boolean, default: false },
+  soy: { type: Boolean, default: false },
+  wheat: { type: Boolean, default: false },
+});
+
 const ingredientSchema = new Schema(
   {
     _id: { type: Number },
@@ -12,6 +20,7 @@ const ingredientSchema = new Schema(
     msnf: { type: Number, required: true },
     protein: { type: Number, required: true },
     image: { type: String, required: true },
+    allergies: { type: allergiesSchema, default: {} },
   },
   { timestamps: true }
 );

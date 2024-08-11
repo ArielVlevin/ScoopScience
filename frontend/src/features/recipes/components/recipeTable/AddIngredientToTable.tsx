@@ -31,9 +31,9 @@ function AddIngredientToTable({
   isAddingIngredient: boolean;
   setIsAddingIngredient: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<string | null>(null);
   const [selectedIngredient, setSelectedIngredient] = useState<string>("");
-  const [weight, setWeight] = useState<number>(100);
+  const [weight, setWeight] = useState<number>(0);
   const [ingredient, setIngredient] = useState<Ingredient | null>(null);
 
   const { ingredientsByCategory } = useGetIngredientsArray();
@@ -43,18 +43,30 @@ function AddIngredientToTable({
     if (selectedIngredient) setIngredient(ingredientData);
   }, [selectedIngredient, ingredientData]);
 
+  const handleDialogClose = useCallback(() => {
+    setCategory(null);
+    setSelectedIngredient("");
+    setWeight(0);
+    setIngredient(null);
+    setIsAddingIngredient(false);
+  }, [setIsAddingIngredient]);
+
   const handleSaveNewRow = useCallback(() => {
     if (!ingredient || !rows) return;
     if (rows.some((row) => row._id === ingredient._id)) {
-      alert(
+      return alert(
         `The ingredient "${ingredient.name}" already exists in the recipe.`
       );
-      return;
+    }
+    if (weight <= 0) {
+      return alert(
+        `The ingredient "${ingredient.name}" must have a positive weight.`
+      );
     }
     const newIngredientRow = { ...ingredient, weight };
     setRows([...rows, newIngredientRow]);
-    setIsAddingIngredient(false);
-  }, [ingredient, rows, weight, setRows, setIsAddingIngredient]);
+    handleDialogClose();
+  }, [ingredient, rows, weight, setRows, handleDialogClose]);
 
   const categoryOptions = useMemo(
     () =>
@@ -67,7 +79,13 @@ function AddIngredientToTable({
   );
 
   return (
-    <Dialog open={isAddingIngredient} onOpenChange={setIsAddingIngredient}>
+    <Dialog
+      open={isAddingIngredient}
+      onOpenChange={(open) => {
+        setIsAddingIngredient(open);
+        if (!open) handleDialogClose();
+      }}
+    >
       <DialogTrigger asChild>
         <Button>Add Ingredient</Button>
       </DialogTrigger>
@@ -90,7 +108,7 @@ function AddIngredientToTable({
             </SelectTrigger>
             <SelectContent>{categoryOptions}</SelectContent>
           </Select>
-          {category && (
+          {category ? (
             <>
               <Label htmlFor="ingredients">Ingredients</Label>
               <Select onValueChange={setSelectedIngredient}>
@@ -105,24 +123,30 @@ function AddIngredientToTable({
                   ))}
                 </SelectContent>
               </Select>
-              <Label htmlFor="weight">Weight</Label>
-              <Input
-                id="weight"
-                type="number"
-                placeholder="Enter weight"
-                onChange={(e) => setWeight(parseFloat(e.target.value))}
-              />
+              {ingredient ? (
+                <>
+                  <Label htmlFor="weight">Weight</Label>
+                  <Input
+                    id="weight"
+                    type="number"
+                    placeholder="Enter weight"
+                    onChange={(e) => setWeight(parseFloat(e.target.value))}
+                  />
+                </>
+              ) : null}
               <DialogFooter>
                 <Button
                   variant="outline"
-                  onClick={() => setIsAddingIngredient(false)}
+                  onClick={() => {
+                    handleDialogClose();
+                  }}
                 >
                   Cancel
                 </Button>
                 <Button onClick={handleSaveNewRow}>Add</Button>
               </DialogFooter>
             </>
-          )}
+          ) : null}
         </div>
       </DialogContent>
     </Dialog>

@@ -2,8 +2,8 @@ export type SpecialMarks = {
   highSugar: boolean;
   subSugar: boolean;
   highFat: boolean;
+  lowFat: boolean;
   vegan: boolean;
-  withEggs: boolean;
 };
 
 export const specialMarksEnum = [

@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogOverlay,
   DialogClose,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -20,24 +19,35 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { RecipeKind, typeOptions } from "@/types";
+import { typeOptions } from "@/types";
 import { useLocation } from "react-router-dom";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
-import HandleTable from "../recipeTable/handleTable";
+import Grid from "@/components/class/grid";
+import { Checkbox } from "@/components/ui";
+import TotalsCard from "./totalsCard";
+import { calculateAndRound } from "../../utils/calculateAndRound";
+import { useState } from "react";
+import BulletChart from "@/components/chart/bulletChart";
+import AddIngredientToTable from "../recipeTable/AddIngredientToTable";
+import NewRecipeTable from "../recipeTable/table";
+import RecipeBulletCharts from "../recipeBulletChart";
 
 export default function NewRecipeDialog() {
   //
   const location = useLocation();
   const BASERECIPE = location.state || undefined;
-
   const {
+    recipes,
     isOpen,
+    isAdditionalSelectVisible,
     setIsOpen,
+    setIsAdditionalSelectVisible,
     currentStep,
     handleNext,
     handleBack,
     formData,
     handleInputChange,
+    handleAdditionalSelectChange,
     handleFileChange,
     handleSelectChange,
     handleSwitchChange,
@@ -47,6 +57,46 @@ export default function NewRecipeDialog() {
     totals,
     setTotals,
   } = useRecipeForm(BASERECIPE);
+  const handleSaveEditTotalWeight = () => {
+    if (newTotalWeight >= 1) {
+      setRows(
+        rows.map((row) => ({
+          ...row,
+          weight: calculateAndRound(
+            row.weight,
+            totals.totalWeight,
+            newTotalWeight
+          ),
+          calories: calculateAndRound(
+            row.calories,
+            totals.totalWeight,
+            newTotalWeight
+          ),
+          sugar: calculateAndRound(
+            row.sugar,
+            totals.totalWeight,
+            newTotalWeight
+          ),
+          fat: calculateAndRound(row.fat, totals.totalWeight, newTotalWeight),
+          protein: calculateAndRound(
+            row.protein,
+            totals.totalWeight,
+            newTotalWeight
+          ),
+          msnf: calculateAndRound(row.msnf, totals.totalWeight, newTotalWeight),
+        }))
+      );
+      setEditTotalWeight(false);
+    } else alert("Please enter a valid value greater than 0 grams");
+  };
+  const [newTotalWeight, setNewTotalWeight] = useState<number>(
+    totals.totalWeight
+  );
+  const [editTotalWeight, setEditTotalWeight] = useState<boolean>(false);
+
+  //
+  //
+  const [isAddingIngredient, setIsAddingIngredient] = useState<boolean>(false);
 
   return (
     <>
@@ -60,63 +110,86 @@ export default function NewRecipeDialog() {
             e.preventDefault();
           }}
         >
-          <DialogHeader>
-            <DialogTitle>New Recipe</DialogTitle>
-            <DialogDescription />
-          </DialogHeader>
-
           {/* Step 1 */}
           {currentStep === 1 && (
-            <form className="grid gap-8">
-              <div className="grid gap-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="name" className="text-sm font-medium">
-                      Recipe Name
-                    </Label>
-                    <Input
-                      id="name"
-                      placeholder="Enter recipe name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="recipeKind" className="text-sm font-medium">
-                      Recipe Kind
+            <form className="gap-6">
+              <Grid className="">
+                <DialogHeader>
+                  <DialogTitle>Recipe Detail</DialogTitle>
+                </DialogHeader>
+                <Grid gap={2}>
+                  <Label htmlFor="name" className="text-sm font-medium">
+                    Recipe Name
+                  </Label>
+                  <Input
+                    id="name"
+                    placeholder="Enter recipe name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid gap={2}>
+                  <Label htmlFor="recipeKind" className="text-sm font-medium">
+                    Recipe Kind
+                  </Label>
+                  <Select
+                    name="recipeKind"
+                    value={formData.recipeKind}
+                    onValueChange={handleSelectChange}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select recipe kind" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {typeOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </Grid>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={isAdditionalSelectVisible}
+                    onCheckedChange={(checked) =>
+                      setIsAdditionalSelectVisible(checked as boolean)
+                    }
+                  />
+                  <Label className="text-sm font-medium">
+                    Import ice cream base recipe
+                  </Label>
+                </div>
+                {isAdditionalSelectVisible && (
+                  <Grid gap={2}>
+                    <Label
+                      htmlFor="additionalSelect"
+                      className="text-sm font-medium"
+                    >
+                      {formData.recipeKind} Recipes
                     </Label>
                     <Select
-                      name="recipeKind"
-                      value={formData.recipeKind}
-                      onValueChange={handleSelectChange}
+                      name="additionalSelect"
+                      onValueChange={handleAdditionalSelectChange}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select recipe kind" />
+                        <SelectValue placeholder="Select additional option" />
                       </SelectTrigger>
                       <SelectContent>
-                        {typeOptions.map((option) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
+                        {recipes.map((recipe) => (
+                          <SelectItem
+                            key={recipe._id}
+                            value={recipe.recipeData.recipeName}
+                          >
+                            {recipe.recipeData.recipeName}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="description" className="text-sm font-medium">
-                    Description
-                  </Label>
-                  <Textarea
-                    id="description"
-                    placeholder="Enter a brief description of the recipe"
-                    rows={3}
-                    value={formData.description}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <DialogFooter>
+                  </Grid>
+                )}
+              </Grid>
+              <DialogFooter className="mt-6">
                 <Button type="button" onClick={handleNext}>
                   Next
                 </Button>
@@ -126,18 +199,36 @@ export default function NewRecipeDialog() {
 
           {/* Step 2 */}
           {currentStep === 2 && (
-            <form className="grid gap-8">
-              <div className="grid gap-4">
-                <HandleTable
-                  recipeKind={formData.recipeKind as RecipeKind}
+            <form className="">
+              <Label className="text-lg font-medium">Ingredients Table</Label>
+              <NewRecipeTable
+                className="border rounded-lg border-gray-300 "
+                rows={rows}
+                setRows={setRows}
+                setTotals={setTotals}
+              />
+              <div className="flex justify-center w-full mt-2">
+                <AddIngredientToTable
                   rows={rows}
                   setRows={setRows}
-                  totals={totals}
-                  setTotals={setTotals}
+                  setIsAddingIngredient={setIsAddingIngredient}
+                  isAddingIngredient={isAddingIngredient}
                 />
               </div>
+              <Label className="text-lg font-medium ">Totals</Label>
+              {totals.totalWeight > 0 ? (
+                <>
+                  <TotalsCard className="w-full mt-2 mb-6" totals={totals} />
+                  <RecipeBulletCharts
+                    recipeType={formData.recipeKind}
+                    totals={totals}
+                    width={1125}
+                    height={80}
+                  />
+                </>
+              ) : null}
 
-              <DialogFooter>
+              <DialogFooter className="mt-6">
                 <Button type="button" onClick={handleBack}>
                   Previous
                 </Button>
@@ -151,8 +242,20 @@ export default function NewRecipeDialog() {
           {/* Step 3 */}
           {currentStep === 3 && (
             <form className="grid gap-8">
-              <div className="grid gap-4">
-                <div className="grid gap-2">
+              <Grid gap={4}>
+                <Grid gap={2}>
+                  <Label htmlFor="description" className="text-sm font-medium">
+                    Description
+                  </Label>
+                  <Textarea
+                    id="description"
+                    placeholder="Enter a brief description of the recipe"
+                    rows={3}
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid gap={2}>
                   <Label htmlFor="instructions" className="text-xl font-medium">
                     Instructions
                   </Label>
@@ -163,9 +266,9 @@ export default function NewRecipeDialog() {
                     value={formData.instructions}
                     onChange={handleInputChange}
                   />
-                </div>
+                </Grid>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="grid gap-2">
+                  <Grid gap={2}>
                     <Label
                       htmlFor="cookingTime"
                       className="text-sm font-medium"
@@ -179,8 +282,8 @@ export default function NewRecipeDialog() {
                       value={formData.cookingTime}
                       onChange={handleInputChange}
                     />
-                  </div>
-                  <div className="grid gap-2">
+                  </Grid>
+                  <Grid gap={2}>
                     <Label htmlFor="prepTime" className="text-sm font-medium">
                       Preparation Time(minutes)
                     </Label>
@@ -191,15 +294,15 @@ export default function NewRecipeDialog() {
                       value={formData.prepTime}
                       onChange={handleInputChange}
                     />
-                  </div>
+                  </Grid>
                 </div>
-                <div className="grid gap-2">
+                <Grid gap={2}>
                   <Label htmlFor="photo" className="text-xl font-medium">
                     Photo
                   </Label>
                   <input type="file" id="photo" onChange={handleFileChange} />
-                </div>
-              </div>
+                </Grid>
+              </Grid>
               <DialogFooter>
                 <Button type="button" onClick={handleBack}>
                   Previous

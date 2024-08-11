@@ -7,6 +7,7 @@ import Loading from "@/pages/loading";
 import PrivateRoute from "@/config/privateRoute";
 import DashBoard from "@/features/auth/components/dashboard";
 import Logout from "@/features/auth/components/logout";
+import NewRecipe from "@/features/recipes/components/newRecipe/new";
 
 const HomePage = lazy(() => import("@/pages/homePage"));
 const IngredientsPage = lazy(
@@ -82,6 +83,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <RecipesPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "newrecipe",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <NewRecipe />
           </Suspense>
         ),
       },

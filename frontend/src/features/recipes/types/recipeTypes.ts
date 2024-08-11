@@ -1,22 +1,16 @@
-import { Totals } from "@/features/recipes/types/totalsTypes";
-import { IngredientWithWeight } from "../../ingredients/types/ingredientTypes";
-import { RecipeRating } from "./recipeRating";
-import { SpecialMarks } from "./specialMarks";
-
-export const typeOptions = [
-  "gelato",
-  "iceCream",
-  "custard",
-  "sorbet",
-  "other",
-] as const;
-export type RecipeKind = (typeof typeOptions)[number]; // = 'gelato' | 'iceCream' | 'sorbet' | 'other';
+import {
+  RecipeRating,
+  IngredientWithWeight,
+  Totals,
+  Allergies,
+  RecipeKind,
+} from "@/types";
 
 export type Ingredients = {
   recipeType: RecipeKind;
   ingredients: IngredientWithWeight[];
   totalData: Totals;
-  specialMarks: SpecialMarks;
+  allergies: Allergies;
 };
 
 export type RecipeData = {
@@ -31,11 +25,9 @@ export type RecipeData = {
 };
 
 export type Recipe = {
+  user_id?: number;
   _id?: number;
   recipeData: RecipeData;
   recipeRating: RecipeRating;
   recipeIngredient: Ingredients;
 };
-
-//TODO:: add user when login exists
-//user: User,

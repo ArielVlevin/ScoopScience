@@ -19,7 +19,7 @@ export default function NavBar() {
   ];
 
   const createLinks = [
-    { name: "New Recipe", href: "/newRecipe" },
+    { name: "New Recipe", href: "/newrecipe" },
     { name: "My Recipes", href: "/myRecipes" },
     { name: "Drafts", href: "/drafts" },
   ];

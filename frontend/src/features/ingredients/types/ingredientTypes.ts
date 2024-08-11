@@ -1,3 +1,4 @@
+import { Allergies } from "@/types";
 export type Ingredient = {
   _id: number;
   name: string;
@@ -8,6 +9,7 @@ export type Ingredient = {
   protein: number;
   totalSolids: number;
   msnf: number;
+  allergies: Allergies;
 };
 
 export const ingredientCategoryArray = [

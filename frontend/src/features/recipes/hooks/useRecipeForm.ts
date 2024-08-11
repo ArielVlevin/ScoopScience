@@ -1,17 +1,35 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { RecipeKind, Row, Recipe } from "@/types";
+import { RecipeKind, Row, Recipe, Allergies, Totals } from "@/types";
 import calculateTotals from "../utils/calculateTotals";
-import { Totals } from "@/types";
 import { postRecipe } from "@/features/recipes/services/postRecipe";
+import { useGetRecipesByKind } from "./useGetRecipesByKind";
+import { useNavigate } from "react-router-dom";
+import { calculateAndRound } from "../utils/calculateAndRound";
 
 export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"
 ) {
+  const navigate = useNavigate();
   const [rows, setRows] = useState<Row[]>([]);
   const [totals, setTotals] = useState<Totals>(calculateTotals(rows));
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [isAdditionalSelectVisible, setIsAdditionalSelectVisible] =
+    useState(false);
+
+  //
+  //
+  //
+  //
+  const [newTotalWeight, setNewTotalWeight] = useState<number>(
+    totals.totalWeight
+  );
+  const [editTotalWeight, setEditTotalWeight] = useState<boolean>(false);
+  //
+  //
+  //
+  //
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -23,13 +41,22 @@ export function useRecipeForm(
     isPublic: true,
     ingredients: undefined as Row[] | undefined,
     totals: undefined as Totals | undefined,
+    allergies: undefined as Allergies | undefined,
   });
+
+  const { recipes, isLoading, isError, error, refetch } = useGetRecipesByKind(
+    formData.recipeKind
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [formData.recipeKind, refetch]);
 
   useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
       ingredients: rows,
-      totals: totals,
+      totals: calculateTotals(rows),
     }));
   }, [rows, totals]);
 
@@ -53,6 +80,18 @@ export function useRecipeForm(
     }));
   };
 
+  const handleAdditionalSelectChange = (value: string) => {
+    console.log("value:", value);
+    const selectedRecipe = recipes.find(
+      (recipe) => recipe.recipeData.recipeName === value
+    );
+    if (selectedRecipe) {
+      setRows(selectedRecipe.recipeIngredient.ingredients);
+      console.log("rows:", rows);
+      setTotals(selectedRecipe.recipeIngredient.totalData);
+    }
+  };
+
   const handleSwitchChange = (checked: boolean) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -66,8 +105,61 @@ export function useRecipeForm(
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  //
+  //
+  //
+
+  const handleSaveEditTotalWeight = () => {
+    if (newTotalWeight >= 1) {
+      setRows(
+        rows.map((row) => ({
+          ...row,
+          weight: calculateAndRound(
+            row.weight,
+            totals.totalWeight,
+            newTotalWeight
+          ),
+          calories: calculateAndRound(
+            row.calories,
+            totals.totalWeight,
+            newTotalWeight
+          ),
+          sugar: calculateAndRound(
+            row.sugar,
+            totals.totalWeight,
+            newTotalWeight
+          ),
+          fat: calculateAndRound(row.fat, totals.totalWeight, newTotalWeight),
+          protein: calculateAndRound(
+            row.protein,
+            totals.totalWeight,
+            newTotalWeight
+          ),
+          msnf: calculateAndRound(row.msnf, totals.totalWeight, newTotalWeight),
+        }))
+      );
+      setEditTotalWeight(false);
+    } else alert("Please enter a valid value greater than 0 grams");
+  };
+
+  //
+  //
+  //
+  //
+  //
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (
+      !formData.name ||
+      !formData.recipeKind ||
+      !formData.description ||
+      !formData.instructions ||
+      !formData.cookingTime ||
+      !formData.prepTime
+    ) {
+      alert("All fields are required");
+      return;
+    }
 
     const newRecipe: Recipe = {
       recipeData: {
@@ -89,47 +181,42 @@ export function useRecipeForm(
         recipeType: formData.recipeKind!,
         ingredients: formData.ingredients!,
         totalData: formData.totals!,
-        specialMarks: {
-          highSugar: false,
-          subSugar: false,
-          highFat: false,
-          vegan: false,
-          withEggs: false,
-        },
+        allergies: formData.allergies!,
       },
     };
 
-    //TODO: remove
-    console.log(
-      "Transformed Recipe Data:\n",
-      newRecipe,
-      "\nfile:\n",
-      selectedFile
-    );
-
     try {
-      postRecipe(newRecipe, selectedFile);
+      const answer = await postRecipe(newRecipe, selectedFile);
+      navigate(`/recipes/${answer._id}`);
     } catch (error) {
       console.error("Error posting recipe:", error);
     }
-    setIsOpen(false); // Close the dialog after submission
+    setIsOpen(false);
   };
 
   return {
+    recipes,
+    isAdditionalSelectVisible,
     isOpen,
     setIsOpen,
+    setIsAdditionalSelectVisible,
     currentStep,
     handleNext,
     handleBack,
     formData,
     handleInputChange,
     handleSelectChange,
+    handleAdditionalSelectChange,
     handleSwitchChange,
     handleFileChange,
+    handleSaveEditTotalWeight,
     handleSubmit,
     rows,
     setRows,
     totals,
     setTotals,
+    isLoading,
+    isError,
+    error,
   };
 }
