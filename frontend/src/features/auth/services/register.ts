@@ -14,6 +14,6 @@ export async function register(
     return response.data;
   } catch (error) {
     console.error("Error registering user:", error);
-    throw error; // You might want to handle this more gracefully
+    throw error;
   }
 }

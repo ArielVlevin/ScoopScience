@@ -16,26 +16,29 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function RecipeDetailPage() {
+  const { user, isAuthenticated, handleFavorite } = useAuth();
+
   const { recipeId } = useParams<{ recipeId: string }>();
+  const recipe_id = parseInt(recipeId!, 10);
 
-  const { user, isAuthenticated } = useAuth();
-
-  const [isButtonFilled, setIsButtonFilled] = useState(false);
-
-  const handleSaveClick = () => {
-    if (!isAuthenticated) return alert("You must be logged in to save recipes");
-
-    setIsButtonFilled(!isButtonFilled);
-  };
-  const { recipe, isLoading, isError, error } = useGetRecipe(
-    (recipeId as string) || ""
+  const { recipe, isLoading, isError, error } = useGetRecipe(recipe_id);
+  const [isButtonFilled, setIsButtonFilled] = useState(
+    user?.favorites.includes(recipe_id)
   );
 
-  if (isNaN(recipeId as unknown as number))
-    return <ErrorPage error="Invalid Recipe ID" />;
+  if (isNaN(recipe_id)) return <ErrorPage error="Invalid Recipe ID" />;
 
   if (isLoading) return <Loading />;
   if (isError && error) return <ErrorPage error={error?.message} />;
+
+  const handleAddToFavorite = async () => {
+    if (!isAuthenticated || !recipe._id)
+      return alert("You must be logged in to save recipes");
+
+    handleFavorite(recipe._id);
+
+    setIsButtonFilled(!isButtonFilled);
+  };
 
   return (
     <Page>
@@ -54,13 +57,14 @@ export default function RecipeDetailPage() {
             View Ingredient Table
           </Button>
           <Button
-            onClick={handleSaveClick}
+            onClick={handleAddToFavorite}
             className={`w-full h-10 ${
               isButtonFilled ? "bg-red-800 text-white" : "bg-white text-red-800"
             } hover:bg-red-400 hover:scale-105 duration-500`}
           >
             Save in favorites
           </Button>
+          <div>favorites: {user?.favorites}</div>
         </Grid>
       </Grid>
 

@@ -55,16 +55,11 @@ const recipeDataSchema = new Schema({
 // Schema for recipe rating
 const recipeRatingSchema = new Schema({
   likes: { type: Number, required: true },
-  likesUsers: [
-    {
-      user_id: { type: Number, required: true },
-    },
-  ],
   ratingValue: { type: Number, required: true },
   ratingAmount: { type: Number, required: true },
   ratingUsers: [
     {
-      user_id: { type: Number, required: true },
+      user_id: { type: Number, required: true, ref: "User" },
       ratingValue: { type: Number, required: true },
     },
   ],

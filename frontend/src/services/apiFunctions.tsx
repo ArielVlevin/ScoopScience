@@ -30,10 +30,10 @@ export async function postData<T>(endpoint: string, data: T): Promise<T> {
 }
 
 // Delete function
-export async function deleteData(endpoint: string): Promise<void> {
+export async function deleteData<T>(endpoint: string, data: T): Promise<T> {
   try {
-    const response = await api.delete(endpoint);
-    return response.data.data;
+    const response = await api.delete(endpoint, { data: data });
+    return response.data;
   } catch (error) {
     console.error("Error deleting data:", error);
     throw error;

@@ -81,7 +81,7 @@ export const getRecipesByKind = async (req, res, next) => {
   }
 };
 
-export const setRate = async (req, res) => {
+export const setRate = async (req, res, next) => {
   const { user_id, ratingValue } = req.body;
   const recipeId = req.params.id;
 
@@ -110,6 +110,6 @@ export const setRate = async (req, res) => {
     await recipe.save();
     res.status(200).json({ message: "Rating updated", recipe });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };

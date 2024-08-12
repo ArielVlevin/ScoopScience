@@ -34,9 +34,18 @@ export const login = async ({ email, password }) => {
     throw new Error("Invalid credentials");
   }
 
-  const token = jwt.sign({ _id: user._id }, config.jwtSecret, {
-    expiresIn: "1h",
-  });
+  const token = jwt.sign(
+    {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      favorites: user.favorites,
+    },
+    config.jwtSecret,
+    {
+      expiresIn: "1h",
+    }
+  );
 
   return {
     token,
@@ -44,6 +53,7 @@ export const login = async ({ email, password }) => {
       _id: user._id,
       username: user.username,
       email: user.email,
+      favorites: user.favorites || [],
     },
   };
 };
