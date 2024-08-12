@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { login, register } from "../services";
+import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export function useAuthCard() {
   const navigate = useNavigate();
-
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -27,10 +27,8 @@ export function useAuthCard() {
       if (activeTab === "register") {
         await register(formData.username, formData.email, formData.password);
         console.log(formData.username, " registered successfully");
+        navigate("/");
       }
-      await login(formData.email, formData.password);
-
-      navigate("/");
     } catch (err) {
       setError(
         "Failed to authenticate. Please check your credentials and try again."

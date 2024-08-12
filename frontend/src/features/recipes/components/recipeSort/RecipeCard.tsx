@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Allergies, RecipeKind } from "@/types";
 import { useNavigate } from "react-router-dom";
 import RecipeCardIcons from "./RecipeCardIcons";
+import { useAuth } from "@/contexts/AuthContext";
 
 //TODO:: change to real RecipedData
 export type cardInfo = {
@@ -32,10 +33,15 @@ export function RecipeCard({
   isLiked,
   allergies,
 }: cardInfo) {
+  //
+  const { user, isAuthenticated } = useAuth();
+  //
   const navigate = useNavigate();
   const [isHeartFilled, setIsHeartFilled] = useState(isLiked);
 
   const handleHeartClick = () => {
+    if (!isAuthenticated) return alert("You must be logged in to save recipes");
+
     setIsHeartFilled(!isHeartFilled);
   };
 

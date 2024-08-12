@@ -15,6 +15,7 @@ import {
 interface User extends JwtPayload {
   _id: string;
   username: string;
+  email: string;
 }
 
 export interface AuthContextType {
@@ -77,9 +78,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       setUser(jwtDecode<User>(token));
+      setIsAuthenticated(true);
     }
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log("User logged in:", user);
+    }
+  }, [isAuthenticated, setIsAuthenticated, user]);
 
   return (
     <AuthContext.Provider
