@@ -2,7 +2,10 @@ import { TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { FilePenIcon, TrashIcon } from "@/components/icons/icon";
 import { Row } from "@/types";
 
-export function NewRecipeTableHeads() {
+type NewRecipeTableHeadsProps = {
+  isEditable: boolean;
+};
+export function NewRecipeTableHeads({ isEditable }: NewRecipeTableHeadsProps) {
   const tableHeader = [
     "Ingredients",
     "Weight",
@@ -11,7 +14,7 @@ export function NewRecipeTableHeads() {
     "Fat",
     "Solid Percentage",
     "MSNF",
-    "Actions",
+    isEditable ? "Actions" : null,
   ];
   return (
     <TableRow>
@@ -29,12 +32,14 @@ type TableCellsProps = {
   selectedRow: Row | null;
   handleEditWeight: (row: Row) => void;
   handleDelete: (row: Row) => void;
+  isEditable: boolean;
 };
 
 export default function TableCells({
   row,
   handleEditWeight,
   handleDelete,
+  isEditable,
 }: TableCellsProps) {
   return (
     <>
@@ -52,32 +57,35 @@ export default function TableCells({
         {row.totalSolids}
       </TableCell>
       <TableCell className="text-center text-foreground">{row.msnf}</TableCell>
-      <TableCell className="flex justify-center items-center text-muted-foreground">
-        <div className="flex items-center justify-end gap-3">
-          {/* ----- EDIT BUTTON ----- */}
-          <div
-            onClick={() => {
-              handleEditWeight(row);
-            }}
-            className="text-muted-foreground hover:text-primary"
-          >
-            <FilePenIcon className="w-4 h-4" />
-            <span className="sr-only">Edit</span>
-          </div>
 
-          {/* ----- DELETE BUTTON ----- */}
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(row);
-            }}
-            className="text-muted-foreground hover:text-destructive"
-          >
-            <TrashIcon className="w-4 h-4" />
-            <span className="sr-only">Delete</span>
+      {isEditable ? (
+        <TableCell className="flex justify-center items-center text-muted-foreground">
+          <div className="flex items-center justify-end gap-3">
+            {/* ----- EDIT BUTTON ----- */}
+            <div
+              onClick={() => {
+                handleEditWeight(row);
+              }}
+              className="text-muted-foreground hover:text-primary"
+            >
+              <FilePenIcon className="w-4 h-4" />
+              <span className="sr-only">Edit</span>
+            </div>
+
+            {/* ----- DELETE BUTTON ----- */}
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(row);
+              }}
+              className="text-muted-foreground hover:text-destructive"
+            >
+              <TrashIcon className="w-4 h-4" />
+              <span className="sr-only">Delete</span>
+            </div>
           </div>
-        </div>
-      </TableCell>
+        </TableCell>
+      ) : null}
     </>
   );
 }

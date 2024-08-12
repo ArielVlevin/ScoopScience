@@ -14,6 +14,15 @@ import Recipecharts from "../components/recipeDetail/recipeCharts";
 import RecipeInstructions from "../components/recipeDetail/recipeInstructions";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import NewRecipeTable from "../components/recipeTable/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui";
 
 export default function RecipeDetailPage() {
   const { user, isAuthenticated, handleFavorite } = useAuth();
@@ -22,6 +31,9 @@ export default function RecipeDetailPage() {
   const recipe_id = parseInt(recipeId!, 10);
 
   const { recipe, isLoading, isError, error } = useGetRecipe(recipe_id);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const [isButtonFilled, setIsButtonFilled] = useState(
     user?.favorites.includes(recipe_id)
   );
@@ -53,9 +65,29 @@ export default function RecipeDetailPage() {
         />
         <Grid mdcols={1} className="w-full ">
           <RecipeIngredients recipe={recipe} />
-          <Button className="  w-full h-10  hover:scale-105 duration-500">
-            View Ingredient Table
-          </Button>
+
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="w-full h-10 hover:scale-105 duration-500">
+                View Ingredient Table
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-6xl">
+              <DialogHeader>
+                <DialogTitle className=" pb-4">Ingredient Table</DialogTitle>
+                <DialogDescription className=" ">
+                  <NewRecipeTable
+                    className="border rounded-lg border-gray-300 p-2 "
+                    rows={recipe.recipeIngredient.ingredients}
+                    isEditable={false}
+                  />
+                </DialogDescription>
+              </DialogHeader>
+              <Button onClick={() => setIsDialogOpen(false)} className="mt-4">
+                Close
+              </Button>
+            </DialogContent>
+          </Dialog>
           <Button
             onClick={handleAddToFavorite}
             className={`w-full h-10 ${
@@ -64,7 +96,6 @@ export default function RecipeDetailPage() {
           >
             Save in favorites
           </Button>
-          <div>favorites: {user?.favorites}</div>
         </Grid>
       </Grid>
 

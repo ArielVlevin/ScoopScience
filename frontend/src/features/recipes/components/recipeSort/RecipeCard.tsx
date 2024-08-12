@@ -30,17 +30,20 @@ export function RecipeCard({
   recipeKind,
   description,
   rating,
-  isLiked,
   allergies,
 }: cardInfo) {
   //
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, handleFavorite } = useAuth();
   //
   const navigate = useNavigate();
-  const [isHeartFilled, setIsHeartFilled] = useState(isLiked);
+  const [isHeartFilled, setIsHeartFilled] = useState(
+    user?.favorites.includes(_id)
+  );
 
   const handleHeartClick = () => {
     if (!isAuthenticated) return alert("You must be logged in to save recipes");
+
+    handleFavorite(_id);
 
     setIsHeartFilled(!isHeartFilled);
   };

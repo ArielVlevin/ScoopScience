@@ -9,17 +9,19 @@ import EditWeightDialog from "./editWeight";
 type NewRecipeTableProops = {
   className?: string;
   rows: Row[];
-  setRows: React.Dispatch<React.SetStateAction<Row[]>>;
-  setTotals: React.Dispatch<
+  setRows?: React.Dispatch<React.SetStateAction<Row[]>>;
+  setTotals?: React.Dispatch<
     React.SetStateAction<ReturnType<typeof calculateTotals>>
   >;
+  isEditable?: boolean;
 };
 
 export default function NewRecipeTable({
   className,
   rows,
-  setRows,
-  setTotals,
+  setRows = () => {},
+  setTotals = () => {},
+  isEditable = true,
 }: NewRecipeTableProops) {
   const [selectedRow, setSelectedRow] = useState<Row | null>(null);
   const [isEditingWeight, setIsEditingWeight] = useState<boolean>(false);
@@ -69,7 +71,7 @@ export default function NewRecipeTable({
         <div className="relative w-full overflow-auto">
           <Table>
             <TableHeader>
-              <NewRecipeTableHeads />
+              <NewRecipeTableHeads isEditable={isEditable} />
             </TableHeader>
 
             <TableBody>
@@ -89,6 +91,7 @@ export default function NewRecipeTable({
                     selectedRow={selectedRow}
                     handleEditWeight={handleEditWeight}
                     handleDelete={handleDelete}
+                    isEditable={isEditable}
                   />
                 </TableRow>
               ))}
