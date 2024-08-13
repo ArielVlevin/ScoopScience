@@ -1,31 +1,41 @@
 import { useState, useEffect } from "react";
-import { Table, TableHeader, TableRow, TableBody } from "@/components/ui/table";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableBody,
+  TableFooter,
+} from "@/components/ui/table";
 import { Row } from "@/types";
 import NewRecipeTableCells, { NewRecipeTableHeads } from "./tableSetUp";
 import { roundToTwoDecimalPlaces } from "@/utils/math";
 import calculateTotals from "@/features/recipes/utils/calculateTotals";
 import EditWeightDialog from "./editWeight";
-
 type NewRecipeTableProops = {
   className?: string;
   rows: Row[];
   setRows?: React.Dispatch<React.SetStateAction<Row[]>>;
+  totals?: ReturnType<typeof calculateTotals>;
   setTotals?: React.Dispatch<
     React.SetStateAction<ReturnType<typeof calculateTotals>>
   >;
   isEditable?: boolean;
+  isTotalsVisible?: boolean;
 };
 
 export default function NewRecipeTable({
   className,
   rows,
   setRows = () => {},
+  totals = calculateTotals(rows),
   setTotals = () => {},
   isEditable = true,
+  isTotalsVisible = true,
 }: NewRecipeTableProops) {
   const [selectedRow, setSelectedRow] = useState<Row | null>(null);
   const [isEditingWeight, setIsEditingWeight] = useState<boolean>(false);
-
+  const [isEditingTotalWeight, setIsEditingTotalWeight] =
+    useState<boolean>(false);
   useEffect(() => {
     setTotals(calculateTotals(rows));
   }, [rows, setTotals]);
@@ -33,6 +43,11 @@ export default function NewRecipeTable({
   const handleEditWeight = (row: Row) => {
     setSelectedRow(row);
     setIsEditingWeight(true);
+  };
+
+  const handleEditTotalWeight = () => {
+    setIsEditingTotalWeight(true);
+    console.log("work");
   };
 
   const handleClose = () => {
@@ -70,7 +85,7 @@ export default function NewRecipeTable({
       <div className={className}>
         <div className="relative w-full overflow-auto">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-muted">
               <NewRecipeTableHeads isEditable={isEditable} />
             </TableHeader>
 
@@ -96,9 +111,33 @@ export default function NewRecipeTable({
                 </TableRow>
               ))}
             </TableBody>
+
+            {/* ----- FOOTER FOR TOTAL WEIGHT ----- */}
+            {isTotalsVisible && rows.length > 0 ? (
+              <TableFooter className="">
+                <TableRow>
+                  <td className="font-bold text-left p-2 " colSpan={2}>
+                    Total Weight:
+                  </td>
+                  <td className="text-center font-medium p-2 " colSpan={2}>
+                    {totals.totalWeight}g
+                  </td>
+                  <td colSpan={4} className="text-right p-2 ">
+                    <button
+                      type="button"
+                      onClick={handleEditTotalWeight}
+                      className="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-3 rounded "
+                    >
+                      Adjust Weight
+                    </button>
+                  </td>
+                </TableRow>
+              </TableFooter>
+            ) : null}
           </Table>
         </div>
       </div>
+
       {/* -----/--- TABLE ----- */}
     </div>
   );

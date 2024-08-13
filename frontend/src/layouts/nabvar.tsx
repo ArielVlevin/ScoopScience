@@ -12,22 +12,17 @@ import NewRecipeDialog from "@/features/recipes/components/newRecipe/newRecipe";
 export default function NavBar() {
   const [activeTab, setActiveTab] = useState<"create" | "discovery">("create");
 
-  const pagesNav = [
-    { name: "New Recipe", href: "/newRecipe" },
-    { name: "Recipes", href: "/recipes" },
-    { name: "Ingredients", href: "/Ingredients" },
-  ];
-
   const createLinks = [
     { name: "New Recipe", href: "/newrecipe" },
     { name: "My Recipes", href: "/myRecipes" },
-    { name: "Drafts", href: "/drafts" },
+    { name: "My Favorites", href: "/favorites" },
   ];
 
   const discoveryLinks = [
     { name: "Explore Recipes", href: "/recipes" },
-    { name: "Top Rated", href: "/topRated" },
-    { name: "Newest", href: "/newest" },
+    { name: "Top Rated(!)", href: "/topRated" },
+    { name: "Newest(!)", href: "/newest" },
+    { name: "Ingredients", href: "/Ingredients" },
   ];
 
   const navLinks = activeTab === "create" ? createLinks : discoveryLinks;

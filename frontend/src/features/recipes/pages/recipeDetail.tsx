@@ -3,7 +3,7 @@ import Page from "@/components/class/page";
 import { Button } from "@/components/ui/button";
 
 import ice_cream_image from "@/assets/ice-cream-back2.jpeg";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useGetRecipe } from "../hooks/useGetRecipe";
 import Loading from "@/pages/loading";
 import ErrorPage from "@/pages/error";
@@ -25,6 +25,8 @@ import {
 } from "@/components/ui";
 
 export default function RecipeDetailPage() {
+  const navigate = useNavigate();
+
   const { user, isAuthenticated, handleFavorite } = useAuth();
 
   const { recipeId } = useParams<{ recipeId: string }>();
@@ -52,6 +54,9 @@ export default function RecipeDetailPage() {
     setIsButtonFilled(!isButtonFilled);
   };
 
+  const goToMakePage = () => {
+    navigate(`/make?id=${recipe._id}`, { state: { recipe } });
+  };
   return (
     <Page>
       <RecipeHeader recipe={recipe} />
@@ -63,8 +68,11 @@ export default function RecipeDetailPage() {
           loading="lazy"
           className="size-full rounded-lg object-cover hover:scale-105 duration-500"
         />
-        <Grid mdcols={1} className="w-full ">
-          <RecipeIngredients recipe={recipe} />
+        <div className="w-full flex flex-col gap-4 ">
+          <RecipeIngredients
+            recipe={recipe}
+            className="min-h-[300px] max-h-[300px]"
+          />
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
@@ -80,6 +88,7 @@ export default function RecipeDetailPage() {
                     className="border rounded-lg border-gray-300 p-2 "
                     rows={recipe.recipeIngredient.ingredients}
                     isEditable={false}
+                    isTotalsVisible={false}
                   />
                 </DialogDescription>
               </DialogHeader>
@@ -88,6 +97,7 @@ export default function RecipeDetailPage() {
               </Button>
             </DialogContent>
           </Dialog>
+
           <Button
             onClick={handleAddToFavorite}
             className={`w-full h-10 ${
@@ -96,7 +106,14 @@ export default function RecipeDetailPage() {
           >
             Save in favorites
           </Button>
-        </Grid>
+
+          <Button
+            onClick={goToMakePage}
+            className="w-full h-10 bg-orange-700 text-white hover:bg-orange-400 hover:scale-105 duration-500"
+          >
+            Make
+          </Button>
+        </div>
       </Grid>
 
       <Recipecharts recipe={recipe} />

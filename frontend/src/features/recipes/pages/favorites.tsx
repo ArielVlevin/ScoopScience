@@ -4,6 +4,7 @@ import Page from "@/components/class/page";
 import Loading from "@/pages/loading";
 import RecipeGrid from "../components/recipeSort/RecipeGrid";
 import ErrorPage from "@/pages/error";
+import ZeroFavorites from "../components/favorites/zeroFavorites";
 
 export default function FavoritesRecipesPage() {
   const { user } = useAuth();
@@ -11,6 +12,8 @@ export default function FavoritesRecipesPage() {
   const { recipes, isLoading, isError, errors } = useGetRecipes(
     user?.favorites || []
   );
+
+  if (user?.favorites.length === 0) return <ZeroFavorites />;
 
   if (isLoading) return <Loading />;
   if (isError && errors) {
@@ -25,7 +28,8 @@ export default function FavoritesRecipesPage() {
   return (
     <Page wide>
       {/* ----Cards----- */}
-      <RecipeGrid recipes={recipes} />
+
+      <RecipeGrid recipes={recipes} isFavoriteCard />
     </Page>
   );
 }

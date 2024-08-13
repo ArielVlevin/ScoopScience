@@ -1,23 +1,26 @@
 import { Card, CardContent } from "@/components/ui/card";
 
-import cardImgExmpl from "@/assets/icecream-example.jpeg";
-import { HeartIcon, StarIcon } from "@/components/icons/icon";
+import { HeartIcon } from "@/components/icons/icon";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Allergies, RecipeKind } from "@/types";
+import { Allergies, Recipe, RecipeKind } from "@/types";
 import { useNavigate } from "react-router-dom";
 import RecipeCardIcons from "./RecipeCardIcons";
 import { useAuth } from "@/contexts/AuthContext";
 
-//TODO:: change to real RecipedData
+import cardImgExmpl from "@/assets/icecream-example.jpeg";
+import { Rating } from "@smastrom/react-rating";
+
 export type cardInfo = {
+  recipe: Recipe;
   _id: number;
   recipeName: string;
   recipeKind: RecipeKind;
   description: string;
   rating: number;
-  isLiked: boolean;
+  ratingVotes: number;
   allergies: Allergies;
+  isFavoriteCard?: boolean;
 };
 
 export type cardsInfo = cardInfo[];
@@ -25,12 +28,15 @@ export type cardsInfo = cardInfo[];
 //TODO:: if liked should add to saved to user favorite
 
 export function RecipeCard({
+  recipe,
   _id,
   recipeName,
   recipeKind,
   description,
   rating,
+  ratingVotes,
   allergies,
+  isFavoriteCard = false,
 }: cardInfo) {
   //
   const { user, isAuthenticated, handleFavorite } = useAuth();
@@ -46,6 +52,10 @@ export function RecipeCard({
     handleFavorite(_id);
 
     setIsHeartFilled(!isHeartFilled);
+  };
+
+  const goToMakePage = () => {
+    navigate(`/make?id=${_id}`, { state: { recipe } });
   };
 
   return (
@@ -69,15 +79,17 @@ export function RecipeCard({
             />
           </button>
         </div>
+
         <CardContent className="p-6">
           <div className="flex justify-between items-center ">
             <h2 className="text-sm font-bold">{recipeKind}</h2>
 
-            <div className="flex items-center">
-              <StarIcon className="text-yellow-500 w-5 h-5 mr-1" />
-              <span className="text-gray-700">{rating.toFixed(1)}</span>
+            <div className="flex ">
+              <Rating style={{ maxWidth: 80 }} value={rating} readOnly />
+              <span className="text-gray-500 text-sm ">({ratingVotes})</span>
             </div>
           </div>
+
           <h1 className="text-3xl font-bold justify-center flex">
             {recipeName}
           </h1>
@@ -85,16 +97,27 @@ export function RecipeCard({
           <p className="text-gray-700 mb-2 justify-center flex">
             {description}
           </p>
+
           <RecipeCardIcons allergies={allergies} />
-          <Button
-            className="w-full"
-            variant="default"
-            onClick={() => {
-              navigate(`/recipes/${_id}`);
-            }}
-          >
-            View Recipe
-          </Button>
+          <div className="flex flex-col gap-2">
+            {isFavoriteCard ? (
+              <Button
+                className="w-full bg-orange-700 hover:bg-orange-500"
+                onClick={goToMakePage}
+              >
+                Make
+              </Button>
+            ) : null}
+            <Button
+              className="w-full"
+              variant="default"
+              onClick={() => {
+                navigate(`/recipes/${_id}`);
+              }}
+            >
+              View Recipe
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

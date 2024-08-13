@@ -12,7 +12,7 @@ export function useAuthCard() {
     email: "",
     password: "",
   });
-  const [activeTab, setActiveTab] = useState("register");
+  const [activeTab, setActiveTab] = useState("");
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({
     username: "",
@@ -73,7 +73,23 @@ export function useAuthCard() {
         navigate("/");
       }
     } catch (err) {
-      alert(err);
+      if (err instanceof Error) {
+        if (err.message === "Your password is incorrect.") {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            password: err.message,
+          }));
+        }
+        if (
+          err.message === "We cannot find an account with that email address."
+        ) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            email: err.message,
+          }));
+        }
+      }
+      return;
     }
   };
 

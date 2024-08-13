@@ -19,7 +19,10 @@ export function NewRecipeTableHeads({ isEditable }: NewRecipeTableHeadsProps) {
   return (
     <TableRow>
       {tableHeader.map((header) => (
-        <TableHead key={header} className="text-center text-foreground">
+        <TableHead
+          key={header}
+          className="text-center text-foreground font-bold"
+        >
           {header}
         </TableHead>
       ))}

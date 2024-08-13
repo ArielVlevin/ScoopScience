@@ -10,6 +10,7 @@ import Logout from "@/auth/components/logout";
 import NewRecipe from "@/features/recipes/components/newRecipe/new";
 
 const HomePage = lazy(() => import("@/pages/homePage"));
+
 const IngredientsPage = lazy(
   () => import("@/features/ingredients/pages/ingredients")
 );
@@ -27,6 +28,7 @@ const RecipesPage = lazy(() => import("@/features/recipes/pages/recipes"));
 const RecipeDetailPage = lazy(
   () => import("@/features/recipes/pages/recipeDetail")
 );
+const MakeRecipePage = lazy(() => import("@/features/recipes/pages/make"));
 
 const FavoritesRecipesPage = lazy(
   () => import("@/features/recipes/pages/favorites")
@@ -97,6 +99,21 @@ const router = createBrowserRouter([
             <NewRecipe />
           </Suspense>
         ),
+      },
+      {
+        path: "make",
+        element: <PrivateRoute />,
+
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <MakeRecipePage />
+              </Suspense>
+            ),
+          },
+        ],
       },
       {
         path: "recipes/:recipeId",

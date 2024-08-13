@@ -7,9 +7,13 @@ import { Recipe } from "@/types";
 
 type RecipeGridProps = {
   recipes: Recipe[];
+  isFavoriteCard?: boolean;
 };
 
-export default function RecipeGrid({ recipes }: RecipeGridProps) {
+export default function RecipeGrid({
+  recipes,
+  isFavoriteCard = false,
+}: RecipeGridProps) {
   const [itemsPerPage, setItemsPerPage] = useState(9);
 
   const handleLoadMore = () => {
@@ -26,13 +30,15 @@ export default function RecipeGrid({ recipes }: RecipeGridProps) {
       <Grid smcols={1} mdcols={2} lgcols={3} gap={8}>
         {displayedRecipes.map((recipe) => (
           <RecipeCard
+            recipe={recipe}
             _id={recipe._id as number}
             recipeName={recipe.recipeData.recipeName}
             recipeKind={recipe.recipeData.recipeKind}
             description={recipe.recipeData.description}
             rating={recipe.recipeRating.ratingValue}
-            isLiked={false}
+            ratingVotes={recipe.recipeRating.ratingAmount}
             allergies={recipe.recipeIngredient.allergies}
+            isFavoriteCard={isFavoriteCard}
           />
         ))}
       </Grid>

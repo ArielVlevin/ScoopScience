@@ -25,21 +25,15 @@ export default function UserDropDownMenu() {
         </Button>
       </DropdownMenuTrigger>
 
-      {isAuthenticated ? (
+      {isAuthenticated && user ? (
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>
-            //todo:repair(do not show username) Hello, {user?.username}
-          </DropdownMenuLabel>
+          <DropdownMenuLabel>Hello {user.username}!</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <Link to="dashboard">
             <DropdownMenuItem>Dashboard</DropdownMenuItem>
           </Link>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>My Recipes</DropdownMenuItem>
-          <DropdownMenuItem>Saved Recipes</DropdownMenuItem>
-          <DropdownMenuSeparator />
+
           <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {

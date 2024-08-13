@@ -51,7 +51,9 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
             handleRating(star);
           }}
         />
-        ({recipe?.recipeRating.ratingAmount})
+        <span className="text-muted-foreground text-sm">
+          ({recipe?.recipeRating.ratingAmount})
+        </span>
       </div>
       <div className="flex justify-center text-muted-foreground mb-4">
         {recipe?.recipeData.description}

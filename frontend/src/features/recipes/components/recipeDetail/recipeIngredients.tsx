@@ -1,7 +1,9 @@
 import Grid from "@/components/class/grid";
 import { IngredientWithWeight, Recipe } from "@/types";
+import { cn } from "@/utils/cn";
 
 type RecipeIngredientsProps = {
+  className?: string;
   recipe: Recipe;
 };
 
@@ -28,11 +30,19 @@ const categories = [
   { title: "Other Ingredients", filter: "other" },
 ];
 
-export default function RecipeIngredients({ recipe }: RecipeIngredientsProps) {
+export default function RecipeIngredients({
+  className,
+  recipe,
+}: RecipeIngredientsProps) {
   const ingredientsArray = recipe.recipeIngredient.ingredients;
 
   return (
-    <div className="bg-muted rounded-lg p-6 hover:scale-105 duration-500">
+    <div
+      className={cn(
+        "bg-muted rounded-lg p-6 hover:scale-105 duration-500",
+        className
+      )}
+    >
       <h2 className="text-xl font-bold mb-4">Ingredients</h2>
       <Grid mdcols={2} gap={8} className="w-full">
         {categories.map(({ title, filter }) => {
