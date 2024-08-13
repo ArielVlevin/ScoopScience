@@ -13,8 +13,6 @@ app.use(corsMiddleware);
 
 app.use(express.json());
 
-app.use(errorHandler);
-
 setupStaticFiles(app);
 
 //
@@ -22,6 +20,8 @@ app.use("/api", apiRouter);
 
 // Connect to MongoDB
 connectDB();
+
+app.use(errorHandler);
 
 // Handle exit events
 exitHandler();

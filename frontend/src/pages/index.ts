@@ -3,7 +3,7 @@ export * from "./error.tsx";
 export * from "./contact.tsx";
 export * from "./loading.tsx";
 
-export * from "../features/auth/pages/auth.tsx";
+export * from "../auth/pages/auth.tsx";
 
 export * from "../features/ingredients/pages/ingredients.tsx";
 export * from "../features/ingredients/pages/ingredientDetails.tsx";

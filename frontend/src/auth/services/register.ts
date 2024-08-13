@@ -12,7 +12,10 @@ export async function register(
       password,
     });
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response) {
+      throw error.response.data.message;
+    }
     console.error("Error registering user:", error);
     throw error;
   }

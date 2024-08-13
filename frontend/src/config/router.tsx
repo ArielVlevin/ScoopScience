@@ -2,11 +2,11 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import ErrorPage from "@/pages/error";
-import AuthPage from "@/features/auth/pages/auth";
+import AuthPage from "@/auth/pages/auth";
 import Loading from "@/pages/loading";
 import PrivateRoute from "@/config/privateRoute";
-import DashBoard from "@/features/auth/components/dashboard";
-import Logout from "@/features/auth/components/logout";
+import DashBoard from "@/auth/components/dashboard";
+import Logout from "@/auth/components/logout";
 import NewRecipe from "@/features/recipes/components/newRecipe/new";
 
 const HomePage = lazy(() => import("@/pages/homePage"));
@@ -27,10 +27,14 @@ const RecipesPage = lazy(() => import("@/features/recipes/pages/recipes"));
 const RecipeDetailPage = lazy(
   () => import("@/features/recipes/pages/recipeDetail")
 );
+
+const FavoritesRecipesPage = lazy(
+  () => import("@/features/recipes/pages/favorites")
+);
 const LandingPage = lazy(() => import("@/features/recipes/pages/landingPage"));
 const ContactUs = lazy(() => import("@/pages/contact"));
-const Login = lazy(() => import("@/features/auth/pages/login"));
-const Register = lazy(() => import("@/features/auth/pages/register"));
+const Login = lazy(() => import("@/auth/pages/login"));
+const Register = lazy(() => import("@/auth/pages/register"));
 
 const router = createBrowserRouter([
   {
@@ -111,6 +115,21 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "favorites",
+        element: <PrivateRoute />,
+
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <FavoritesRecipesPage />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
         path: "contact",
         element: (
           <Suspense fallback={<Loading />}>
@@ -161,11 +180,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: (
-      <PrivateRoute>
-        <DashBoard />
-      </PrivateRoute>
-    ),
+    element: <PrivateRoute />,
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <DashBoard />
+          </Suspense>
+        ),
+      },
+    ],
   },
 ]);
 

@@ -1,5 +1,25 @@
 export default function errorHandler(error, req, res, next) {
-  console.error("Error:", error);
+  console.error("Error handler:\nCatched error:", error);
+
+  if (error.message === "Email is already in use") {
+    return res.status(409).json({ message: error.message });
+  }
+
+  if (error.message === "Username is already in use") {
+    return res.status(409).json({ message: error.message });
+  }
+
+  if (error.message === "We cannot find an account with that email address") {
+    return res
+      .status(404)
+      .json({ message: "User Not Found", details: error.message });
+  }
+
+  if (error.message === "Your password is incorrect") {
+    return res
+      .status(401)
+      .json({ message: "Authentication Failed", details: error.message });
+  }
 
   if (error.name === "ValidationError") {
     return res
@@ -41,6 +61,7 @@ export default function errorHandler(error, req, res, next) {
       .status(400)
       .json({ message: "JSON Syntax Error", details: error.message });
   }
+
   res
     .status(500)
     .json({ message: "Internal Server Error", details: error.message });

@@ -6,11 +6,7 @@ import React, {
   useContext,
 } from "react";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import {
-  register,
-  login,
-  logout as logoutUser,
-} from "@/features/auth/services/index.ts";
+import { register, login, logout as logoutUser } from "@/auth/services";
 import { deleteData, postData } from "@/services/apiFunctions";
 
 interface User extends JwtPayload {
@@ -45,10 +41,12 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  //useStates
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
+  //
   const handleRegister = async (
     username: string,
     email: string,
@@ -59,6 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await handleLogin(email, password);
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 
@@ -66,13 +65,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const data = await login(email, password);
       const decodedUser = jwtDecode<User>(data.token);
+
       setUser(decodedUser);
+
       localStorage.setItem("user", JSON.stringify(decodedUser));
       localStorage.setItem("token", data.token);
 
       setIsAuthenticated(true);
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 
@@ -83,6 +85,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
   };
+
+  /*
+   *
+   *
+   * Favorites
+   *
+   *
+   * */
+
+  const handleFavorite = (recipe_id: number) => {
+    if (!user || !recipe_id) return;
+
+    if (user.favorites.includes(recipe_id)) {
+      removeFavorite(recipe_id);
+    } else {
+      addFavorite(recipe_id);
+    }
+    return user.favorites.includes(recipe_id);
+  };
+
+  /*
+   *
+   * add Favorite
+   *
+   * */
 
   const addFavorite = async (recipe_id: number) => {
     if (!user || !recipe_id) return;
@@ -104,6 +131,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  /*
+   *
+   * remove Favorite
+   *
+   * */
+
   const removeFavorite = async (recipe_id: number) => {
     if (!user || !recipe_id) return;
 
@@ -124,24 +157,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.error("Failed to delete recipe from favorites:", error);
     }
   };
-
-  const handleFavorite = (recipe_id: number) => {
-    if (!user || !recipe_id) return;
-
-    if (user.favorites.includes(recipe_id)) {
-      removeFavorite(recipe_id);
-    } else {
-      addFavorite(recipe_id);
-    }
-    return user.favorites.includes(recipe_id);
-  };
+  /*
+   *
+   *
+   * End Favorites
+   *
+   *
+   * */
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
 
     if (token && storedUser) {
-      setUser(JSON.parse(storedUser)); // Load user from local storage
+      setUser(JSON.parse(storedUser));
       setIsAuthenticated(true);
     }
     setLoading(false);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Recipe } from "@/types";
 import { Rating } from "@smastrom/react-rating";

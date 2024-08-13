@@ -1,4 +1,3 @@
-import User from "../models/User.js";
 import * as authService from "../services/authService.js";
 
 export const register = async (req, res, next) => {

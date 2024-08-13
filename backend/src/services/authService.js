@@ -8,6 +8,18 @@ const getLastUserID = async () => {
   return lastUser ? lastUser._id : 70000;
 };
 export const register = async ({ username, email, password }) => {
+  const existingUser = await User.findOne({
+    $or: [{ email }, { username }],
+  });
+
+  if (existingUser) {
+    if (existingUser.email === email) {
+      throw new Error("Email is already in use");
+    }
+    if (existingUser.username === username) {
+      throw new Error("Username is already in use");
+    }
+  }
   const newID = (await getLastUserID()) + 1;
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = new User({
@@ -24,16 +36,15 @@ export const register = async ({ username, email, password }) => {
 export const login = async ({ email, password }) => {
   console.log("email: ", email, " password: ", password);
   const user = await User.findOne({ email });
-  if (!user) {
-    throw new Error("Invalid credentials");
-  }
 
+  if (!user) {
+    throw new Error("We cannot find an account with that email address");
+  }
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Error("Invalid credentials");
+    throw new Error("Your password is incorrect");
   }
-
   const token = jwt.sign(
     {
       _id: user._id,

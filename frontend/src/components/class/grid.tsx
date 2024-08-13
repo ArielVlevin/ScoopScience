@@ -12,14 +12,15 @@ interface GridProps {
 
 const Grid = ({
   children,
-  className,
+  className = "",
   smcols,
-  mdcols,
+  mdcols = 1,
   lgcols,
-  gap,
+  gap = 4,
 }: GridProps) => {
   const smCols = smcols ?? mdcols;
   const lgCols = lgcols ?? mdcols;
+
   return (
     <div
       className={cn(
@@ -30,14 +31,6 @@ const Grid = ({
       {children}
     </div>
   );
-};
-
-Grid.defaultProps = {
-  className: "",
-  mdcols: 1,
-  smcols: undefined,
-  lgcols: undefined,
-  gap: 4,
 };
 
 export default Grid;

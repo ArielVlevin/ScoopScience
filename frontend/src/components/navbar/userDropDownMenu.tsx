@@ -41,7 +41,14 @@ export default function UserDropDownMenu() {
           <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => logout()}>Logout</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              logout();
+              navigate("/auth");
+            }}
+          >
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       ) : (
         <DropdownMenuContent align="end">

@@ -1,17 +1,24 @@
+import { useQueries } from "@tanstack/react-query";
 import { fetchData } from "@/services/apiFunctions";
 import { Recipe } from "@/types";
-import { useQuery } from "@tanstack/react-query";
 
-export function useGetRecipes() {
-  const recipesQuary = useQuery({
-    queryKey: ["recipesArrayTotal"],
-    queryFn: () => fetchData<Recipe[]>("/recipes/recipesArray"),
+export function useGetRecipes(ids: number[]) {
+  const queries = useQueries<Recipe[]>({
+    queries: ids.map((_id) => ({
+      queryKey: ["recipe", _id],
+      queryFn: () => fetchData<Recipe>(`/recipes/id/${_id}`),
+      enabled: _id > 0,
+    })),
   });
 
+  const isLoading = queries.some((query) => query.isLoading);
+  const isError = queries.some((query) => query.isError);
+  const recipes = queries.map((query) => query.data) as Recipe[];
+
   return {
-    recipes: recipesQuary.data ?? [],
-    isLoading: recipesQuary.isLoading,
-    isError: recipesQuary.isError,
-    error: recipesQuary.error,
+    recipes: recipes ?? ([] as Recipe[]),
+    isLoading,
+    isError,
+    errors: queries.map((query) => query.error),
   };
 }

@@ -2,15 +2,14 @@ import { fetchData } from "@/services/apiFunctions";
 import { Recipe } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
-export function useGetRecipe(_id: number) {
+export function useGetAllRecipes() {
   const recipesQuary = useQuery({
-    queryKey: ["recipe", _id],
-    queryFn: () => fetchData<Recipe>(`/recipes/id/${_id}`),
-    enabled: !!_id && _id > 0,
+    queryKey: ["recipesArrayTotal"],
+    queryFn: () => fetchData<Recipe[]>("/recipes/recipesArray"),
   });
 
   return {
-    recipe: recipesQuary.data ?? ({} as Recipe),
+    recipes: recipesQuary.data ?? [],
     isLoading: recipesQuary.isLoading,
     isError: recipesQuary.isError,
     error: recipesQuary.error,
