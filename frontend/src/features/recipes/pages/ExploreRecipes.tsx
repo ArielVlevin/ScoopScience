@@ -2,10 +2,10 @@ import Page from "@/components/class/page";
 import Loading from "@/pages/loading";
 import ErrorPage from "@/pages/error";
 import SortRecipesBar from "../components/recipeSort/sortRecipesBar";
-import RecipeGrid from "../components/recipeSort/RecipeGrid";
+import RecipeGrid from "../components/recipeCard/RecipeGrid";
 import { useGetAllRecipes } from "../hooks/useGetAllRecipes";
 
-export default function RecipesPage() {
+export default function ExploreRecipesPage() {
   const { recipes, isLoading, isError, error } = useGetAllRecipes();
 
   if (isLoading) return <Loading />;

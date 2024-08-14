@@ -55,11 +55,11 @@ export const getAllIngredients = async (req, res, next) => {
     const ingredients = await Ingredient.find({});
 
     const ingredientsByCategory = ingredients.reduce((acc, ingredient) => {
-      const { category, id, name } = ingredient;
+      const { category, _id, name } = ingredient;
       if (!acc[category]) {
         acc[category] = [];
       }
-      acc[category].push({ id, name });
+      acc[category].push({ _id, name });
       return acc;
     }, {});
 

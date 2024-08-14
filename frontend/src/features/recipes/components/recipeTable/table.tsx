@@ -11,6 +11,7 @@ import NewRecipeTableCells, { NewRecipeTableHeads } from "./tableSetUp";
 import { roundToTwoDecimalPlaces } from "@/utils/math";
 import calculateTotals from "@/features/recipes/utils/calculateTotals";
 import EditWeightDialog from "./editWeight";
+import EditTotalWeight from "./editTotalWeight";
 type NewRecipeTableProops = {
   className?: string;
   rows: Row[];
@@ -47,7 +48,9 @@ export default function NewRecipeTable({
 
   const handleEditTotalWeight = () => {
     setIsEditingTotalWeight(true);
-    console.log("work");
+  };
+  const handleCloseTotalWeight = () => {
+    setIsEditingTotalWeight(false);
   };
 
   const handleClose = () => {
@@ -123,6 +126,14 @@ export default function NewRecipeTable({
                     {totals.totalWeight}g
                   </td>
                   <td colSpan={4} className="text-right p-2 ">
+                    <EditTotalWeight
+                      isOpen={isEditingTotalWeight}
+                      onClose={handleCloseTotalWeight}
+                      rows={rows}
+                      setRows={setRows}
+                      totals={totals}
+                      setTotals={setTotals}
+                    />
                     <button
                       type="button"
                       onClick={handleEditTotalWeight}

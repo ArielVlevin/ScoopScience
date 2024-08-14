@@ -1,12 +1,17 @@
 import api from "@/config/api";
 import { Recipe } from "@/types";
 
-export async function postRecipe(data: Recipe, photo: File | null) {
+export async function postRecipe(
+  data: Recipe,
+  photo: File | null,
+  user_id: string
+) {
   const formData = new FormData();
 
   formData.append("recipeData", JSON.stringify(data.recipeData));
   formData.append("recipeRating", JSON.stringify(data.recipeRating));
   formData.append("recipeIngredient", JSON.stringify(data.recipeIngredient));
+  formData.append("user_id", user_id);
 
   if (photo) {
     formData.append("photo", photo);

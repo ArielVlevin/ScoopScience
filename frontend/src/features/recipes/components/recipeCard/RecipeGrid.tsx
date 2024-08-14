@@ -8,11 +8,15 @@ import { Recipe } from "@/types";
 type RecipeGridProps = {
   recipes: Recipe[];
   isFavoriteCard?: boolean;
+  isShowRecipeFound?: boolean;
+  className?: string;
 };
 
 export default function RecipeGrid({
   recipes,
   isFavoriteCard = false,
+  isShowRecipeFound = true,
+  className,
 }: RecipeGridProps) {
   const [itemsPerPage, setItemsPerPage] = useState(9);
 
@@ -22,22 +26,18 @@ export default function RecipeGrid({
 
   const displayedRecipes = recipes.slice(0, itemsPerPage);
   return (
-    <Page>
-      <p className="text-sm text-muted-foreground mb-4 text-center">
-        {recipes.length} recipes found
-      </p>
+    <Page className={className}>
+      {isShowRecipeFound && (
+        <p className="text-sm text-muted-foreground mb-4 text-center">
+          {recipes.length} recipes found
+        </p>
+      )}
 
       <Grid smcols={1} mdcols={2} lgcols={3} gap={8}>
         {displayedRecipes.map((recipe) => (
           <RecipeCard
+            key={recipe._id}
             recipe={recipe}
-            _id={recipe._id as number}
-            recipeName={recipe.recipeData.recipeName}
-            recipeKind={recipe.recipeData.recipeKind}
-            description={recipe.recipeData.description}
-            rating={recipe.recipeRating.ratingValue}
-            ratingVotes={recipe.recipeRating.ratingAmount}
-            allergies={recipe.recipeIngredient.allergies}
             isFavoriteCard={isFavoriteCard}
           />
         ))}

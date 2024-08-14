@@ -32,6 +32,7 @@ export function useRecipeForm(
   //
   const [formData, setFormData] = useState({
     name: "",
+    user_id: "",
     description: "",
     recipeKind: initialRecipeKind,
     instructions: "",
@@ -47,6 +48,10 @@ export function useRecipeForm(
   const { recipes, isLoading, isError, error, refetch } = useGetRecipesByKind(
     formData.recipeKind
   );
+
+  const setUserId = (user_id: string) => {
+    setFormData((prevData) => ({ ...prevData, user_id }));
+  };
 
   useEffect(() => {
     refetch();
@@ -186,7 +191,11 @@ export function useRecipeForm(
     };
 
     try {
-      const answer = await postRecipe(newRecipe, selectedFile);
+      const answer = await postRecipe(
+        newRecipe,
+        selectedFile,
+        formData.user_id
+      );
       navigate(`/recipes/${answer._id}`);
     } catch (error) {
       console.error("Error posting recipe:", error);
@@ -199,6 +208,7 @@ export function useRecipeForm(
     isAdditionalSelectVisible,
     isOpen,
     setIsOpen,
+    setUserId,
     setIsAdditionalSelectVisible,
     currentStep,
     handleNext,

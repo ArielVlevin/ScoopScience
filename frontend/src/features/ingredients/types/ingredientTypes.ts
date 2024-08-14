@@ -32,5 +32,5 @@ export type IngredientWithWeight = Ingredient & {
 export type Row = IngredientWithWeight;
 
 export type IngredientsArray = {
-  [key: string]: { id: string; name: string }[];
+  [key: string]: { _id: string; name: string }[];
 };

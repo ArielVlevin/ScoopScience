@@ -6,6 +6,9 @@ import Loading from "@/pages/loading";
 import RecipeHeader from "../components/recipeDetail/recipeHeader";
 import NewRecipeTable from "../components/recipeTable/table";
 import RecipeInstructions from "../components/recipeDetail/recipeInstructions";
+import { Row, Totals } from "@/types";
+import { useEffect, useState } from "react";
+import calculateTotals from "../utils/calculateTotals";
 
 export default function MakeRecipePage() {
   //
@@ -14,7 +17,21 @@ export default function MakeRecipePage() {
   const recipeId = searchParams.get("id");
   const recipe_id = parseInt(recipeId!, 10);
 
+  const [tempoRows, setTempoRows] = useState<Row[]>([]);
+  const [tempoTotals, setTempoTotals] = useState<Totals>(calculateTotals([]));
+
   const { recipe, isLoading, isError, error } = useGetRecipe(recipe_id);
+
+  useEffect(() => {
+    if (
+      recipe &&
+      recipe.recipeIngredient &&
+      recipe.recipeIngredient.ingredients
+    ) {
+      setTempoRows(recipe.recipeIngredient.ingredients);
+      setTempoTotals(calculateTotals(recipe.recipeIngredient.ingredients));
+    }
+  }, [recipe]);
 
   if (isNaN(recipe_id)) return <ErrorPage error="Invalid Recipe ID" />;
   if (isLoading) return <Loading />;
@@ -23,11 +40,16 @@ export default function MakeRecipePage() {
   return (
     <Page>
       <RecipeHeader recipe={recipe} />
+
       <NewRecipeTable
         className="border rounded-lg border-gray-300 mt-8 mb-8 "
-        rows={recipe.recipeIngredient.ingredients}
+        rows={tempoRows}
+        setRows={setTempoRows}
+        totals={tempoTotals}
+        setTotals={setTempoTotals}
         isEditable={false}
       />
+
       <RecipeInstructions recipe={recipe} />
     </Page>
   );

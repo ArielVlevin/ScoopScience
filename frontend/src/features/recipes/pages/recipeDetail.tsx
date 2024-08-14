@@ -2,7 +2,6 @@ import Grid from "@/components/class/grid";
 import Page from "@/components/class/page";
 import { Button } from "@/components/ui/button";
 
-import ice_cream_image from "@/assets/ice-cream-back2.jpeg";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetRecipe } from "../hooks/useGetRecipe";
 import Loading from "@/pages/loading";
@@ -63,7 +62,7 @@ export default function RecipeDetailPage() {
 
       <Grid mdcols={2} gap={6} className="w-full mb-6">
         <img
-          src={ice_cream_image} //TODO:change to real img
+          src={`http://localhost:3000${recipe.recipeData.photo}`}
           alt="Creamy Vanilla Ice Cream"
           loading="lazy"
           className="size-full rounded-lg object-cover hover:scale-105 duration-500"

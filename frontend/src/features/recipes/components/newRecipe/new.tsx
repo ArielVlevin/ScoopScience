@@ -11,25 +11,22 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { typeOptions } from "@/types";
-import { useLocation } from "react-router-dom";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
 import Grid from "@/components/class/grid";
 import { Checkbox } from "@/components/ui";
 import TotalsCard from "./totalsCard";
-import { useState } from "react";
-import BulletChart from "@/components/chart/bulletChart";
+import { useEffect, useState } from "react";
 import AddIngredientToTable from "../recipeTable/AddIngredientToTable";
 import NewRecipeTable from "../recipeTable/table";
 import RecipeBulletCharts from "../recipeBulletChart";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function NewRecipe() {
-  //
-  const location = useLocation();
-  const BASERECIPE = location.state || undefined;
   const {
     recipes,
     isAdditionalSelectVisible,
     setIsAdditionalSelectVisible,
+    setUserId,
     currentStep,
     handleNext,
     handleBack,
@@ -44,12 +41,15 @@ export default function NewRecipe() {
     setRows,
     totals,
     setTotals,
-  } = useRecipeForm(BASERECIPE);
+  } = useRecipeForm();
 
-  //
   //
   const [isAddingIngredient, setIsAddingIngredient] = useState<boolean>(false);
 
+  const { user, isAuthenticated } = useAuth();
+  useEffect(() => {
+    if (isAuthenticated && user) setUserId(user._id);
+  }, [isAuthenticated]);
   return (
     <>
       {/* Step 1 */}

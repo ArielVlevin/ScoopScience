@@ -4,6 +4,14 @@ import Loading from "@/pages/loading.tsx";
 import ErrorPage from "@/pages/error.tsx";
 import Page from "@/components/class/page";
 import { useGetIngredientsArray } from "../hooks/useGetIngredientArray";
+import { MilkIcon, NutIcon } from "@/components/icons/icon";
+import Grid from "@/components/class/grid";
+import {
+  CandyIcon,
+  CircleEllipsisIcon,
+  CitrusIcon,
+  DropletIcon,
+} from "lucide-react";
 
 export default function IngredientsPage() {
   const { ingredientsByCategory, isLoading, isError, error } =
@@ -14,40 +22,51 @@ export default function IngredientsPage() {
 
   return (
     <Page>
-      <div className="grid gap-12">
+      <div className="grid gap-10">
         {Object.keys(ingredientsByCategory).map((category) => (
-          <div key={category} className="grid gap-6">
-            <div>
+          <div key={category}>
+            <div className="m-6 ml-6 mb-8">
               <h2 className="text-2xl font-bold capitalize">{category}</h2>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 h-60">
+            <Grid mdcols={4} gap={2}>
               {ingredientsByCategory[category].map((ingredient) => (
-                <Link
-                  to={`/ingredients/${ingredient.id}`}
-                  key={ingredient.id}
-                  className="group"
-                >
-                  <div className="bg-muted rounded-lg overflow-hidden h-60 ">
-                    <img
-                      loading="lazy"
-                      src={`http://localhost:3000/assets/ingredients/${ingredient.id}.jpeg`}
-                      alt={ingredient.name}
-                      className="w-full h-full object-cover"
-                    />
+                <div className="group flex flex-col items-center size-48">
+                  <div className="binline-block rounded-full bg-muted p-4 ">
+                    {category === "dairy" ? (
+                      <MilkIcon className="size-24 text-blue-300" />
+                    ) : category === "sugars" ? (
+                      <CandyIcon className="size-24 text-blue-300" />
+                    ) : category === "stabilizer" ? (
+                      <CandyIcon className="size-24 text-blue-300" />
+                    ) : category === "fruits" ? (
+                      <CitrusIcon className="size-24 text-blue-300" />
+                    ) : category === "nuts" ? (
+                      <NutIcon className="size-24 text-blue-300" />
+                    ) : category === "liquid" ? (
+                      <DropletIcon className="size-24 text-blue-300" />
+                    ) : (
+                      <CircleEllipsisIcon className="size-24 text-blue-300" />
+                    )}
                   </div>
-                  <div className="mt-2 text-center">
-                    <h3 className="text-lg font-medium group-hover:text-primary transition-colors">
-                      {ingredient.name}
-                    </h3>
-                  </div>
-                </Link>
+                  <Link
+                    to={`/ingredients/${ingredient._id}`}
+                    key={ingredient._id}
+                  >
+                    <div className="mt-2 text-center">
+                      <h3 className="text-lg font-medium group-hover:text-primary transition-colors hover:underline">
+                        {ingredient.name}
+                      </h3>
+                    </div>
+                  </Link>
+                </div>
               ))}
-            </div>
+            </Grid>
             <Link
+              className="w-full"
               to={`/IngredientsCategory/${category}`}
               state={{ ingredients: ingredientsByCategory[category] }}
             >
-              <Button variant="outline" className="w-full mt-4">
+              <Button variant="outline" className="w-full mt-8">
                 See More {category}
               </Button>
             </Link>

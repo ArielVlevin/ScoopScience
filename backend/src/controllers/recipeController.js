@@ -8,15 +8,19 @@ const getLastRecipeID = async () => {
 export const createRecipe = async (req, res, next) => {
   try {
     const new_id = (await getLastRecipeID()) + 1;
+    const { user_id } = req.body;
 
     const data = JSON.parse(req.body.recipeData);
     const recipeRating = JSON.parse(req.body.recipeRating);
     const recipeIngredient = JSON.parse(req.body.recipeIngredient);
 
-    const photoPath = req.file ? req.file.path : null;
+    const photoPath = req.file
+      ? `/assets/${req.file.path.split("/assets/")[1]}`
+      : null;
 
     const newRecipeData = {
       _id: new_id,
+      user_id,
       recipeData: {
         ...data,
         photo: photoPath,
@@ -35,7 +39,8 @@ export const createRecipe = async (req, res, next) => {
       newRecipe._id,
       ", name:",
       newRecipe.recipeData.recipeName,
-      "\n"
+      ", user_id:",
+      newRecipe.user_id
     );
   } catch (error) {
     next(error);

@@ -2,7 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useGetRecipes } from "../hooks/useGetRecipes";
 import Page from "@/components/class/page";
 import Loading from "@/pages/loading";
-import RecipeGrid from "../components/recipeSort/RecipeGrid";
+import RecipeGrid from "../components/recipeCard/RecipeGrid";
 import ErrorPage from "@/pages/error";
 import ZeroFavorites from "../components/favorites/zeroFavorites";
 

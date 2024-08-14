@@ -25,15 +25,15 @@ import { useRecipeForm } from "../../hooks/useRecipeForm";
 import Grid from "@/components/class/grid";
 import { Checkbox } from "@/components/ui";
 import TotalsCard from "./totalsCard";
-import { calculateAndRound } from "../../utils/calculateAndRound";
-import { useState } from "react";
-import BulletChart from "@/components/chart/bulletChart";
+import { useEffect, useState } from "react";
 import AddIngredientToTable from "../recipeTable/AddIngredientToTable";
 import NewRecipeTable from "../recipeTable/table";
 import RecipeBulletCharts from "../recipeBulletChart";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function NewRecipeDialog() {
   //
+
   const location = useLocation();
   const BASERECIPE = location.state || undefined;
   const {
@@ -41,6 +41,7 @@ export default function NewRecipeDialog() {
     isOpen,
     isAdditionalSelectVisible,
     setIsOpen,
+    setUserId,
     setIsAdditionalSelectVisible,
     currentStep,
     handleNext,
@@ -57,47 +58,15 @@ export default function NewRecipeDialog() {
     totals,
     setTotals,
   } = useRecipeForm(BASERECIPE);
-  const handleSaveEditTotalWeight = () => {
-    if (newTotalWeight >= 1) {
-      setRows(
-        rows.map((row) => ({
-          ...row,
-          weight: calculateAndRound(
-            row.weight,
-            totals.totalWeight,
-            newTotalWeight
-          ),
-          calories: calculateAndRound(
-            row.calories,
-            totals.totalWeight,
-            newTotalWeight
-          ),
-          sugar: calculateAndRound(
-            row.sugar,
-            totals.totalWeight,
-            newTotalWeight
-          ),
-          fat: calculateAndRound(row.fat, totals.totalWeight, newTotalWeight),
-          protein: calculateAndRound(
-            row.protein,
-            totals.totalWeight,
-            newTotalWeight
-          ),
-          msnf: calculateAndRound(row.msnf, totals.totalWeight, newTotalWeight),
-        }))
-      );
-      setEditTotalWeight(false);
-    } else alert("Please enter a valid value greater than 0 grams");
-  };
-  const [newTotalWeight, setNewTotalWeight] = useState<number>(
-    totals.totalWeight
-  );
-  const [editTotalWeight, setEditTotalWeight] = useState<boolean>(false);
 
   //
   //
   const [isAddingIngredient, setIsAddingIngredient] = useState<boolean>(false);
 
+  const { user, isAuthenticated } = useAuth();
+  useEffect(() => {
+    if (isAuthenticated && user) setUserId(user._id);
+  }, [isAuthenticated]);
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>Create New Recipe</Button>

@@ -117,7 +117,7 @@ function AddIngredientToTable({
                 </SelectTrigger>
                 <SelectContent>
                   {ingredientsByCategory[category].map((ingredient, index) => (
-                    <SelectItem key={index} value={ingredient.id}>
+                    <SelectItem key={index} value={ingredient._id}>
                       {ingredient.name}
                     </SelectItem>
                   ))}

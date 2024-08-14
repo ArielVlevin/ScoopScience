@@ -1,12 +1,20 @@
 import Page from "@/components/class/page";
+import { MilkIcon } from "@/components/icons/icon";
 import ErrorPage from "@/pages/error";
 import { Ingredient } from "@/types";
+import {
+  CandyIcon,
+  CircleEllipsisIcon,
+  CitrusIcon,
+  DropletIcon,
+  NutIcon,
+} from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
 
 export default function IngredientsCategoryPage() {
   const { category } = useParams();
   const location = useLocation();
-  const ingredients = (location.state?.ingredients as Ingredient[]) || []; // call the fetch function again
+  const ingredients = (location.state?.ingredients as Ingredient[]) || [];
 
   if (!ingredients.length) {
     return <ErrorPage error="No ingredients found." />;
@@ -19,21 +27,30 @@ export default function IngredientsCategoryPage() {
         {ingredients.map((ingredient) => (
           <div
             key={ingredient._id}
-            className="bg-muted rounded-lg overflow-hidden"
+            className="group flex flex-col items-center size-48"
           >
-            <Link
-              to={`/ingredients/${ingredient._id}`}
-              key={ingredient._id}
-              className="group"
-            >
-              <img
-                loading="lazy"
-                src={`http://localhost:3000/assets/ingredients/${ingredient._id}.jpeg`}
-                alt={ingredient.name}
-                className="w-full h-64 object-cover"
-              />
+            <div className="binline-block rounded-full bg-muted p-4 ">
+              {category === "dairy" ? (
+                <MilkIcon className="size-24 text-blue-300" />
+              ) : category === "sugars" ? (
+                <CandyIcon className="size-24 text-blue-300" />
+              ) : category === "stabilizer" ? (
+                <CandyIcon className="size-24 text-blue-300" />
+              ) : category === "fruits" ? (
+                <CitrusIcon className="size-24 text-blue-300" />
+              ) : category === "nuts" ? (
+                <NutIcon className="size-24 text-blue-300" />
+              ) : category === "liquid" ? (
+                <DropletIcon className="size-24 text-blue-300" />
+              ) : (
+                <CircleEllipsisIcon className="size-24 text-blue-300" />
+              )}
+            </div>
+            <Link to={`/ingredients/${ingredient._id}`} key={ingredient._id}>
               <div className="mt-2 text-center">
-                <h3 className="text-lg font-medium">{ingredient.name}</h3>
+                <h3 className="text-lg font-medium group-hover:text-primary transition-colors hover:underline">
+                  {ingredient.name}
+                </h3>
               </div>
             </Link>
           </div>

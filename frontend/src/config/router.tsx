@@ -23,7 +23,9 @@ const IngredientDetailPage = lazy(
 const IngredientsCategoryPage = lazy(
   () => import("@/features/ingredients/pages/IngredientsCategories")
 );
-const RecipesPage = lazy(() => import("@/features/recipes/pages/recipes"));
+const RecipesPage = lazy(
+  () => import("@/features/recipes/pages/ExploreRecipes")
+);
 
 const RecipeDetailPage = lazy(
   () => import("@/features/recipes/pages/recipeDetail")

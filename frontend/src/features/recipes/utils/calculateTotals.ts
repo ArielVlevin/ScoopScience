@@ -1,10 +1,11 @@
 import { Row } from "@/types";
 import { Totals } from "../types/totalsTypes";
+import { roundToTwoDecimalPlaces } from "@/utils/math";
 
 export default function calculateTotals(rows: Row[]): Totals {
   let totalWeight = 0;
   let totalFat = 0;
-  let totalSol = 0;
+  let totalSolidsWeight = 0;
   let totalCalories = 0;
   let totalSugar = 0;
   let totalMSNF = 0;
@@ -19,22 +20,24 @@ export default function calculateTotals(rows: Row[]): Totals {
 
     totalWeight += weight;
     totalFat += fat;
-    totalSol += solidsPercentage;
+    totalSolidsWeight += (solidsPercentage * weight) / 100;
     totalCalories += calories * (weight / 100);
-    totalSugar += sugars;
+    totalSugar += sugars * (weight / 100);
     totalMSNF += (msnf * weight) / 100;
   });
 
-  //maybe need changes
-  return {
-    totalWeight,
-    totalFat,
-    totalCalories,
-    totalSugar,
-    totalMsnf: totalMSNF,
-    totalSolidPercentage: totalSol,
+  const totalFatPercentage = (totalFat / totalWeight) * 100;
+  const totalSugarPercentage = (totalSugar / totalWeight) * 100;
+  const totalSolidPercentage = (totalSolidsWeight / totalWeight) * 100;
 
-    totalFatPercentage: (totalFat / totalWeight) * 100,
-    totalSugarPercentage: (totalSugar / totalWeight) * 100,
+  return {
+    totalWeight: roundToTwoDecimalPlaces(totalWeight),
+    totalFat: roundToTwoDecimalPlaces(totalFat),
+    totalCalories: roundToTwoDecimalPlaces(totalCalories),
+    totalSugar: roundToTwoDecimalPlaces(totalSugar),
+    totalMsnf: roundToTwoDecimalPlaces(totalMSNF),
+    totalSolidPercentage: roundToTwoDecimalPlaces(totalSolidPercentage),
+    totalFatPercentage: roundToTwoDecimalPlaces(totalFatPercentage),
+    totalSugarPercentage: roundToTwoDecimalPlaces(totalSugarPercentage),
   };
 }
