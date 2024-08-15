@@ -4,35 +4,36 @@ import calculateTotals from "../utils/calculateTotals";
 import { postRecipe } from "@/features/recipes/services/postRecipe";
 import { useGetRecipesByKind } from "./useGetRecipesByKind";
 import { useNavigate } from "react-router-dom";
-import { calculateAndRound } from "../utils/calculateAndRound";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"
 ) {
+  const { user, isAuthenticated, setRecipeID } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated && user) setUserId(user._id);
+  }, [isAuthenticated]);
+
   const navigate = useNavigate();
+
+  const [userId, setUserId] = useState("");
+
   const [rows, setRows] = useState<Row[]>([]);
+
   const [totals, setTotals] = useState<Totals>(calculateTotals(rows));
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   const [isOpen, setIsOpen] = useState(false);
+
   const [currentStep, setCurrentStep] = useState(1);
+
   const [isAdditionalSelectVisible, setIsAdditionalSelectVisible] =
     useState(false);
 
-  //
-  //
-  //
-  //
-  const [newTotalWeight, setNewTotalWeight] = useState<number>(
-    totals.totalWeight
-  );
-  const [editTotalWeight, setEditTotalWeight] = useState<boolean>(false);
-  //
-  //
-  //
-  //
   const [formData, setFormData] = useState({
     name: "",
-    user_id: "",
     description: "",
     recipeKind: initialRecipeKind,
     instructions: "",
@@ -48,10 +49,6 @@ export function useRecipeForm(
   const { recipes, isLoading, isError, error, refetch } = useGetRecipesByKind(
     formData.recipeKind
   );
-
-  const setUserId = (user_id: string) => {
-    setFormData((prevData) => ({ ...prevData, user_id }));
-  };
 
   useEffect(() => {
     refetch();
@@ -110,48 +107,6 @@ export function useRecipeForm(
     }
   };
 
-  //
-  //
-  //
-
-  const handleSaveEditTotalWeight = () => {
-    if (newTotalWeight >= 1) {
-      setRows(
-        rows.map((row) => ({
-          ...row,
-          weight: calculateAndRound(
-            row.weight,
-            totals.totalWeight,
-            newTotalWeight
-          ),
-          calories: calculateAndRound(
-            row.calories,
-            totals.totalWeight,
-            newTotalWeight
-          ),
-          sugar: calculateAndRound(
-            row.sugar,
-            totals.totalWeight,
-            newTotalWeight
-          ),
-          fat: calculateAndRound(row.fat, totals.totalWeight, newTotalWeight),
-          protein: calculateAndRound(
-            row.protein,
-            totals.totalWeight,
-            newTotalWeight
-          ),
-          msnf: calculateAndRound(row.msnf, totals.totalWeight, newTotalWeight),
-        }))
-      );
-      setEditTotalWeight(false);
-    } else alert("Please enter a valid value greater than 0 grams");
-  };
-
-  //
-  //
-  //
-  //
-  //
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
@@ -191,14 +146,13 @@ export function useRecipeForm(
     };
 
     try {
-      const answer = await postRecipe(
-        newRecipe,
-        selectedFile,
-        formData.user_id
-      );
+      const answer = await postRecipe(newRecipe, selectedFile, userId);
+      setRecipeID(answer._id);
       navigate(`/recipes/${answer._id}`);
     } catch (error) {
       console.error("Error posting recipe:", error);
+      alert("Error posting recipe");
+      throw error;
     }
     setIsOpen(false);
   };
@@ -219,7 +173,6 @@ export function useRecipeForm(
     handleAdditionalSelectChange,
     handleSwitchChange,
     handleFileChange,
-    handleSaveEditTotalWeight,
     handleSubmit,
     rows,
     setRows,

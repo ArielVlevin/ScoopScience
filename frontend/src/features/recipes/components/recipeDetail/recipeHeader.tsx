@@ -40,8 +40,11 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
       <div className="flex justify-center text-xs font-bold uppercase mb-1  ">
         {recipe?.recipeData.recipeKind}
       </div>
-      <div className="flex justify-center text-3xl font-bold ">
+      <div className="flex justify-center text-3xl font-bold  ">
         {recipe?.recipeData.recipeName}
+      </div>
+      <div className="flex justify-center text-muted-foreground mb-1">
+        by {recipe?.user_id}[its user id, need to change to user name]
       </div>
       <div className="flex justify-center ">
         <Rating

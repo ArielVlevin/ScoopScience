@@ -20,28 +20,27 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { typeOptions } from "@/types";
-import { useLocation } from "react-router-dom";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
 import Grid from "@/components/class/grid";
 import { Checkbox } from "@/components/ui";
 import TotalsCard from "./totalsCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddIngredientToTable from "../recipeTable/AddIngredientToTable";
 import NewRecipeTable from "../recipeTable/table";
 import RecipeBulletCharts from "../recipeBulletChart";
-import { useAuth } from "@/contexts/AuthContext";
 
-export default function NewRecipeDialog() {
+type NewRecipeDialogProps = {
+  className?: string;
+};
+
+export default function NewRecipeDialog({ className }: NewRecipeDialogProps) {
   //
 
-  const location = useLocation();
-  const BASERECIPE = location.state || undefined;
   const {
     recipes,
     isOpen,
     isAdditionalSelectVisible,
     setIsOpen,
-    setUserId,
     setIsAdditionalSelectVisible,
     currentStep,
     handleNext,
@@ -57,18 +56,14 @@ export default function NewRecipeDialog() {
     setRows,
     totals,
     setTotals,
-  } = useRecipeForm(BASERECIPE);
+  } = useRecipeForm();
 
   //
-  //
+
   const [isAddingIngredient, setIsAddingIngredient] = useState<boolean>(false);
 
-  const { user, isAuthenticated } = useAuth();
-  useEffect(() => {
-    if (isAuthenticated && user) setUserId(user._id);
-  }, [isAuthenticated]);
   return (
-    <>
+    <div className={className}>
       <Button onClick={() => setIsOpen(true)}>Create New Recipe</Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -168,7 +163,7 @@ export default function NewRecipeDialog() {
 
           {/* Step 2 */}
           {currentStep === 2 && (
-            <form className="">
+            <form className="gap-6 ">
               <Label className="text-lg font-medium">Ingredients Table</Label>
               <NewRecipeTable
                 className="border rounded-lg border-gray-300 "
@@ -330,6 +325,6 @@ export default function NewRecipeDialog() {
           <DialogClose />
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }

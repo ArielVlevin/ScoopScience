@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
 
   favorites: [{ type: Number, ref: "Recipe" }],
+  recipes: [{ type: Number, ref: "Recipe" }],
 });
 
 const User = mongoose.model("User", UserSchema, "Users");

@@ -1,4 +1,5 @@
 import { Recipe } from "../models/Recipe.js";
+import User from "../models/User.js";
 
 const getLastRecipeID = async () => {
   const lastRecipe = await Recipe.findOne().sort({ _id: -1 });
@@ -32,6 +33,12 @@ export const createRecipe = async (req, res, next) => {
     const newRecipe = new Recipe(newRecipeData);
 
     await newRecipe.save();
+
+    console.log("user_id:", user_id);
+
+    await User.findByIdAndUpdate(user_id, {
+      $push: { recipes: new_id },
+    });
 
     res.status(201).json(newRecipe);
     console.log(

@@ -51,6 +51,7 @@ export const login = async ({ email, password }) => {
       username: user.username,
       email: user.email,
       favorites: user.favorites,
+      recipes: user.recipes,
     },
     config.jwtSecret,
     {
@@ -65,6 +66,7 @@ export const login = async ({ email, password }) => {
       username: user.username,
       email: user.email,
       favorites: user.favorites || [],
+      recipes: user.recipes || [],
     },
   };
 };

@@ -7,6 +7,7 @@ import Loading from "@/pages/loading";
 import PrivateRoute from "@/config/privateRoute";
 import DashBoard from "@/auth/components/dashboard";
 import Logout from "@/auth/components/logout";
+
 import NewRecipe from "@/features/recipes/components/newRecipe/new";
 
 const HomePage = lazy(() => import("@/pages/homePage"));
@@ -35,7 +36,15 @@ const MakeRecipePage = lazy(() => import("@/features/recipes/pages/make"));
 const FavoritesRecipesPage = lazy(
   () => import("@/features/recipes/pages/favorites")
 );
-const LandingPage = lazy(() => import("@/features/recipes/pages/landingPage"));
+
+const UserFavoritesRecipesPage = lazy(
+  () => import("@/features/recipes/pages/userFavorites")
+);
+
+const UserRecipesPage = lazy(
+  () => import("@/features/recipes/pages/userRecipes")
+);
+
 const ContactUs = lazy(() => import("@/pages/contact"));
 const Login = lazy(() => import("@/auth/pages/login"));
 const Register = lazy(() => import("@/auth/pages/register"));
@@ -94,6 +103,7 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      //todo: change to user/{user_id}/recipes/newrecipe
       {
         path: "newrecipe",
         element: (
@@ -103,7 +113,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "make",
+        path: "/recipes/make",
         element: <PrivateRoute />,
 
         children: [
@@ -125,18 +135,10 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      {
-        path: "recipes/newRecipeLanding",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <LandingPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: "favorites",
-        element: <PrivateRoute />,
 
+      {
+        path: "user/favorites",
+        element: <PrivateRoute />,
         children: [
           {
             index: true,
@@ -149,12 +151,32 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "contact",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <ContactUs />
-          </Suspense>
-        ),
+        path: "user/recipes",
+        element: <PrivateRoute />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <UserRecipesPage />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "profile/:userName/favorites",
+        element: <PrivateRoute />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <UserFavoritesRecipesPage />
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },
@@ -210,6 +232,14 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "contact",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <ContactUs />
+      </Suspense>
+    ),
   },
 ]);
 

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,18 +14,20 @@ import { useRecipeForm } from "../../hooks/useRecipeForm";
 import Grid from "@/components/class/grid";
 import { Checkbox } from "@/components/ui";
 import TotalsCard from "./totalsCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddIngredientToTable from "../recipeTable/AddIngredientToTable";
 import NewRecipeTable from "../recipeTable/table";
 import RecipeBulletCharts from "../recipeBulletChart";
-import { useAuth } from "@/contexts/AuthContext";
+import Page from "@/components/class/page";
+import StepsProgressBar from "@/components/class/StepsProgresBar";
+import FixedButtomBar from "@/components/class/fixedButtonBar";
+import { Separator } from "@/components/ui/separator";
 
 export default function NewRecipe() {
   const {
     recipes,
     isAdditionalSelectVisible,
     setIsAdditionalSelectVisible,
-    setUserId,
     currentStep,
     handleNext,
     handleBack,
@@ -46,17 +47,27 @@ export default function NewRecipe() {
   //
   const [isAddingIngredient, setIsAddingIngredient] = useState<boolean>(false);
 
-  const { user, isAuthenticated } = useAuth();
-  useEffect(() => {
-    if (isAuthenticated && user) setUserId(user._id);
-  }, [isAuthenticated]);
   return (
-    <>
+    <Page>
       {/* Step 1 */}
       {currentStep === 1 && (
-        <form className="gap-6 m-6">
-          <Grid className="">
-            <h1>Recipe Detail</h1>
+        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
+          <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
+          <Separator className="mt-6 mb-6 " />
+
+          <StepsProgressBar
+            currentStep={currentStep}
+            tasks={[
+              { title: "Recipe Details" },
+              { title: "Ingredients" },
+              { title: "Recipe Steps" },
+              { title: "Review" },
+            ]}
+          />
+          <Grid className="m-6">
+            <div className="text-2xl font-bold text-primary mb-4 text-center">
+              Recipe Detail
+            </div>
             <Grid gap={2}>
               <Label htmlFor="name" className="text-sm font-medium">
                 Recipe Name
@@ -89,6 +100,9 @@ export default function NewRecipe() {
                 </SelectContent>
               </Select>
             </Grid>
+            <Separator className="mt-6 mb-6 " />
+            <Label className="text-lg font-medium ">Import</Label>
+
             <div className="flex items-center space-x-2">
               <Checkbox
                 checked={isAdditionalSelectVisible}
@@ -129,27 +143,29 @@ export default function NewRecipe() {
               </Grid>
             )}
           </Grid>
-          <div className="mt-6">
-            <Button type="button" onClick={handleNext}>
-              Next
-            </Button>
-          </div>
         </form>
       )}
 
       {/* Step 2 */}
       {currentStep === 2 && (
-        <form className="gap-6 m-6 ">
+        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
+          <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
+          <Separator className="mt-6 mb-6 " />
+          <StepsProgressBar
+            currentStep={currentStep}
+            tasks={[
+              { title: "Recipe Details" },
+              { title: "Ingredients" },
+              { title: "Recipe Details" },
+              { title: "Review" },
+            ]}
+          />
           <Grid>
-            <Grid mdcols={2}>
-              <Button className="m-6 w-1/6" type="button" onClick={handleBack}>
-                Previous
-              </Button>
-              <Button className="w-1/6 m-6 " type="button" onClick={handleNext}>
-                Next
-              </Button>
-            </Grid>
-            <Label className="text-lg font-medium">Ingredients Table</Label>
+            <div className="text-2xl font-bold text-primary mb-4 text-center">
+              Ingredients Table
+            </div>
+            <Label className="text-lg font-medium ">Table</Label>
+
             <NewRecipeTable
               className="border rounded-lg border-gray-300 "
               rows={rows}
@@ -164,9 +180,12 @@ export default function NewRecipe() {
                 isAddingIngredient={isAddingIngredient}
               />
             </div>
-            <Label className="text-lg font-medium ">Totals</Label>
+
             {totals.totalWeight > 0 ? (
               <>
+                <Separator className="mt-6 mb-6 " />
+                <Label className="text-lg font-medium ">Totals</Label>
+
                 <TotalsCard className="w-full mt-2 mb-6" totals={totals} />
                 <RecipeBulletCharts
                   recipeType={formData.recipeKind}
@@ -182,18 +201,24 @@ export default function NewRecipe() {
 
       {/* Step 3 */}
       {currentStep === 3 && (
-        <form className="m-6 gap-6">
-          <Grid mdcols={2}>
-            <Button className="m-2 w-1/6" type="button" onClick={handleBack}>
-              Previous
-            </Button>
-            <Button className="w-1/6 m-2 " type="button" onClick={handleNext}>
-              Next
-            </Button>
-          </Grid>
-          <Grid gap={4}>
+        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
+          <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
+          <Separator className="mt-6 mb-6 " />
+          <StepsProgressBar
+            currentStep={currentStep}
+            tasks={[
+              { title: "Recipe Details" },
+              { title: "Ingredients" },
+              { title: "Recipe Steps" },
+              { title: "Review" },
+            ]}
+          />
+          <Grid className="m-6">
+            <div className="text-2xl font-bold text-primary mb-4 text-center">
+              Recipe Detail
+            </div>
             <Grid gap={2}>
-              <Label htmlFor="description" className="text-sm font-medium">
+              <Label htmlFor="instructions" className="text-xl font-medium">
                 Description
               </Label>
               <Textarea
@@ -254,43 +279,68 @@ export default function NewRecipe() {
 
       {/* Step 4 */}
       {currentStep === 4 && (
-        <form className="grid gap-8">
-          <Grid mdcols={2}>
-            <Button className="m-6 w-1/6" type="button" onClick={handleBack}>
-              Previous
-            </Button>
-            <Button type="submit" onClick={handleSubmit}>
-              Save Recipe
-            </Button>
-          </Grid>
+        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
+          <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
+          <Separator className="mt-6 mb-6 " />
+          <StepsProgressBar
+            currentStep={currentStep}
+            tasks={[
+              { title: "Recipe Details" },
+              { title: "Ingredients" },
+              { title: "Recipe Steps" },
+              { title: "Review" },
+            ]}
+          />
+          <Grid className="m-6">
+            <div className="text-2xl font-bold text-primary mb-4 text-center">
+              Review
+            </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="isPublic" className="text-sm font-medium">
-              Make recipe public?
-            </Label>
-            <Switch
-              id="isPublic"
-              checked={formData.isPublic}
-              onCheckedChange={handleSwitchChange}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="recipeSummary" className="text-xl font-medium">
-              Recipe Summary
-            </Label>
-            <p>
-              Name: {formData.name}
-              <br />
-              Category: {formData.recipeKind}
-              <br />
-              Cooking Time: {formData.cookingTime}
-              <br />
-              Preparation Time: {formData.prepTime}
-              <br />
-            </p>
-          </div>
+            <div className="grid gap-2">
+              <Label htmlFor="isPublic" className="text-sm font-medium">
+                Make recipe public?
+              </Label>
+              <Switch
+                id="isPublic"
+                checked={formData.isPublic}
+                onCheckedChange={handleSwitchChange}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="recipeSummary" className="text-xl font-medium">
+                Recipe Summary
+              </Label>
+              <p>
+                Name: {formData.name}
+                <br />
+                Category: {formData.recipeKind}
+                <br />
+                Cooking Time: {formData.cookingTime}
+                <br />
+                Preparation Time: {formData.prepTime}
+                <br />
+              </p>
+            </div>
+          </Grid>
         </form>
       )}
-    </>
+      {currentStep === 1 ? (
+        <FixedButtomBar onClick={handleNext} btmText="Save and Continue" />
+      ) : currentStep === 2 || currentStep === 3 ? (
+        <FixedButtomBar
+          onClick={handleNext}
+          btmText="Save and Continue"
+          scndBtmText="Back"
+          scndBtmOnClick={handleBack}
+        />
+      ) : (
+        <FixedButtomBar
+          onClick={handleSubmit}
+          btmText="Upload Recipe"
+          scndBtmText="Back"
+          scndBtmOnClick={handleBack}
+        />
+      )}
+    </Page>
   );
 }

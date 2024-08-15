@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { IceCreamConeIcon } from "@/components/icons/icon";
@@ -10,22 +10,25 @@ import { ModeToggle } from "@/components/navbar/modeToggle";
 import NewRecipeDialog from "@/features/recipes/components/newRecipe/newRecipe";
 
 export default function NavBar() {
-  const [activeTab, setActiveTab] = useState<"create" | "discovery">("create");
+  const [activeTab, setActiveTab] = useState<"create" | "explore">("create");
 
   const createLinks = [
-    { name: "New Recipe", href: "/newrecipe" },
-    { name: "My Recipes", href: "/myRecipes" },
-    { name: "My Favorites", href: "/favorites" },
+    //todo:{ name: "New Recipe", href: "/newrecipe" },
+    { name: "My Recipes", href: "/user/recipes" },
+    {
+      name: "My Favorites",
+      href: "/user/favorites",
+    },
   ];
 
-  const discoveryLinks = [
+  const exploreLinks = [
     { name: "Explore Recipes", href: "/recipes" },
     { name: "Top Rated(!)", href: "/topRated" },
     { name: "Newest(!)", href: "/newest" },
     { name: "Ingredients", href: "/Ingredients" },
   ];
 
-  const navLinks = activeTab === "create" ? createLinks : discoveryLinks;
+  const navLinks = activeTab === "create" ? createLinks : exploreLinks;
 
   return (
     <header className="w-full bg-primary shadow-xl">
@@ -44,12 +47,12 @@ export default function NavBar() {
             Create
           </Button>
           <Button
-            onClick={() => setActiveTab("discovery")}
+            onClick={() => setActiveTab("explore")}
             className={`btn-base ${
-              activeTab === "discovery" ? "btn-active" : "btn-inactive"
+              activeTab === "explore" ? "btn-active" : "btn-inactive"
             }`}
           >
-            Discovery
+            Explore
           </Button>
         </div>
 
@@ -65,7 +68,6 @@ export default function NavBar() {
 
       <nav className="bg-muted">
         <div className="container flex h-11 items-center gap-14 px-4 md:px-6">
-          <NewRecipeDialog />
           {navLinks.map((link) => (
             <Link
               key={link.name}

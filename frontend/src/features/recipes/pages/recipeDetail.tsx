@@ -54,7 +54,7 @@ export default function RecipeDetailPage() {
   };
 
   const goToMakePage = () => {
-    navigate(`/make?id=${recipe._id}`, { state: { recipe } });
+    navigate(`/recipes/make?id=${recipe._id}`, { state: { recipe } });
   };
   return (
     <Page>

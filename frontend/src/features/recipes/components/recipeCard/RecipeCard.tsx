@@ -12,11 +12,16 @@ import { Rating } from "@smastrom/react-rating";
 export type cardInfo = {
   recipe: Recipe;
   isFavoriteCard?: boolean;
+  isEditable?: boolean;
 };
 
 export type cardsInfo = cardInfo[];
 
-export function RecipeCard({ recipe, isFavoriteCard = false }: cardInfo) {
+export function RecipeCard({
+  recipe,
+  isFavoriteCard = false,
+  isEditable = false,
+}: cardInfo) {
   //
   const { user, isAuthenticated, handleFavorite } = useAuth();
   //
@@ -35,19 +40,25 @@ export function RecipeCard({ recipe, isFavoriteCard = false }: cardInfo) {
   };
 
   const goToMakePage = () => {
-    navigate(`/make?id=${recipe._id!}`, { state: { recipe } });
+    navigate(`/recipes/make?id=${recipe._id!}`, { state: { recipe } });
+  };
+
+  const goToEditPage = () => {
+    navigate(`/recipes/edit?id=${recipe._id!}`, { state: { recipe } });
   };
 
   return (
     <div key={recipe._id!} className="w-full ">
       <Card className="shadow-lg rounded-lg bg-muted overflow-hidden  hover:scale-105 duration-500">
         <div className="relative">
-          <img
-            loading="lazy"
-            src={`http://localhost:3000${recipe.recipeData.photo}`}
-            alt={recipe.recipeData.description}
-            className="w-full h-full object-cover"
-          />
+          <div className=" w-full h-auto aspect-video	">
+            <img
+              loading="lazy"
+              src={`http://localhost:3000${recipe.recipeData.photo}`}
+              alt={recipe.recipeData.description}
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
           <button
             onClick={handleHeartClick}
             className="absolute top-4 right-4 text-red-500"
@@ -94,6 +105,14 @@ export function RecipeCard({ recipe, isFavoriteCard = false }: cardInfo) {
                 onClick={goToMakePage}
               >
                 Make
+              </Button>
+            ) : null}
+            {isEditable ? (
+              <Button
+                className="w-full bg-orange-700 hover:bg-orange-500"
+                onClick={goToEditPage}
+              >
+                Edit
               </Button>
             ) : null}
             <Button

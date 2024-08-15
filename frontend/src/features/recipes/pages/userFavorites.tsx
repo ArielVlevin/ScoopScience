@@ -4,11 +4,28 @@ import Page from "@/components/class/page";
 import Loading from "@/pages/loading";
 import RecipeGrid from "../components/recipeCard/RecipeGrid";
 import ErrorPage from "@/pages/error";
-import { FileHeartIcon } from "@/components/icons/icon";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 import ZeroStatePage from "@/components/class/zeroStatePage";
+import { FileHeartIcon } from "@/components/icons/icon";
 
-export default function FavoritesRecipesPage() {
-  const { user } = useAuth();
+export default function UserFavoritesRecipesPage() {
+  const { isAuthenticated, user } = useAuth();
+
+  const { userName } = useParams<{ userName: string }>();
+
+  let user_id = "";
+
+  useEffect(() => {
+    if (!userName) {
+      return;
+    }
+    if (isAuthenticated && user && userName === user.username) {
+      user_id = user._id;
+    } else if (isAuthenticated && user && userName !== user.username) {
+      user_id = userName || "";
+    }
+  }, [isAuthenticated, user, userName]);
 
   const { recipes, isLoading, isError, errors } = useGetRecipes(
     user?.favorites || []
@@ -36,9 +53,7 @@ export default function FavoritesRecipesPage() {
   }
 
   return (
-    <Page>
-      <a className="text-3xl font-bold text-primary ">My Favorites Recipes</a>
-
+    <Page wide>
       {/* ----Cards----- */}
 
       <RecipeGrid recipes={recipes} isFavoriteCard />
