@@ -28,7 +28,7 @@ export default function RecipeGrid({
   return (
     <Page className={className}>
       {isShowRecipeFound && (
-        <p className="text-sm text-muted-foreground mb-4 text-center">
+        <p className="text-sm text-muted-foreground mb-6 text-center">
           {recipes.length} recipes found
         </p>
       )}
@@ -44,8 +44,10 @@ export default function RecipeGrid({
       </Grid>
 
       {itemsPerPage < recipes.length && (
-        <div className="flex justify-center mt-8">
-          <Button onClick={handleLoadMore}>Load More</Button>
+        <div className="flex justify-center mt-12">
+          <Button className="w-52 h-16 text-xl" onClick={handleLoadMore}>
+            Load More
+          </Button>
         </div>
       )}
     </Page>

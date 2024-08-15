@@ -10,14 +10,15 @@ export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"
 ) {
   const { user, isAuthenticated, setRecipeID } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuthenticated && user) setUserId(user._id);
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user]);
 
-  const navigate = useNavigate();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
 
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(0);
 
   const [rows, setRows] = useState<Row[]>([]);
 
@@ -106,9 +107,11 @@ export function useRecipeForm(
       setSelectedFile(event.target.files[0]);
     }
   };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSetRecipe = (): Recipe | null => {
+    if (!userId) {
+      alert("You must be logged in to create a recipe");
+      return null;
+    }
     if (
       !formData.name ||
       !formData.recipeKind ||
@@ -118,19 +121,20 @@ export function useRecipeForm(
       !formData.prepTime
     ) {
       alert("All fields are required");
-      return;
+      return null;
     }
 
     const newRecipe: Recipe = {
+      user_id: userId,
       recipeData: {
         recipeName: formData.name,
         recipeKind: formData.recipeKind!,
         description: formData.description,
         instructions: formData.instructions,
-        cookingTime: parseInt(formData.cookingTime),
-        prepTime: parseInt(formData.prepTime),
+        cookingTime: parseInt(formData.cookingTime, 10),
+        prepTime: parseInt(formData.prepTime, 10),
         photo: "",
-        isPublic: formData.isPublic,
+        isPublic: true, // TODO: change to formData.isPublic
       },
       recipeRating: {
         likes: 0,
@@ -141,12 +145,35 @@ export function useRecipeForm(
         recipeType: formData.recipeKind!,
         ingredients: formData.ingredients!,
         totalData: formData.totals!,
-        allergies: formData.allergies!,
+        allergies: {
+          milk: true,
+          nuts: false,
+          egg: false,
+          soy: false,
+          wheat: false,
+        },
       },
     };
 
+    return newRecipe;
+  };
+
+  const handleRecipePreview = () => {
+    const newRecipe = handleSetRecipe();
+    if (newRecipe) {
+      setRecipe(newRecipe);
+      alert("Recipe preview successfully created");
+    } else {
+      alert("Error with creating recipe preview, try again");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newRecipe = handleSetRecipe();
+    if (!newRecipe) return alert("Error with the recipe, try again");
     try {
-      const answer = await postRecipe(newRecipe, selectedFile, userId);
+      const answer = await postRecipe(newRecipe, selectedFile);
       setRecipeID(answer._id);
       navigate(`/recipes/${answer._id}`);
     } catch (error) {
@@ -181,5 +208,7 @@ export function useRecipeForm(
     isLoading,
     isError,
     error,
+    handleRecipePreview,
+    recipe,
   };
 }

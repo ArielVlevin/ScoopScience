@@ -5,15 +5,24 @@ import Loading from "@/pages/loading";
 import RecipeGrid from "../components/recipeCard/RecipeGrid";
 import ErrorPage from "@/pages/error";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ZeroStatePage from "@/components/class/zeroStatePage";
 import { FileHeartIcon } from "@/components/icons/icon";
+import {
+  LoadMoreButton,
+  RecipeGridList,
+} from "../components/recipeGrid/recipeGrid";
 
 export default function UserFavoritesRecipesPage() {
   const { isAuthenticated, user } = useAuth();
 
   const { userName } = useParams<{ userName: string }>();
 
+  const [itemsPerPage, setItemsPerPage] = useState(9);
+
+  const handleLoadMore = () => {
+    setItemsPerPage(itemsPerPage + 6);
+  };
   let user_id = "";
 
   useEffect(() => {
@@ -53,10 +62,22 @@ export default function UserFavoritesRecipesPage() {
   }
 
   return (
-    <Page wide>
-      {/* ----Cards----- */}
+    <>
+      <Page>
+        {/* ----Cards----- */}
 
-      <RecipeGrid recipes={recipes} isFavoriteCard />
-    </Page>
+        <RecipeGridList
+          recipes={recipes}
+          itemsPerPage={itemsPerPage}
+          isFavoriteCard
+        />
+      </Page>
+      <LoadMoreButton
+        className="mb-12"
+        itemsPerPage={itemsPerPage}
+        totalRecipes={recipes.length}
+        onLoadMore={handleLoadMore}
+      />
+    </>
   );
 }

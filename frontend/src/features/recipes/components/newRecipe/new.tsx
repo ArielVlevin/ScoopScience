@@ -18,10 +18,10 @@ import { useState } from "react";
 import AddIngredientToTable from "../recipeTable/AddIngredientToTable";
 import NewRecipeTable from "../recipeTable/table";
 import RecipeBulletCharts from "../recipeBulletChart";
-import Page from "@/components/class/page";
 import StepsProgressBar from "@/components/class/StepsProgresBar";
 import FixedButtomBar from "@/components/class/fixedButtonBar";
 import { Separator } from "@/components/ui/separator";
+import RecipeRecipePreview from "./recipePreview";
 
 export default function NewRecipe() {
   const {
@@ -42,16 +42,18 @@ export default function NewRecipe() {
     setRows,
     totals,
     setTotals,
+
+    recipe,
   } = useRecipeForm();
 
   //
   const [isAddingIngredient, setIsAddingIngredient] = useState<boolean>(false);
 
   return (
-    <Page>
+    <div className="container mx-auto">
       {/* Step 1 */}
       {currentStep === 1 && (
-        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
+        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl">
           <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
           <Separator className="mt-6 mb-6 " />
 
@@ -65,6 +67,7 @@ export default function NewRecipe() {
             ]}
           />
           <Grid className="m-6">
+            ֿ
             <div className="text-2xl font-bold text-primary mb-4 text-center">
               Recipe Detail
             </div>
@@ -102,7 +105,6 @@ export default function NewRecipe() {
             </Grid>
             <Separator className="mt-6 mb-6 " />
             <Label className="text-lg font-medium ">Import</Label>
-
             <div className="flex items-center space-x-2">
               <Checkbox
                 checked={isAdditionalSelectVisible}
@@ -148,7 +150,7 @@ export default function NewRecipe() {
 
       {/* Step 2 */}
       {currentStep === 2 && (
-        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
+        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl">
           <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
           <Separator className="mt-6 mb-6 " />
           <StepsProgressBar
@@ -160,9 +162,9 @@ export default function NewRecipe() {
               { title: "Review" },
             ]}
           />
-          <Grid>
+          <Grid className="m-6">
             <div className="text-2xl font-bold text-primary mb-4 text-center">
-              Ingredients Table
+              Ingredients
             </div>
             <Label className="text-lg font-medium ">Table</Label>
 
@@ -201,7 +203,7 @@ export default function NewRecipe() {
 
       {/* Step 3 */}
       {currentStep === 3 && (
-        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
+        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl">
           <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
           <Separator className="mt-6 mb-6 " />
           <StepsProgressBar
@@ -279,53 +281,61 @@ export default function NewRecipe() {
 
       {/* Step 4 */}
       {currentStep === 4 && (
-        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
-          <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
-          <Separator className="mt-6 mb-6 " />
-          <StepsProgressBar
-            currentStep={currentStep}
-            tasks={[
-              { title: "Recipe Details" },
-              { title: "Ingredients" },
-              { title: "Recipe Steps" },
-              { title: "Review" },
-            ]}
-          />
-          <Grid className="m-6">
-            <div className="text-2xl font-bold text-primary mb-4 text-center">
-              Review
+        <>
+          <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl">
+            <div className="text-3xl font-bold text-primary mb-4">
+              New Recipe
             </div>
+            <Separator className="mt-6 mb-6 " />
+            <StepsProgressBar
+              currentStep={currentStep}
+              tasks={[
+                { title: "Recipe Details" },
+                { title: "Ingredients" },
+                { title: "Recipe Steps" },
+                { title: "Review" },
+              ]}
+            />
+            <Grid className="m-6">
+              <div className="text-2xl font-bold text-primary mb-4 text-center">
+                Review
+              </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="isPublic" className="text-sm font-medium">
-                Make recipe public?
-              </Label>
-              <Switch
-                id="isPublic"
-                checked={formData.isPublic}
-                onCheckedChange={handleSwitchChange}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="recipeSummary" className="text-xl font-medium">
-                Recipe Summary
-              </Label>
-              <p>
-                Name: {formData.name}
-                <br />
-                Category: {formData.recipeKind}
-                <br />
-                Cooking Time: {formData.cookingTime}
-                <br />
-                Preparation Time: {formData.prepTime}
-                <br />
-              </p>
-            </div>
-          </Grid>
-        </form>
+              <div className="grid gap-2">
+                <Label htmlFor="isPublic" className="text-sm font-medium">
+                  Make recipe public?
+                </Label>
+                <Switch
+                  id="isPublic"
+                  checked={formData.isPublic}
+                  onCheckedChange={handleSwitchChange}
+                />
+              </div>
+              <Separator className="mt-6 mb-6 " />
+              <div className="grid gap-2">
+                <Label htmlFor="recipeSummary" className="text-xl font-medium">
+                  Recipe Summary
+                </Label>
+                <div onClick={handleNext} className="cursor-pointer">
+                  click here to generate Recipe Preview
+                </div>
+              </div>
+            </Grid>
+          </form>
+        </>
       )}
+
+      {currentStep === 5 && <RecipeRecipePreview recipe={recipe} />}
+
       {currentStep === 1 ? (
         <FixedButtomBar onClick={handleNext} btmText="Save and Continue" />
+      ) : currentStep === 4 ? (
+        <FixedButtomBar
+          onClick={handleSubmit}
+          btmText="Upload Recipe"
+          scndBtmText="Back"
+          scndBtmOnClick={handleBack}
+        />
       ) : currentStep === 2 || currentStep === 3 ? (
         <FixedButtomBar
           onClick={handleNext}
@@ -333,14 +343,9 @@ export default function NewRecipe() {
           scndBtmText="Back"
           scndBtmOnClick={handleBack}
         />
-      ) : (
-        <FixedButtomBar
-          onClick={handleSubmit}
-          btmText="Upload Recipe"
-          scndBtmText="Back"
-          scndBtmOnClick={handleBack}
-        />
-      )}
-    </Page>
+      ) : currentStep === 5 ? (
+        <FixedButtomBar onClick={handleBack} btmText="Back" />
+      ) : null}
+    </div>
   );
 }

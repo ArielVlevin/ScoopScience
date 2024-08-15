@@ -9,7 +9,7 @@ const getLastRecipeID = async () => {
 export const createRecipe = async (req, res, next) => {
   try {
     const new_id = (await getLastRecipeID()) + 1;
-    const { user_id } = req.body;
+    const user_id = JSON.parse(req.body.user_id);
 
     const data = JSON.parse(req.body.recipeData);
     const recipeRating = JSON.parse(req.body.recipeRating);

@@ -10,7 +10,7 @@ import { register, login, logout as logoutUser } from "@/auth/services";
 import { deleteData, postData } from "@/services/apiFunctions";
 
 interface User extends JwtPayload {
-  _id: string;
+  _id: number;
   username: string;
   email: string;
   favorites: number[];

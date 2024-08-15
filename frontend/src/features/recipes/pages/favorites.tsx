@@ -6,9 +6,21 @@ import RecipeGrid from "../components/recipeCard/RecipeGrid";
 import ErrorPage from "@/pages/error";
 import { FileHeartIcon } from "@/components/icons/icon";
 import ZeroStatePage from "@/components/class/zeroStatePage";
+import {
+  LoadMoreButton,
+  RecipeGridList,
+} from "../components/recipeGrid/recipeGrid";
+import { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 export default function FavoritesRecipesPage() {
   const { user } = useAuth();
+
+  const [itemsPerPage, setItemsPerPage] = useState(9);
+
+  const handleLoadMore = () => {
+    setItemsPerPage(itemsPerPage + 6);
+  };
 
   const { recipes, isLoading, isError, errors } = useGetRecipes(
     user?.favorites || []
@@ -36,12 +48,23 @@ export default function FavoritesRecipesPage() {
   }
 
   return (
-    <Page>
-      <a className="text-3xl font-bold text-primary ">My Favorites Recipes</a>
-
-      {/* ----Cards----- */}
-
-      <RecipeGrid recipes={recipes} isFavoriteCard />
-    </Page>
+    <>
+      <Page>
+        <a className="text-3xl font-bold text-primary ">My Favorites Recipes</a>
+        <Separator className="mt-6 mb-6" />
+        {/* ----Cards----- */}
+        <RecipeGridList
+          recipes={recipes}
+          itemsPerPage={itemsPerPage}
+          isFavoriteCard
+        />
+      </Page>
+      <LoadMoreButton
+        className="mb-12"
+        itemsPerPage={itemsPerPage}
+        totalRecipes={recipes.length}
+        onLoadMore={handleLoadMore}
+      />
+    </>
   );
 }

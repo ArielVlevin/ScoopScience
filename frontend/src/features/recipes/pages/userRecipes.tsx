@@ -10,6 +10,12 @@ import NewRecipe from "../components/newRecipe/new";
 import { Recipe } from "../types/recipeTypes";
 import { Button } from "@/components/ui";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import {
+  LoadMoreButton,
+  RecipeGridList,
+} from "../components/recipeGrid/recipeGrid";
+import { Separator } from "@/components/ui/separator";
 
 export default function UserRecipesPage() {
   const { user } = useAuth();
@@ -17,6 +23,12 @@ export default function UserRecipesPage() {
   const { recipes, isLoading, isError, errors } = useGetRecipes(
     user?.recipes || []
   );
+
+  const [itemsPerPage, setItemsPerPage] = useState(9);
+
+  const handleLoadMore = () => {
+    setItemsPerPage(itemsPerPage + 6);
+  };
 
   if (user?.recipes.length === 0)
     return (
@@ -40,16 +52,28 @@ export default function UserRecipesPage() {
   }
 
   return (
-    <Page>
-      <div className="text-3xl font-bold text-primary mb-4 ">My Recipes</div>
-      {/* ----add new recipe----- */}
+    <>
+      <Page>
+        <div className="text-3xl font-bold text-primary mb-4 ">My Recipes</div>
+        <Separator className="mt-6 mb-6" />
 
-      <Link to="/newRecipe">
-        <Button variant="outline">new Recipe</Button>
-      </Link>
+        {/* ----add new recipe----- */}
 
-      {/* ----Cards----- */}
-      <RecipeGrid recipes={recipes} isFavoriteCard />
-    </Page>
+        <Link to="/newRecipe">
+          <Button variant="outline" className="w-40 h-12 text-xl mb-6">
+            New Recipe
+          </Button>
+        </Link>
+
+        {/* ----Cards----- */}
+        <RecipeGridList recipes={recipes} itemsPerPage={itemsPerPage} />
+      </Page>
+      <LoadMoreButton
+        className="mb-12"
+        itemsPerPage={itemsPerPage}
+        totalRecipes={recipes.length}
+        onLoadMore={handleLoadMore}
+      />
+    </>
   );
 }

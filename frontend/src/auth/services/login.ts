@@ -2,10 +2,11 @@ import api from "@/config/api";
 
 interface LoginResponse {
   user: {
-    _id: string;
+    _id: number;
     username: string;
     email: string;
     favorites: number[];
+    recipes: number[];
   };
   token: string;
 }
