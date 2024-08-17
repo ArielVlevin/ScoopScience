@@ -11,6 +11,7 @@ import {
 } from "@/components/icons/icon";
 import { postData } from "@/services/apiFunctions";
 import { useAuth } from "@/contexts/AuthContext";
+import Box from "@/components/class/box";
 
 type RecipeHeaderProps = {
   recipe: Recipe;
@@ -36,7 +37,7 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
   };
 
   return (
-    <div className="bg-muted  rounded-lg p-6 mb-6 hover:scale-105 duration-500 h-full items-center justify-center">
+    <Box className="h-full items-center justify-center">
       <div className="flex justify-center text-xs font-bold uppercase mb-1  ">
         {recipe?.recipeData.recipeKind}
       </div>
@@ -44,7 +45,7 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
         {recipe?.recipeData.recipeName}
       </div>
       <div className="flex justify-center text-muted-foreground mb-1">
-        by {recipe?.user_id}[its user id, need to change to user name]
+        by {recipe?.user_id?.username}
       </div>
       <div className="flex justify-center ">
         <Rating
@@ -94,6 +95,6 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
           </div>
         ) : null}
       </div>
-    </div>
+    </Box>
   );
 }

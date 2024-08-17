@@ -9,11 +9,14 @@ import { RouterProvider } from "react-router-dom";
 import router from "@/config/router.tsx";
 import queryClient from "@/config/query.ts";
 
+import { Toaster } from "./components/ui/toaster";
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <RouterProvider router={router} />
+        <Toaster />
       </AuthProvider>
     </QueryClientProvider>
   );

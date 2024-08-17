@@ -10,18 +10,20 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { typeOptions } from "@/types";
-import { useRecipeForm } from "../../hooks/useRecipeForm";
+import { useRecipeForm } from "../hooks/useRecipeForm";
 import Grid from "@/components/class/grid";
 import { Checkbox } from "@/components/ui";
-import TotalsCard from "./totalsCard";
+import TotalsCard from "../components/newRecipe/totalsCard";
 import { useState } from "react";
-import AddIngredientToTable from "../recipeTable/AddIngredientToTable";
-import NewRecipeTable from "../recipeTable/table";
-import RecipeBulletCharts from "../recipeBulletChart";
+import AddIngredientToTable from "../components/recipeTable/AddIngredientToTable";
+import NewRecipeTable from "../components/recipeTable/table";
+import RecipeBulletCharts from "../components/recipeBulletChart";
 import StepsProgressBar from "@/components/class/StepsProgresBar";
 import FixedButtomBar from "@/components/class/fixedButtonBar";
 import { Separator } from "@/components/ui/separator";
-import RecipeRecipePreview from "./recipePreview";
+import RecipeRecipePreview from "../components/newRecipe/recipePreview";
+import RequiredLabel from "@/components/class/requiredLabel";
+import { ContinueRecipeModal } from "../components/newRecipe/continueModal";
 
 export default function NewRecipe() {
   const {
@@ -42,39 +44,45 @@ export default function NewRecipe() {
     setRows,
     totals,
     setTotals,
-
     recipe,
+    isModalOpen,
+    handleContinuePrevious,
+    handleNew,
   } = useRecipeForm();
 
   //
   const [isAddingIngredient, setIsAddingIngredient] = useState<boolean>(false);
 
   return (
-    <div className="container mx-auto">
-      {/* Step 1 */}
-      {currentStep === 1 && (
-        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl">
-          <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
-          <Separator className="mt-6 mb-6 " />
+    <div className="container mx-auto ">
+      <ContinueRecipeModal
+        isOpen={isModalOpen}
+        onContinue={handleContinuePrevious}
+        onNew={handleNew}
+      />
 
-          <StepsProgressBar
-            currentStep={currentStep}
-            tasks={[
-              { title: "Recipe Details" },
-              { title: "Ingredients" },
-              { title: "Recipe Steps" },
-              { title: "Review" },
-            ]}
-          />
+      <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl mt-16 mb-16">
+        <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
+        <Separator className="mt-6 mb-6 " />
+
+        <StepsProgressBar
+          currentStep={currentStep}
+          tasks={[
+            { title: "Recipe Details" },
+            { title: "Ingredients" },
+            { title: "Recipe Steps" },
+            { title: "Review" },
+          ]}
+        />
+        {/* Step 1 */}
+
+        {currentStep === 1 && (
           <Grid className="m-6">
-            ֿ
             <div className="text-2xl font-bold text-primary mb-4 text-center">
               Recipe Detail
             </div>
             <Grid gap={2}>
-              <Label htmlFor="name" className="text-sm font-medium">
-                Recipe Name
-              </Label>
+              <RequiredLabel htmlFor="name">Recipe Name</RequiredLabel>
               <Input
                 id="name"
                 placeholder="Enter recipe name"
@@ -83,9 +91,7 @@ export default function NewRecipe() {
               />
             </Grid>
             <Grid gap={2}>
-              <Label htmlFor="recipeKind" className="text-sm font-medium">
-                Recipe Kind
-              </Label>
+              <RequiredLabel htmlFor="recipeKind">Recipe Kind</RequiredLabel>
               <Select
                 name="recipeKind"
                 value={formData.recipeKind}
@@ -145,23 +151,11 @@ export default function NewRecipe() {
               </Grid>
             )}
           </Grid>
-        </form>
-      )}
+        )}
 
-      {/* Step 2 */}
-      {currentStep === 2 && (
-        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl">
-          <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
-          <Separator className="mt-6 mb-6 " />
-          <StepsProgressBar
-            currentStep={currentStep}
-            tasks={[
-              { title: "Recipe Details" },
-              { title: "Ingredients" },
-              { title: "Recipe Details" },
-              { title: "Review" },
-            ]}
-          />
+        {/* Step 2 */}
+
+        {currentStep === 2 && (
           <Grid className="m-6">
             <div className="text-2xl font-bold text-primary mb-4 text-center">
               Ingredients
@@ -198,31 +192,18 @@ export default function NewRecipe() {
               </>
             ) : null}
           </Grid>
-        </form>
-      )}
+        )}
 
-      {/* Step 3 */}
-      {currentStep === 3 && (
-        <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl">
-          <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
-          <Separator className="mt-6 mb-6 " />
-          <StepsProgressBar
-            currentStep={currentStep}
-            tasks={[
-              { title: "Recipe Details" },
-              { title: "Ingredients" },
-              { title: "Recipe Steps" },
-              { title: "Review" },
-            ]}
-          />
+        {/* Step 3 */}
+
+        {currentStep === 3 && (
           <Grid className="m-6">
             <div className="text-2xl font-bold text-primary mb-4 text-center">
               Recipe Detail
             </div>
             <Grid gap={2}>
-              <Label htmlFor="instructions" className="text-xl font-medium">
-                Description
-              </Label>
+              <RequiredLabel htmlFor="instructions">Description</RequiredLabel>
+
               <Textarea
                 id="description"
                 placeholder="Enter a brief description of the recipe"
@@ -232,9 +213,7 @@ export default function NewRecipe() {
               />
             </Grid>
             <Grid gap={2}>
-              <Label htmlFor="instructions" className="text-xl font-medium">
-                Instructions
-              </Label>
+              <RequiredLabel htmlFor="instructions">Instructions</RequiredLabel>
               <Textarea
                 id="instructions"
                 placeholder="Enter step-by-step instructions"
@@ -245,9 +224,9 @@ export default function NewRecipe() {
             </Grid>
             <div className="grid grid-cols-2 gap-4">
               <Grid gap={2}>
-                <Label htmlFor="cookingTime" className="text-sm font-medium">
+                <RequiredLabel htmlFor="cookingTime">
                   Cooking Time(minutes)
-                </Label>
+                </RequiredLabel>
                 <Input
                   id="cookingTime"
                   type="number"
@@ -257,9 +236,9 @@ export default function NewRecipe() {
                 />
               </Grid>
               <Grid gap={2}>
-                <Label htmlFor="prepTime" className="text-sm font-medium">
+                <RequiredLabel htmlFor="prepTime">
                   Preparation Time(minutes)
-                </Label>
+                </RequiredLabel>
                 <Input
                   id="prepTime"
                   type="number"
@@ -276,57 +255,38 @@ export default function NewRecipe() {
               <input type="file" id="photo" onChange={handleFileChange} />
             </Grid>
           </Grid>
-        </form>
-      )}
+        )}
+        {/* Step 4 */}
 
-      {/* Step 4 */}
-      {currentStep === 4 && (
-        <>
-          <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl">
-            <div className="text-3xl font-bold text-primary mb-4">
-              New Recipe
+        {currentStep === 4 && (
+          <Grid className="m-6">
+            <div className="text-2xl font-bold text-primary mb-4 text-center">
+              Review
+            </div>
+
+            <div className="grid gap-2">
+              <RequiredLabel htmlFor="isPublic">
+                Make recipe public?
+              </RequiredLabel>
+              <Switch
+                id="isPublic"
+                checked={formData.isPublic}
+                onCheckedChange={handleSwitchChange}
+              />
             </div>
             <Separator className="mt-6 mb-6 " />
-            <StepsProgressBar
-              currentStep={currentStep}
-              tasks={[
-                { title: "Recipe Details" },
-                { title: "Ingredients" },
-                { title: "Recipe Steps" },
-                { title: "Review" },
-              ]}
-            />
-            <Grid className="m-6">
-              <div className="text-2xl font-bold text-primary mb-4 text-center">
-                Review
+            <div className="grid gap-2">
+              <Label htmlFor="recipeSummary" className="text-xl font-medium">
+                Recipe Summary
+              </Label>
+              <div onClick={handleNext} className="cursor-pointer">
+                click here to generate Recipe Preview
               </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="isPublic" className="text-sm font-medium">
-                  Make recipe public?
-                </Label>
-                <Switch
-                  id="isPublic"
-                  checked={formData.isPublic}
-                  onCheckedChange={handleSwitchChange}
-                />
-              </div>
-              <Separator className="mt-6 mb-6 " />
-              <div className="grid gap-2">
-                <Label htmlFor="recipeSummary" className="text-xl font-medium">
-                  Recipe Summary
-                </Label>
-                <div onClick={handleNext} className="cursor-pointer">
-                  click here to generate Recipe Preview
-                </div>
-              </div>
-            </Grid>
-          </form>
-        </>
-      )}
-
+            </div>
+          </Grid>
+        )}
+      </form>
       {currentStep === 5 && <RecipeRecipePreview recipe={recipe} />}
-
       {currentStep === 1 ? (
         <FixedButtomBar onClick={handleNext} btmText="Save and Continue" />
       ) : currentStep === 4 ? (

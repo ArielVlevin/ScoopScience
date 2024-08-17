@@ -1,14 +1,41 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { RecipeKind, Row, Recipe, Allergies, Totals } from "@/types";
+import {
+  RecipeKind,
+  Row,
+  Recipe,
+  Allergies,
+  Totals,
+  RecipeFormState,
+} from "@/types";
 import calculateTotals from "../utils/calculateTotals";
 import { postRecipe } from "@/features/recipes/services/postRecipe";
 import { useGetRecipesByKind } from "./useGetRecipesByKind";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import invalidInputToast from "@/components/class/inputToast";
+import {
+  MISSING_DATA_ERROR,
+  MISSING_INGREDIENTS_ERROR,
+  RECIPE_DESCRIPTION_ERROR,
+  RECIPE_INSTRUCTIONS_ERROR,
+  RECIPE_NAME_ERROR,
+  TIME_ERROR,
+  validateRecipeDescription,
+  validateRecipeInstructions,
+  validateRecipeName,
+} from "../utils/validation";
+import {
+  clearLocalStorage,
+  loadFromLocalStorage,
+  saveToLocalStorage,
+} from "../utils/localStorage";
+
+const STORAGE_KEY = "recipe_in_progress";
 
 export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"
 ) {
+  //
   const { user, isAuthenticated, setRecipeID } = useAuth();
   const navigate = useNavigate();
 
@@ -16,40 +43,69 @@ export function useRecipeForm(
     if (isAuthenticated && user) setUserId(user._id);
   }, [isAuthenticated, user]);
 
+  //use State
+
+  //modals
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
   const [userId, setUserId] = useState(0);
-
-  const [rows, setRows] = useState<Row[]>([]);
-
-  const [totals, setTotals] = useState<Totals>(calculateTotals(rows));
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const [currentStep, setCurrentStep] = useState(1);
-
   const [isAdditionalSelectVisible, setIsAdditionalSelectVisible] =
     useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    recipeKind: initialRecipeKind,
-    instructions: "",
-    cookingTime: "",
-    prepTime: "",
-    image: "",
-    isPublic: true,
-    ingredients: undefined as Row[] | undefined,
-    totals: undefined as Totals | undefined,
-    allergies: undefined as Allergies | undefined,
+  //
+  // form
+  //
+  const [currentStep, setCurrentStep] = useState(() => {
+    return loadFromLocalStorage(STORAGE_KEY)?.currentStep || 1;
   });
 
+  const [rows, setRows] = useState<Row[]>(() => {
+    return loadFromLocalStorage(STORAGE_KEY)?.rows || [];
+  });
+
+  const [totals, setTotals] = useState<Totals>(() => {
+    return loadFromLocalStorage(STORAGE_KEY)?.totals || calculateTotals(rows);
+  });
+
+  const [formData, setFormData] = useState(() => {
+    return (
+      loadFromLocalStorage(STORAGE_KEY)?.formData || {
+        name: "",
+        description: "",
+        recipeKind: initialRecipeKind,
+        instructions: "",
+        cookingTime: "",
+        prepTime: "",
+        image: "",
+        isPublic: true,
+        ingredients: undefined as Row[] | undefined,
+        totals: undefined as Totals | undefined,
+        allergies: undefined as Allergies | undefined,
+      }
+    );
+  });
+
+  //load recipes
   const { recipes, isLoading, isError, error, refetch } = useGetRecipesByKind(
     formData.recipeKind
   );
+
+  useEffect(() => {
+    const recipeFormState: RecipeFormState = {
+      formData,
+      rows,
+      totals,
+      currentStep,
+    };
+    saveToLocalStorage(STORAGE_KEY, recipeFormState);
+  }, [formData, rows, totals, currentStep]);
 
   useEffect(() => {
     refetch();
@@ -63,7 +119,82 @@ export function useRecipeForm(
     }));
   }, [rows, totals]);
 
-  const handleNext = () => setCurrentStep(currentStep + 1);
+  useEffect(() => {
+    const storedRecipe = loadFromLocalStorage(STORAGE_KEY);
+    if (storedRecipe) {
+      setIsModalOpen(true);
+    }
+  }, []);
+
+  const handleContinuePrevious = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleNew = () => {
+    clearLocalStorage(STORAGE_KEY); // Clear the local storage
+
+    setFormData({
+      name: "",
+      instructions: "",
+      cookingTime: "",
+      prepTime: "",
+      image: "",
+      isPublic: true,
+      description: "",
+      recipeKind: "gelato",
+      ingredients: [],
+      totals: undefined,
+      allergies: undefined,
+    });
+    setRows([]);
+    setTotals(calculateTotals([]));
+    setCurrentStep(1);
+
+    setIsModalOpen(false);
+  };
+
+  const handleNext = () => {
+    if (currentStep === 1) {
+      if (!validateRecipeName(formData.name)) {
+        return invalidInputToast({
+          description: RECIPE_NAME_ERROR,
+        });
+      }
+    }
+
+    if (currentStep === 2) {
+      if (rows.length === 0) {
+        return invalidInputToast({
+          description: MISSING_INGREDIENTS_ERROR,
+        });
+      }
+    }
+    if (currentStep === 3) {
+      if (!validateRecipeDescription(formData.description)) {
+        return invalidInputToast({
+          description: RECIPE_DESCRIPTION_ERROR,
+        });
+      }
+
+      if (!validateRecipeInstructions(formData.instructions)) {
+        return invalidInputToast({
+          description: RECIPE_INSTRUCTIONS_ERROR,
+        });
+      }
+
+      if (!formData.cookingTime || !formData.prepTime) {
+        return invalidInputToast({ description: MISSING_DATA_ERROR });
+      }
+
+      if (formData.cookingTime.length > 3 || formData.prepTime.length > 3) {
+        return invalidInputToast({
+          description: TIME_ERROR,
+        });
+      }
+    }
+    setCurrentStep(currentStep + 1);
+  };
+
   const handleBack = () => setCurrentStep(currentStep - 1);
 
   const handleInputChange = (
@@ -110,25 +241,15 @@ export function useRecipeForm(
   const handleSetRecipe = (): Recipe | null => {
     if (!userId) {
       alert("You must be logged in to create a recipe");
-      return null;
-    }
-    if (
-      !formData.name ||
-      !formData.recipeKind ||
-      !formData.description ||
-      !formData.instructions ||
-      !formData.cookingTime ||
-      !formData.prepTime
-    ) {
-      alert("All fields are required");
+      navigate("/auth");
       return null;
     }
 
     const newRecipe: Recipe = {
-      user_id: userId,
+      user_id: { _id: userId },
       recipeData: {
         recipeName: formData.name,
-        recipeKind: formData.recipeKind!,
+        recipeKind: formData.recipeKind,
         description: formData.description,
         instructions: formData.instructions,
         cookingTime: parseInt(formData.cookingTime, 10),
@@ -175,6 +296,7 @@ export function useRecipeForm(
     try {
       const answer = await postRecipe(newRecipe, selectedFile);
       setRecipeID(answer._id);
+      clearLocalStorage(STORAGE_KEY);
       navigate(`/recipes/${answer._id}`);
     } catch (error) {
       console.error("Error posting recipe:", error);
@@ -210,5 +332,8 @@ export function useRecipeForm(
     error,
     handleRecipePreview,
     recipe,
+    isModalOpen,
+    handleContinuePrevious,
+    handleNew,
   };
 }

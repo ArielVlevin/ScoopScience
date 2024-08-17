@@ -25,7 +25,6 @@ const Register: React.FC = () => {
       navigate("/");
     } catch (error) {
       console.error("Registration failed:", error);
-      // Handle the error appropriately
     }
   };
 

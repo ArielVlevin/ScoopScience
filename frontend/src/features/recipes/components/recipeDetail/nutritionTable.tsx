@@ -1,3 +1,4 @@
+import Box from "@/components/class/box";
 import {
   Select,
   SelectTrigger,
@@ -8,11 +9,15 @@ import {
 import { Recipe } from "@/types";
 
 export interface NutritionTableProps {
+  className?: string;
   recipe: Recipe;
 }
-export default function NutritionTable({ recipe }: NutritionTableProps) {
+export default function NutritionTable({
+  className,
+  recipe,
+}: NutritionTableProps) {
   return (
-    <div className="bg-muted rounded-lg mx-auto p-6  hover:scale-105 duration-500">
+    <Box className={className}>
       <h2 className="text-xl font-bold ">Nurtional Table</h2>
       <div className="mt-2">
         <label htmlFor="serving-size" className="block text-sm font-medium">
@@ -135,6 +140,6 @@ export default function NutritionTable({ recipe }: NutritionTableProps) {
         <br />
         Fat 9 • Carbohydrate 4 • Protein 4
       </p>
-    </div>
+    </Box>
   );
 }

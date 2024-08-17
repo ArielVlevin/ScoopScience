@@ -9,15 +9,15 @@ const getLastRecipeID = async () => {
 export const createRecipe = async (req, res, next) => {
   try {
     const new_id = (await getLastRecipeID()) + 1;
-    const user_id = JSON.parse(req.body.user_id);
 
+    const user_id = req.body.user_id;
     const data = JSON.parse(req.body.recipeData);
     const recipeRating = JSON.parse(req.body.recipeRating);
     const recipeIngredient = JSON.parse(req.body.recipeIngredient);
 
     const photoPath = req.file
       ? `/assets/${req.file.path.split("/assets/")[1]}`
-      : null;
+      : "/assets/recipe/default_recipe_image.jpg"; // Default image if none provided
 
     const newRecipeData = {
       _id: new_id,
@@ -33,8 +33,6 @@ export const createRecipe = async (req, res, next) => {
     const newRecipe = new Recipe(newRecipeData);
 
     await newRecipe.save();
-
-    console.log("user_id:", user_id);
 
     await User.findByIdAndUpdate(user_id, {
       $push: { recipes: new_id },
@@ -57,7 +55,9 @@ export const createRecipe = async (req, res, next) => {
 export const getRecipe = async (req, res, next) => {
   const recipeID = req.params.id;
   try {
-    const recipe = await Recipe.findById(recipeID).exec();
+    const recipe = await Recipe.findById(recipeID)
+      .populate("user_id", "username")
+      .exec();
     if (recipe) {
       res.status(200).json(recipe);
     } else {
@@ -70,7 +70,9 @@ export const getRecipe = async (req, res, next) => {
 
 export const getAllRecipes = async (req, res, next) => {
   try {
-    const recipes = await Recipe.find({}).exec();
+    const recipes = await Recipe.find({})
+      .populate("user_id", "username")
+      .exec();
     res.status(200).json(recipes);
   } catch (error) {
     next(error);
@@ -82,12 +84,40 @@ export const getRecipesByKind = async (req, res, next) => {
   try {
     const recipes = await Recipe.find({
       "recipeData.recipeKind": recipeKind,
-    }).exec();
+    })
+      .populate("user_id", "username")
+      .exec();
+
     if (recipes.length > 0) {
       res.status(200).json(recipes);
     } else if (recipes.length === 0) {
-      res.status(200).json([]);
+      res.status(200).json([]); //Return an empty array if no recipes found
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPaginatedRecipes = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
+    const skip = (page - 1) * limit;
+
+    const recipes = await Recipe.find({})
+      .populate("user_id", "username")
+      .skip(skip)
+      .limit(limit)
+      .exec();
+
+    const totalRecipes = await Recipe.countDocuments(); // Get the total number of recipes
+
+    res.status(200).json({
+      recipes,
+      totalRecipes,
+      totalPages: Math.ceil(totalRecipes / limit),
+      currentPage: page,
+    });
   } catch (error) {
     next(error);
   }

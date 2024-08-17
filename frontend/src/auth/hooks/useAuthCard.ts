@@ -73,7 +73,22 @@ export function useAuthCard() {
         navigate("/");
       }
     } catch (err) {
+      if (err === "Username is already in use") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          username: err,
+        }));
+      }
+
+      if (err === "Email is already in use") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: err,
+        }));
+      }
       if (err instanceof Error) {
+        console.error("its fking error!!", err);
+
         if (err.message === "Your password is incorrect.") {
           setErrors((prevErrors) => ({
             ...prevErrors,

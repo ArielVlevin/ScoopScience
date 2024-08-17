@@ -76,7 +76,6 @@ export function RecipeCard({
             <h2 className="text-sm font-bold">
               {recipe.recipeData.recipeKind}
             </h2>
-
             <div className="flex ">
               <Rating
                 style={{ maxWidth: 80 }}
@@ -97,7 +96,11 @@ export function RecipeCard({
             {recipe.recipeData.description}
           </p>
 
-          <RecipeCardIcons allergies={recipe.recipeIngredient.allergies} />
+          <RecipeCardIcons
+            className="mb-2"
+            allergies={recipe.recipeIngredient.allergies}
+          />
+
           <div className="flex flex-col gap-2">
             {isFavoriteCard ? (
               <Button

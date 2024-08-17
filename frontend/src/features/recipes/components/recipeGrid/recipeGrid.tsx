@@ -58,6 +58,7 @@ type LoadMoreButtonProps = {
   itemsPerPage: number;
   totalRecipes: number;
   onLoadMore: () => void;
+  isLoading?: boolean;
 };
 
 export function LoadMoreButton({
@@ -65,13 +66,18 @@ export function LoadMoreButton({
   itemsPerPage,
   totalRecipes,
   onLoadMore,
+  isLoading,
 }: LoadMoreButtonProps) {
   if (itemsPerPage >= totalRecipes) return null;
 
   return (
     <div className={cn(className, "flex justify-center ")}>
-      <Button className="w-52 h-16 text-xl" onClick={onLoadMore}>
-        Load More
+      <Button
+        className="w-52 h-16 text-xl"
+        disabled={isLoading}
+        onClick={onLoadMore}
+      >
+        {isLoading ? "Loading..." : "Load More"}
       </Button>
     </div>
   );

@@ -8,7 +8,7 @@ import PrivateRoute from "@/config/privateRoute";
 import DashBoard from "@/auth/components/dashboard";
 import Logout from "@/auth/components/logout";
 
-import NewRecipe from "@/features/recipes/components/newRecipe/new";
+import NewRecipe from "@/features/recipes/pages/newRecipePage";
 
 const HomePage = lazy(() => import("@/pages/homePage"));
 

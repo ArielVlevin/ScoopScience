@@ -1,4 +1,10 @@
-import { RecipeRating, IngredientWithWeight, Totals, Allergies } from "@/types";
+import {
+  RecipeRating,
+  IngredientWithWeight,
+  Totals,
+  Allergies,
+  Row,
+} from "@/types";
 
 export const typeOptions = [
   "gelato",
@@ -28,9 +34,33 @@ export type RecipeData = {
 };
 
 export type Recipe = {
-  user_id?: number;
+  user_id?: {
+    _id?: number;
+    username?: string;
+  };
   _id?: number;
   recipeData: RecipeData;
   recipeRating: RecipeRating;
   recipeIngredient: Ingredients;
+};
+
+export type RecipeFormData = {
+  name: string;
+  description: string;
+  recipeKind: RecipeKind;
+  instructions: string;
+  cookingTime: string;
+  prepTime: string;
+  image: string;
+  isPublic: boolean;
+  ingredients?: Row[];
+  totals?: Totals;
+  allergies?: Allergies;
+};
+
+export type RecipeFormState = {
+  formData: RecipeFormData;
+  rows: Row[];
+  totals: Totals;
+  currentStep: number;
 };

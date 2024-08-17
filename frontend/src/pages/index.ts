@@ -11,4 +11,3 @@ export * from "../features/ingredients/pages/newIngredients.tsx";
 
 export * from "../features/recipes/pages/ExploreRecipes.tsx";
 export * from "../features/recipes/pages/recipeDetail.tsx";
-export * from "../features/recipes/pages/landingPage.tsx";

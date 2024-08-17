@@ -7,13 +7,18 @@ import {
 } from "@/components/icons/icon";
 
 import { Allergies } from "@/types";
+import { cn } from "@/utils/cn";
 
 type RecipeCardIconsProps = {
+  className?: string;
   allergies: Allergies;
 };
-export default function RecipeCardIcons({ allergies }: RecipeCardIconsProps) {
+export default function RecipeCardIcons({
+  className,
+  allergies,
+}: RecipeCardIconsProps) {
   return (
-    <div className="flex justify-center gap-4">
+    <div className={cn(className, "flex justify-center gap-4")}>
       {allergies.nuts ? (
         <div className="flex items-center gap-2">
           <NutIcon className="w-5 h-5 text-orange-800" />
@@ -21,14 +26,14 @@ export default function RecipeCardIcons({ allergies }: RecipeCardIconsProps) {
         </div>
       ) : null}
       {allergies.milk ? (
-        <div className="flex items-center gap-2">
-          <MilkIcon className="w-5 h-5 text-blue-200" />
-          <span className="text-muted-foreground">Milk</span>
+        <div className="flex items-center gap-1">
+          <MilkIcon className="size-4 text-blue-300" />
+          <span className="text-muted-foreground text-sm">Milk</span>
         </div>
       ) : null}
       {allergies.egg ? (
         <div className="flex items-center gap-2">
-          <EggIcon className="w-5 h-5  " />
+          <EggIcon className="w-5 h-5 " />
           <span className="text-muted-foreground">eggs</span>
         </div>
       ) : null}

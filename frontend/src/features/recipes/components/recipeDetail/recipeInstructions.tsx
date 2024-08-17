@@ -1,3 +1,4 @@
+import Box from "@/components/class/box";
 import { Recipe } from "@/types";
 
 type RecipeInstructionsProps = {
@@ -7,7 +8,7 @@ export default function RecipeInstructions({
   recipe,
 }: RecipeInstructionsProps) {
   return (
-    <div className="bg-muted rounded-lg p-6 w-full  hover:scale-105 duration-500 ">
+    <Box>
       <h2 className="text-xl font-bold mb-4">Instructions</h2>
       <ol className="space-y-4">
         <li>
@@ -43,6 +44,6 @@ export default function RecipeInstructions({
           </p>
         </li>
       </ol>
-    </div>
+    </Box>
   );
 }

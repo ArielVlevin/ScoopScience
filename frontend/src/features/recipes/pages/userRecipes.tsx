@@ -1,13 +1,11 @@
 import Page from "@/components/class/page";
 import Loading from "@/pages/loading";
 import ErrorPage from "@/pages/error";
-import RecipeGrid from "../components/recipeCard/RecipeGrid";
 import { useAuth } from "@/contexts/AuthContext";
 import { useGetRecipes } from "../hooks/useGetRecipes";
 import ZeroStatePage from "@/components/class/zeroStatePage";
 import { FileAddIcon } from "@/components/icons/icon";
-import NewRecipe from "../components/newRecipe/new";
-import { Recipe } from "../types/recipeTypes";
+
 import { Button } from "@/components/ui";
 import { Link } from "react-router-dom";
 import { useState } from "react";
