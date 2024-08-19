@@ -1,6 +1,7 @@
 import api from "@/config/api";
 import { Recipe } from "@/types";
 
+///post
 export async function postRecipe(data: Recipe, photo: File | null) {
   const formData = new FormData();
 
@@ -22,6 +23,17 @@ export async function postRecipe(data: Recipe, photo: File | null) {
     return response.data;
   } catch (error) {
     console.error("Error posting recipe:", error);
+    throw error;
+  }
+}
+
+///delete
+export async function deleteRecipe(recipeId: number): Promise<void> {
+  try {
+    const response = await api.delete(`/recipes/id/${recipeId}`);
+    console.log("Recipe deleted:", response.data);
+  } catch (error) {
+    console.error("Failed to delete recipe:", error);
     throw error;
   }
 }

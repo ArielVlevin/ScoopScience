@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { usePaginatedRecipes } from "../hooks/usePaginatedRecipes";
 import ErrorPage from "@/pages/error";
 import { useEffect } from "react";
+import Title from "@/components/class/title";
 
 export default function ExploreRecipesPage() {
   const {
@@ -28,7 +29,7 @@ export default function ExploreRecipesPage() {
   }
   return (
     <Page>
-      <a className="text-3xl font-bold text-primary">Explore Recipes</a>
+      <Title>Explore Recipes</Title>
       <Separator className="mt-6 mb-6" />
 
       {/* Show the number of recipes found */}

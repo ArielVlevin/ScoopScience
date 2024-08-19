@@ -28,10 +28,19 @@ const RecipesPage = lazy(
   () => import("@/features/recipes/pages/ExploreRecipes")
 );
 
+const ExploreNewsetRecipesPage = lazy(
+  () => import("@/features/recipes/pages/newestRecipes")
+);
+
+const ExploreTopRatedRecipesPage = lazy(
+  () => import("@/features/recipes/pages/topRatedRecipes")
+);
 const RecipeDetailPage = lazy(
   () => import("@/features/recipes/pages/recipeDetail")
 );
-const MakeRecipePage = lazy(() => import("@/features/recipes/pages/make"));
+const MakeRecipe = lazy(() => import("@/features/recipes/pages/make"));
+
+const EditRecipe = lazy(() => import("@/features/recipes/pages/edit"));
 
 const FavoritesRecipesPage = lazy(
   () => import("@/features/recipes/pages/favorites")
@@ -103,6 +112,23 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "recipes/toprated",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ExploreTopRatedRecipesPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "recipes/newest",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ExploreNewsetRecipesPage />
+          </Suspense>
+        ),
+      },
+
       //todo: change to user/{user_id}/recipes/newrecipe
       {
         path: "newrecipe",
@@ -121,12 +147,28 @@ const router = createBrowserRouter([
             index: true,
             element: (
               <Suspense fallback={<Loading />}>
-                <MakeRecipePage />
+                <MakeRecipe />
               </Suspense>
             ),
           },
         ],
       },
+      {
+        path: "/recipes/edit",
+        element: <PrivateRoute />,
+
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <EditRecipe />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+
       {
         path: "recipes/:recipeId",
         element: (

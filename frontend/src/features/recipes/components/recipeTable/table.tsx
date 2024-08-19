@@ -9,7 +9,7 @@ import {
 import { Row } from "@/types";
 import NewRecipeTableCells, { NewRecipeTableHeads } from "./tableSetUp";
 import { roundToTwoDecimalPlaces } from "@/utils/math";
-import calculateTotals from "@/features/recipes/utils/calculateTotals";
+import calculateTotals from "@/features/recipes/calc/calculateTotals";
 import EditWeightDialog from "./editWeight";
 import EditTotalWeight from "./editTotalWeight";
 type NewRecipeTableProops = {

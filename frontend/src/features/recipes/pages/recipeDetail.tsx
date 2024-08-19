@@ -56,6 +56,11 @@ export default function RecipeDetailPage() {
   const goToMakePage = () => {
     navigate(`/recipes/make?id=${recipe._id}`, { state: { recipe } });
   };
+
+  const goToEditPage = () => {
+    navigate(`/recipes/edit?id=${recipe._id}`, { state: { recipe } });
+  };
+
   return (
     <Page>
       <RecipeHeader recipe={recipe} />
@@ -112,6 +117,14 @@ export default function RecipeDetailPage() {
           >
             Make
           </Button>
+          {user && user._id === recipe.user_id?._id && (
+            <Button
+              onClick={goToEditPage}
+              className="w-full h-10 bg-red-700 text-white hover:bg-red-900 hover:scale-105 duration-500"
+            >
+              Edit The Recipe
+            </Button>
+          )}
         </div>
       </Grid>
 

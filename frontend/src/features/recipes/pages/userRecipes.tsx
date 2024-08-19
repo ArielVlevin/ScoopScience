@@ -4,7 +4,7 @@ import ErrorPage from "@/pages/error";
 import { useAuth } from "@/contexts/AuthContext";
 import { useGetRecipes } from "../hooks/useGetRecipes";
 import ZeroStatePage from "@/components/class/zeroStatePage";
-import { FileAddIcon } from "@/components/icons/icon";
+import { FileAddIcon, PlusIcon } from "@/components/icons/icon";
 
 import { Button } from "@/components/ui";
 import { Link } from "react-router-dom";
@@ -52,19 +52,27 @@ export default function UserRecipesPage() {
   return (
     <>
       <Page>
-        <div className="text-3xl font-bold text-primary mb-4 ">My Recipes</div>
+        <p className="text-3xl font-sans  font-medium text-primary mb-4 ">
+          My Recipes
+        </p>
+
         <Separator className="mt-6 mb-6" />
 
         {/* ----add new recipe----- */}
 
         <Link to="/newRecipe">
-          <Button variant="outline" className="w-40 h-12 text-xl mb-6">
+          <Button className="w-40 h-12 text-md mb-6">
+            <PlusIcon className="size-4 mr-2" />
             New Recipe
           </Button>
         </Link>
 
         {/* ----Cards----- */}
-        <RecipeGridList recipes={recipes} itemsPerPage={itemsPerPage} />
+        <RecipeGridList
+          recipes={recipes}
+          itemsPerPage={itemsPerPage}
+          isFavoriteCard
+        />
       </Page>
       <LoadMoreButton
         className="mb-12"

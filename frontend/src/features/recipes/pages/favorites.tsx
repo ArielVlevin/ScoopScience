@@ -2,7 +2,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useGetRecipes } from "../hooks/useGetRecipes";
 import Page from "@/components/class/page";
 import Loading from "@/pages/loading";
-import RecipeGrid from "../components/recipeCard/RecipeGrid";
 import ErrorPage from "@/pages/error";
 import { FileHeartIcon } from "@/components/icons/icon";
 import ZeroStatePage from "@/components/class/zeroStatePage";
@@ -12,6 +11,7 @@ import {
 } from "../components/recipeGrid/recipeGrid";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import Title from "@/components/class/title";
 
 export default function FavoritesRecipesPage() {
   const { user } = useAuth();
@@ -50,7 +50,7 @@ export default function FavoritesRecipesPage() {
   return (
     <>
       <Page>
-        <a className="text-3xl font-bold text-primary ">My Favorites Recipes</a>
+        <Title>My Favorites Recipes</Title>
         <Separator className="mt-6 mb-6" />
         {/* ----Cards----- */}
         <RecipeGridList

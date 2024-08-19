@@ -3,13 +3,17 @@ import { Recipe } from "@/types";
 import { useGetPaginatedRecipes } from "./useGetPaginatedRecipes";
 
 type usePaginatedRecipesProps = {
+  type?: string;
   initialPage?: number;
   limit?: number;
+  order?: "asc" | "desc";
 };
 
 export function usePaginatedRecipes({
+  type,
   initialPage = 1,
   limit = 6,
+  order,
 }: usePaginatedRecipesProps) {
   const [page, setPage] = useState(initialPage);
   const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
@@ -23,8 +27,10 @@ export function usePaginatedRecipes({
     isError,
     error,
   } = useGetPaginatedRecipes({
+    type: type,
     page: page,
     limit: limit,
+    order: order,
   });
 
   const handleLoadMore = () => {

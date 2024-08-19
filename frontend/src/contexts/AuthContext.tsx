@@ -30,7 +30,7 @@ export interface AuthContextType {
   isAuthenticated: boolean;
 
   handleFavorite: (recipe_id: number) => void;
-  setRecipeID: (recipe_id: number) => void;
+  updateUserRecipes: (recipe_id: number, action: "add" | "remove") => void;
 }
 
 interface AuthProviderProps {
@@ -166,12 +166,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    *
    * */
 
-  const setRecipeID = (recipe_id: number) => {
+  const updateUserRecipes = (recipe_id: number, action: "add" | "remove") => {
     if (!user || !recipe_id) return;
+
+    let updatedRecipes;
+
+    if (action === "add") {
+      // Add the recipe ID to the user's recipes array
+      updatedRecipes = [...user.recipes, recipe_id];
+    } else if (action === "remove") {
+      // Remove the recipe ID from the user's recipes array
+      updatedRecipes = user.recipes.filter((id) => id !== recipe_id);
+    } else {
+      return;
+    }
 
     const updatedUser = {
       ...user,
-      recipes: [...user.recipes, recipe_id],
+      recipes: updatedRecipes,
     };
 
     setUser(updatedUser);
@@ -199,7 +211,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         logout: handleLogout,
         isAuthenticated: !!user,
         handleFavorite,
-        setRecipeID,
+        updateUserRecipes,
       }}
     >
       {!loading && children}

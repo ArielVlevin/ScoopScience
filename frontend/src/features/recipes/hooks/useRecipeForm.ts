@@ -7,8 +7,8 @@ import {
   Totals,
   RecipeFormState,
 } from "@/types";
-import calculateTotals from "../utils/calculateTotals";
-import { postRecipe } from "@/features/recipes/services/postRecipe";
+import calculateTotals from "../calc/calculateTotals";
+import { postRecipe } from "@/features/recipes/services/api";
 import { useGetRecipesByKind } from "./useGetRecipesByKind";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,7 +36,7 @@ export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"
 ) {
   //
-  const { user, isAuthenticated, setRecipeID } = useAuth();
+  const { user, isAuthenticated, updateUserRecipes } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -295,7 +295,7 @@ export function useRecipeForm(
     if (!newRecipe) return alert("Error with the recipe, try again");
     try {
       const answer = await postRecipe(newRecipe, selectedFile);
-      setRecipeID(answer._id);
+      updateUserRecipes(answer._id, "add");
       clearLocalStorage(STORAGE_KEY);
       navigate(`/recipes/${answer._id}`);
     } catch (error) {

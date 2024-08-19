@@ -10,7 +10,7 @@ export const createRecipe = async (req, res, next) => {
   try {
     const new_id = (await getLastRecipeID()) + 1;
 
-    const user_id = req.body.user_id;
+    const user_id = JSON.parse(req.body.user_id)._id;
     const data = JSON.parse(req.body.recipeData);
     const recipeRating = JSON.parse(req.body.recipeRating);
     const recipeIngredient = JSON.parse(req.body.recipeIngredient);
@@ -47,6 +47,34 @@ export const createRecipe = async (req, res, next) => {
       ", user_id:",
       newRecipe.user_id
     );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteRecipe = async (req, res, next) => {
+  const recipeId = req.params.id;
+
+  try {
+    const recipe = await Recipe.findById(recipeId);
+
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    // Check if the user is the creator or an admin
+    if (
+      recipe.user_id.toString() !== req.user._id.toString() &&
+      !req.user.isAdmin
+    ) {
+      return res.status(403).json({
+        message: "Access denied. You can only delete your own recipes.",
+      });
+    }
+
+    await Recipe.findByIdAndDelete(recipeId);
+
+    res.status(200).json({ message: "Recipe deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -100,8 +128,7 @@ export const getRecipesByKind = async (req, res, next) => {
 
 export const getPaginatedRecipes = async (req, res, next) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 9;
+    const { limit = 9, page = 1 } = req.query;
     const skip = (page - 1) * limit;
 
     const recipes = await Recipe.find({})
@@ -110,13 +137,57 @@ export const getPaginatedRecipes = async (req, res, next) => {
       .limit(limit)
       .exec();
 
-    const totalRecipes = await Recipe.countDocuments(); // Get the total number of recipes
+    const totalRecipes = await Recipe.countDocuments();
 
     res.status(200).json({
       recipes,
       totalRecipes,
+      currentPage: parseInt(page, 10),
       totalPages: Math.ceil(totalRecipes / limit),
-      currentPage: page,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getRecipesByDate = async (req, res, next) => {
+  const { order = "desc", limit = 9, page = 1 } = req.query;
+
+  try {
+    const recipes = await Recipe.find({})
+      .sort({ createdAt: order === "asc" ? 1 : -1 })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit, 10));
+
+    const totalRecipes = await Recipe.countDocuments();
+
+    res.status(200).json({
+      recipes,
+      totalRecipes,
+      currentPage: parseInt(page, 10),
+      totalPages: Math.ceil(totalRecipes / limit),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getRecipesByRate = async (req, res, next) => {
+  const { order = "desc", limit = 9, page = 1 } = req.query;
+
+  try {
+    const recipes = await Recipe.find({})
+      .sort({ "recipeRating.ratingValue": order === "asc" ? 1 : -1 })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit, 10));
+
+    const totalRecipes = await Recipe.countDocuments();
+
+    res.status(200).json({
+      recipes,
+      totalRecipes,
+      currentPage: parseInt(page, 10),
+      totalPages: Math.ceil(totalRecipes / limit),
     });
   } catch (error) {
     next(error);

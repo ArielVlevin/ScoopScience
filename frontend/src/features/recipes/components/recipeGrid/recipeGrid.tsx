@@ -73,7 +73,7 @@ export function LoadMoreButton({
   return (
     <div className={cn(className, "flex justify-center ")}>
       <Button
-        className="w-52 h-16 text-xl"
+        className="w-52 h-16 text-xl bg-primary/85"
         disabled={isLoading}
         onClick={onLoadMore}
       >
