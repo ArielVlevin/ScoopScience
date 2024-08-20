@@ -65,12 +65,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const handleLogin = async (email: string, password: string) => {
     try {
       const data = await login(email, password);
-      const decodedUser = jwtDecode<User>(data.token);
+      const decodedUser = jwtDecode<User>(data.accessToken);
 
       setUser(decodedUser);
 
+      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+
       localStorage.setItem("user", JSON.stringify(decodedUser));
-      localStorage.setItem("token", data.token);
 
       setIsAuthenticated(true);
     } catch (error) {
@@ -85,6 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsAuthenticated(false);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
   };
 
   /*
@@ -98,7 +101,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const handleFavorite = (recipe_id: number) => {
     if (!user || !recipe_id) return;
 
-    if (user.favorites.includes(recipe_id)) {
+    if (user.favorites === undefined) {
+      user.favorites = [];
+      addFavorite(recipe_id);
+    } else if (user.favorites?.includes(recipe_id)) {
       removeFavorite(recipe_id);
     } else {
       addFavorite(recipe_id);
@@ -150,10 +156,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(updatedUser));
 
     try {
-      const response = await deleteData(`/favorites/delete/${recipe_id}`, {
+      await deleteData(`/favorites/delete/${recipe_id}`, {
         user_id: user._id,
       });
-      console.log("response:", response);
     } catch (error) {
       console.error("Failed to delete recipe from favorites:", error);
     }
@@ -173,6 +178,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     if (action === "add") {
       // Add the recipe ID to the user's recipes array
+      if (!user.recipes) user.recipes = [];
       updatedRecipes = [...user.recipes, recipe_id];
     } else if (action === "remove") {
       // Remove the recipe ID from the user's recipes array

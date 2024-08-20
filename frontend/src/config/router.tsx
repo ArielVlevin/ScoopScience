@@ -46,10 +46,6 @@ const FavoritesRecipesPage = lazy(
   () => import("@/features/recipes/pages/favorites")
 );
 
-const UserFavoritesRecipesPage = lazy(
-  () => import("@/features/recipes/pages/userFavorites")
-);
-
 const UserRecipesPage = lazy(
   () => import("@/features/recipes/pages/userRecipes")
 );
@@ -201,20 +197,6 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<Loading />}>
                 <UserRecipesPage />
-              </Suspense>
-            ),
-          },
-        ],
-      },
-      {
-        path: "profile/:userName/favorites",
-        element: <PrivateRoute />,
-        children: [
-          {
-            index: true,
-            element: (
-              <Suspense fallback={<Loading />}>
-                <UserFavoritesRecipesPage />
               </Suspense>
             ),
           },

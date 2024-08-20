@@ -36,7 +36,7 @@ export default function RecipeDetailPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [isButtonFilled, setIsButtonFilled] = useState(
-    user?.favorites.includes(recipe_id)
+    user?.favorites?.includes(recipe_id)
   );
 
   if (isNaN(recipe_id)) return <ErrorPage error="Invalid Recipe ID" />;

@@ -27,7 +27,7 @@ export function RecipeCard({
   //
   const navigate = useNavigate();
   const [isHeartFilled, setIsHeartFilled] = useState(
-    user?.favorites.includes(recipe._id!)
+    user?.favorites?.includes(recipe._id!)
   );
 
   const handleHeartClick = () => {

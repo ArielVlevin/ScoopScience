@@ -3,6 +3,20 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
+const generateTokens = (user) => {
+  const accessToken = jwt.sign(
+    { _id: user._id, username: user.username, email: user.email },
+    config.jwtSecret,
+    { expiresIn: "1d" }
+  );
+
+  const refreshToken = jwt.sign({ _id: user._id }, config.refreshTokenSecret, {
+    expiresIn: "7d",
+  });
+
+  return { accessToken, refreshToken };
+};
+
 const getLastUserID = async () => {
   const lastUser = await User.findOne().sort({ _id: -1 });
   return lastUser ? lastUser._id : 70000;
@@ -34,7 +48,6 @@ export const register = async ({ username, email, password }) => {
 };
 
 export const login = async ({ email, password }) => {
-  console.log("email: ", email, " password: ", password);
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -45,22 +58,11 @@ export const login = async ({ email, password }) => {
   if (!isMatch) {
     throw new Error("Your password is incorrect");
   }
-  const token = jwt.sign(
-    {
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      favorites: user.favorites,
-      recipes: user.recipes,
-    },
-    config.jwtSecret,
-    {
-      expiresIn: "1h",
-    }
-  );
+  const { accessToken, refreshToken } = generateTokens(user);
 
   return {
-    token,
+    accessToken,
+    refreshToken,
     user: {
       _id: user._id,
       username: user.username,

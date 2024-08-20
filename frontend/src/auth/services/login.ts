@@ -8,7 +8,8 @@ interface LoginResponse {
     favorites: number[];
     recipes: number[];
   };
-  token: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export async function login(

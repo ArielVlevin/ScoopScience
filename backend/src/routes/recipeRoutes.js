@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createRecipe,
+  editRecipe,
   deleteRecipe,
   getRecipe,
   setRate,
@@ -16,6 +17,8 @@ import authenticateUser from "../middleware/auth.js";
 const router = express.Router();
 
 router.post("/post", upload.single("photo"), authenticateUser, createRecipe);
+
+router.put("/id/:id", upload.single("photo"), authenticateUser, editRecipe);
 
 router.delete("/id/:id", authenticateUser, deleteRecipe);
 

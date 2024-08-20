@@ -1,5 +1,6 @@
 import { Recipe } from "../models/Recipe.js";
 import User from "../models/User.js";
+import { aggregateAllergies } from "../utils/recipeUtils.js";
 
 const getLastRecipeID = async () => {
   const lastRecipe = await Recipe.findOne().sort({ _id: -1 });
@@ -15,6 +16,10 @@ export const createRecipe = async (req, res, next) => {
     const recipeRating = JSON.parse(req.body.recipeRating);
     const recipeIngredient = JSON.parse(req.body.recipeIngredient);
 
+    const aggregatedAllergies = aggregateAllergies(
+      recipeIngredient.ingredients
+    );
+
     const photoPath = req.file
       ? `/assets/${req.file.path.split("/assets/")[1]}`
       : "/assets/recipe/default_recipe_image.jpg"; // Default image if none provided
@@ -27,7 +32,10 @@ export const createRecipe = async (req, res, next) => {
         photo: photoPath,
       },
       recipeRating,
-      recipeIngredient,
+      recipeIngredient: {
+        ...recipeIngredient,
+        allergies: aggregatedAllergies,
+      },
     };
 
     const newRecipe = new Recipe(newRecipeData);
@@ -47,6 +55,34 @@ export const createRecipe = async (req, res, next) => {
       ", user_id:",
       newRecipe.user_id
     );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const editRecipe = async (req, res, next) => {
+  const { id } = req.params;
+  const recipeData = JSON.parse(req.body.recipeData);
+
+  const photoPath = req.file
+    ? `/assets/${req.file.path.split("/assets/")[1]}`
+    : null;
+
+  try {
+    const recipe = await Recipe.findById(id);
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    // Update recipe fields
+    if (photoPath) {
+      recipe.recipeData = { ...recipeData, photo: photoPath };
+    } else {
+      recipe.recipeData = { ...recipeData };
+    }
+
+    await recipe.save();
+    res.status(200).json(recipe);
   } catch (error) {
     next(error);
   }

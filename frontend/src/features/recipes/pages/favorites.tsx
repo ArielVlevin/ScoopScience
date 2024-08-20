@@ -26,7 +26,7 @@ export default function FavoritesRecipesPage() {
     user?.favorites || []
   );
 
-  if (user?.favorites.length === 0)
+  if (recipes.length === 0)
     return (
       <ZeroStatePage
         title="You have no favorite recipes yet"

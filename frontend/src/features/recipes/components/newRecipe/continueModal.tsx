@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 type ContinueRecipeModalProps = {
@@ -15,7 +15,9 @@ export function ContinueRecipeModal({
   return (
     <Dialog open={isOpen}>
       <DialogContent>
-        <h2 className="text-xl font-bold">Continue Your Recipe</h2>
+        <DialogTitle className="text-xl font-bold">
+          Continue Your Recipe
+        </DialogTitle>
         <p>
           You have an unfinished recipe. Would you like to continue where you
           left off or start a new recipe?

@@ -37,11 +37,16 @@ export function useRecipeForm(
 ) {
   //
   const { user, isAuthenticated, updateUserRecipes } = useAuth();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated && user) setUserId(user._id);
+    if (isAuthenticated && user) {
+      setUserId(user._id);
+    }
   }, [isAuthenticated, user]);
+
+  const userKey = user ? user._id.toString() : "guest";
 
   //use State
 
@@ -63,20 +68,20 @@ export function useRecipeForm(
   // form
   //
   const [currentStep, setCurrentStep] = useState(() => {
-    return loadFromLocalStorage(STORAGE_KEY)?.currentStep || 1;
+    return loadFromLocalStorage(userKey)?.currentStep || 1;
   });
 
   const [rows, setRows] = useState<Row[]>(() => {
-    return loadFromLocalStorage(STORAGE_KEY)?.rows || [];
+    return loadFromLocalStorage(userKey)?.rows || [];
   });
 
   const [totals, setTotals] = useState<Totals>(() => {
-    return loadFromLocalStorage(STORAGE_KEY)?.totals || calculateTotals(rows);
+    return loadFromLocalStorage(userKey)?.totals || calculateTotals(rows);
   });
 
   const [formData, setFormData] = useState(() => {
     return (
-      loadFromLocalStorage(STORAGE_KEY)?.formData || {
+      loadFromLocalStorage(userKey)?.formData || {
         name: "",
         description: "",
         recipeKind: initialRecipeKind,
@@ -120,8 +125,8 @@ export function useRecipeForm(
   }, [rows, totals]);
 
   useEffect(() => {
-    const storedRecipe = loadFromLocalStorage(STORAGE_KEY);
-    if (storedRecipe) {
+    const storedRecipe = loadFromLocalStorage(userKey);
+    if (storedRecipe && storedRecipe?.rows.length > 0) {
       setIsModalOpen(true);
     }
   }, []);
@@ -131,7 +136,7 @@ export function useRecipeForm(
   };
 
   const handleNew = () => {
-    clearLocalStorage(STORAGE_KEY); // Clear the local storage
+    clearLocalStorage(userKey);
 
     setFormData({
       name: "",
@@ -215,13 +220,11 @@ export function useRecipeForm(
   };
 
   const handleAdditionalSelectChange = (value: string) => {
-    console.log("value:", value);
     const selectedRecipe = recipes.find(
       (recipe) => recipe.recipeData.recipeName === value
     );
     if (selectedRecipe) {
       setRows(selectedRecipe.recipeIngredient.ingredients);
-      console.log("rows:", rows);
       setTotals(selectedRecipe.recipeIngredient.totalData);
     }
   };
@@ -267,7 +270,7 @@ export function useRecipeForm(
         ingredients: formData.ingredients!,
         totalData: formData.totals!,
         allergies: {
-          milk: true,
+          milk: false,
           nuts: false,
           egg: false,
           soy: false,
@@ -296,12 +299,12 @@ export function useRecipeForm(
     try {
       const answer = await postRecipe(newRecipe, selectedFile);
       updateUserRecipes(answer._id, "add");
-      clearLocalStorage(STORAGE_KEY);
+      clearLocalStorage(userKey);
+      alert("Recipe successfully created");
       navigate(`/recipes/${answer._id}`);
     } catch (error) {
       console.error("Error posting recipe:", error);
       alert("Error posting recipe");
-      throw error;
     }
     setIsOpen(false);
   };

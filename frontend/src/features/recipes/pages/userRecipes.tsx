@@ -28,7 +28,7 @@ export default function UserRecipesPage() {
     setItemsPerPage(itemsPerPage + 6);
   };
 
-  if (user?.recipes.length === 0)
+  if (recipes.length === 0)
     return (
       <ZeroStatePage
         title="You have no created recipes yet"

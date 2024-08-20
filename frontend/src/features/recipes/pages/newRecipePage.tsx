@@ -55,11 +55,13 @@ export default function NewRecipe() {
 
   return (
     <div className="container mx-auto ">
-      <ContinueRecipeModal
-        isOpen={isModalOpen}
-        onContinue={handleContinuePrevious}
-        onNew={handleNew}
-      />
+      {isModalOpen && (
+        <ContinueRecipeModal
+          isOpen={isModalOpen}
+          onContinue={handleContinuePrevious}
+          onNew={handleNew}
+        />
+      )}
 
       <form className="gap-6 m-6 bg-muted rounded-lg p-6 mb-6  h-full items-center justify-center drop-shadow-xl mt-16 mb-16">
         <div className="text-3xl font-bold text-primary mb-4">New Recipe</div>
@@ -141,7 +143,9 @@ export default function NewRecipe() {
                     {recipes.map((recipe) => (
                       <SelectItem
                         key={recipe._id}
-                        value={recipe.recipeData.recipeName}
+                        value={
+                          recipe._id?.toString() || recipe.recipeData.recipeName
+                        }
                       >
                         {recipe.recipeData.recipeName}
                       </SelectItem>
