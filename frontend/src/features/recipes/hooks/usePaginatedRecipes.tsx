@@ -36,10 +36,19 @@ export function usePaginatedRecipes({
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
+  const handleBack = () => {
+    setPage((prevPage) => prevPage - 1 || 1);
+  };
+
+  const handleSetPage = (newPage: number) => {
+    if (newPage > 0 && newPage <= totalPages) setPage(newPage);
+    else setPage(1);
+  };
 
   useEffect(() => {
     if (recipes && recipes.length > 0) {
-      setAllRecipes((prevRecipes) => [...prevRecipes, ...recipes]);
+      //setAllRecipes((prevRecipes) => [...prevRecipes, ...recipes]);
+      setAllRecipes(recipes);
     }
   }, [recipes]);
 
@@ -51,6 +60,8 @@ export function usePaginatedRecipes({
     currentPage: currentPage,
     isLoading: isLoading,
     handleLoadMore: handleLoadMore,
+    handleBack: handleBack,
+    handleSetPage: handleSetPage,
     isError: isError,
     error: error,
   };

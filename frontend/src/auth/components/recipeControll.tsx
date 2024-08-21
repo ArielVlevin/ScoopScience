@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { createSwapy } from "swapy";
 
 import {
   DropdownMenu,
@@ -23,12 +24,57 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { MenuIcon } from "lucide-react";
-import { PlusIcon } from "@/components/icons/icon";
+import { ArrowRightIcon, MenuIcon, MoveHorizontalIcon } from "lucide-react";
+import { ArrowLeftIcon, PlusIcon } from "@/components/icons/icon";
 import { Separator } from "@/components/ui/separator";
 import Title from "@/components/class/title";
+import { usePaginatedRecipes } from "@/features/recipes/hooks/usePaginatedRecipes";
+import ErrorPage from "@/pages/error";
+import { useEffect, useRef } from "react";
 
 export default function RecipeControl() {
+  const {
+    recipes,
+    page,
+    totalPages,
+    totalRecipes,
+    isLoading,
+    handleLoadMore,
+    handleBack,
+    handleSetPage,
+    isError,
+    error,
+  } = usePaginatedRecipes({ type: "getRecipesByDate", limit: 10 });
+
+  //
+  const handlePageChange = (newPage: number) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      handleSetPage(newPage);
+    }
+  };
+  //
+
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const swapy = createSwapy(containerRef.current, {
+      animation: "dynamic", // You can also use 'spring' or 'none'
+    });
+
+    // Optional: handle swap events
+    swapy.onSwap((event) => {
+      console.log("New order:", event.data.array);
+    });
+
+    return () => {
+      swapy.destroy(); // Clean up on component unmount
+    };
+  }, []);
+
+  if (isError && error) {
+    return <ErrorPage error={error.message} />;
+  }
+
   return (
     <>
       <Title>Recipes</Title>
@@ -60,123 +106,70 @@ export default function RecipeControl() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Image</TableHead>
                     <TableHead>Name</TableHead>
-                    <TableHead>Ingredients</TableHead>
                     <TableHead>Category</TableHead>
+                    <TableHead>Create at</TableHead>
+                    <TableHead>Ingredients</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <img
-                        src="/placeholder.svg"
-                        width="64"
-                        height="64"
-                        alt="Recipe image"
-                        className="aspect-square rounded-md object-cover"
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      Grilled Chicken Salad
-                    </TableCell>
-                    <TableCell>Chicken, Lettuce, Tomatoes, Dressing</TableCell>
-                    <TableCell>Salad</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            aria-haspopup="true"
-                            size="icon"
-                            variant="ghost"
-                          >
-                            <MenuIcon className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>Delete</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <img
-                        src="/placeholder.svg"
-                        width="64"
-                        height="64"
-                        alt="Recipe image"
-                        className="aspect-square rounded-md object-cover"
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      Vegetable Stir-Fry
-                    </TableCell>
-                    <TableCell>
-                      Broccoli, Carrots, Bell Peppers, Soy Sauce
-                    </TableCell>
-                    <TableCell>Main Dish</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            aria-haspopup="true"
-                            size="icon"
-                            variant="ghost"
-                          >
-                            <MenuIcon className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>Delete</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <img
-                        src="/placeholder.svg"
-                        width="64"
-                        height="64"
-                        alt="Recipe image"
-                        className="aspect-square rounded-md object-cover"
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      Chocolate Chip Cookies
-                    </TableCell>
-                    <TableCell>Flour, Sugar, Butter, Chocolate Chips</TableCell>
-                    <TableCell>Dessert</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            aria-haspopup="true"
-                            size="icon"
-                            variant="ghost"
-                          >
-                            <MenuIcon className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>Delete</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
+                  {recipes.map((recipe) => (
+                    <TableRow key={recipe._id}>
+                      <TableCell id="name" className="font-medium">
+                        {recipe.recipeData.recipeName}
+                      </TableCell>
+                      <TableCell>{recipe.recipeData.recipeKind}</TableCell>
+                      <TableCell>{recipe.createdAt.slice(0, 10)}</TableCell>
+                      <TableCell className="text-xs">
+                        {recipe.recipeIngredient.ingredients
+                          .map((i) => i.name)
+                          .join(", ")}
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoveHorizontalIcon className="h-4 w-4" />
+                              <span className="sr-only">More actions</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>Edit</DropdownMenuItem>
+                            <DropdownMenuItem>Delete</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
+              <div className="flex justify-center mt-8">
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() => handlePageChange(page - 1)}
+                    disabled={page <= 1}
+                  >
+                    <ArrowLeftIcon className="h-4 w-4" />
+                  </Button>
+                  {[...Array(totalPages)].map((_, i) => (
+                    <Button
+                      key={i + 1}
+                      onClick={() => handlePageChange(i + 1)}
+                      className=""
+                      variant={i + 1 === page ? "default" : "outline"}
+                    >
+                      {i + 1}
+                    </Button>
+                  ))}
+                  <Button
+                    onClick={() => handlePageChange(page + 1)}
+                    disabled={page >= totalPages}
+                  >
+                    <ArrowRightIcon className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
