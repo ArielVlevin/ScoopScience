@@ -6,7 +6,12 @@ import React, {
   useContext,
 } from "react";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import { register, login, logout as logoutUser } from "@/auth/services";
+import {
+  register,
+  login,
+  logout as logoutUser,
+  refreshAccessToken,
+} from "@/auth/services";
 import { deleteData, postData } from "@/services/apiFunctions";
 
 interface User extends JwtPayload {
@@ -42,6 +47,28 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  function scheduleTokenRefresh(refreshToken: string, expiresIn: number) {
+    const timeout = expiresIn * 0.9 * 1000;
+
+    setTimeout(async () => {
+      try {
+        console.log("Token expired, refreshing...");
+        const newAccessToken = await refreshAccessToken(refreshToken);
+        localStorage.setItem("token", newAccessToken);
+        // Schedule the next refresh
+        const decodedToken: any = jwtDecode(newAccessToken);
+        scheduleTokenRefresh(
+          refreshToken,
+          decodedToken.exp - Date.now() / 1000
+        );
+      } catch (err) {
+        console.error("Error refreshing access token:", err);
+
+        // Handle refresh error, maybe log out the user
+      }
+    }, timeout);
+  }
+
   //useStates
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -64,13 +91,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const handleLogin = async (email: string, password: string) => {
     try {
-      const data = await login(email, password);
-      const decodedUser = jwtDecode<User>(data.accessToken);
+      const { accessToken, refreshToken } = await login(email, password);
 
+      const decodedToken: any = jwtDecode(accessToken);
+
+      const decodedUser = jwtDecode<User>(accessToken);
       setUser(decodedUser);
 
-      localStorage.setItem("token", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
+      scheduleTokenRefresh(refreshToken, decodedToken.exp - Date.now() / 1000);
+
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
 
       localStorage.setItem("user", JSON.stringify(decodedUser));
 

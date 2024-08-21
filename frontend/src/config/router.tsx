@@ -5,7 +5,7 @@ import ErrorPage from "@/pages/error";
 import AuthPage from "@/auth/pages/auth";
 import Loading from "@/pages/loading";
 import PrivateRoute from "@/config/privateRoute";
-import DashBoard from "@/auth/components/dashboard";
+import DashBoard from "@/auth/pages/dashboard";
 import Logout from "@/auth/components/logout";
 
 import NewRecipe from "@/features/recipes/pages/newRecipePage";
@@ -40,7 +40,9 @@ const RecipeDetailPage = lazy(
 );
 const MakeRecipe = lazy(() => import("@/features/recipes/pages/make"));
 
-const EditRecipe = lazy(() => import("@/features/recipes/pages/edit"));
+const EditRecipe = lazy(
+  () => import("@/features/recipes/components/editRecipe/edit")
+);
 
 const FavoritesRecipesPage = lazy(
   () => import("@/features/recipes/pages/favorites")
@@ -50,6 +52,11 @@ const UserRecipesPage = lazy(
   () => import("@/features/recipes/pages/userRecipes")
 );
 
+const AdminControllPanel = lazy(
+  () => import("@/auth/components/adminControllPanel")
+);
+
+const RecipeController = lazy(() => import("@/auth/components/recipe"));
 const ContactUs = lazy(() => import("@/pages/contact"));
 const Login = lazy(() => import("@/auth/pages/login"));
 const Register = lazy(() => import("@/auth/pages/register"));
@@ -244,7 +251,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/dashboard",
+    path: "control/dashboard",
     element: <PrivateRoute />,
     children: [
       {
@@ -252,6 +259,35 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <DashBoard />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+
+  {
+    path: "control/admin",
+    element: <PrivateRoute />,
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <AdminControllPanel />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+  {
+    path: "control/admin/recipe",
+    element: <PrivateRoute />,
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<Loading />}>
+            <RecipeController />
           </Suspense>
         ),
       },

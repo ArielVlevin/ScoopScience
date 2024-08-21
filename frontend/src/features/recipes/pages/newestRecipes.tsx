@@ -8,7 +8,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { usePaginatedRecipes } from "../hooks/usePaginatedRecipes";
 import ErrorPage from "@/pages/error";
-import { useEffect } from "react";
 import Title from "@/components/class/title";
 
 export default function ExploreNewsetRecipesPage() {
@@ -23,10 +22,10 @@ export default function ExploreNewsetRecipesPage() {
     error,
   } = usePaginatedRecipes({ type: "getRecipesByDate" });
 
-  useEffect(() => {});
   if (isError && error) {
     return <ErrorPage error={error?.message} />;
   }
+
   return (
     <div>
       <Page>

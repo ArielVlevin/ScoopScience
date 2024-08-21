@@ -109,8 +109,8 @@ export function useRecipeForm(
       totals,
       currentStep,
     };
-    saveToLocalStorage(STORAGE_KEY, recipeFormState);
-  }, [formData, rows, totals, currentStep]);
+    saveToLocalStorage(userKey, recipeFormState);
+  }, [formData, rows, totals, currentStep, userKey]);
 
   useEffect(() => {
     refetch();
@@ -129,7 +129,7 @@ export function useRecipeForm(
     if (storedRecipe && storedRecipe?.rows.length > 0) {
       setIsModalOpen(true);
     }
-  }, []);
+  }, [userKey]);
 
   const handleContinuePrevious = () => {
     setIsModalOpen(false);

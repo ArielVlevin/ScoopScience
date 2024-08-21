@@ -5,7 +5,13 @@ export const register = async (req, res, next) => {
   try {
     const user = await authService.register(req.body);
 
-    console.log("\nNew User Registered:\n", user, "\n\n");
+    console.log(
+      "\nNew User Registered:\n",
+      user._id,
+      user.username,
+      user.email,
+      "\n"
+    );
 
     res.status(201).json(user);
   } catch (error) {
@@ -19,13 +25,12 @@ export const login = async (req, res, next) => {
       req.body
     );
 
-    console.log("\nUser Logged In:\n", user, "\n\n");
-
     console.log(
-      "TEST DELETE LATER(controllers/authController.js):\n accessToken:",
-      accessToken,
-      "refreshToken:",
-      refreshToken
+      "\nUser Logged In:\n",
+      user._id,
+      user.username,
+      user.email,
+      "\n"
     );
 
     res.json({ accessToken, refreshToken, user });
@@ -42,14 +47,12 @@ export const refreshAccessToken = async (req, res) => {
   }
 
   try {
-    // Verify the refresh token
     const decoded = jwt.verify(refreshToken, config.refreshTokenSecret);
 
-    // Issue a new access token
     const accessToken = jwt.sign(
       { _id: decoded._id, username: decoded.username, email: decoded.email },
       config.jwtSecret,
-      { expiresIn: "1d" }
+      { expiresIn: "2h" }
     );
 
     res.json({ accessToken });

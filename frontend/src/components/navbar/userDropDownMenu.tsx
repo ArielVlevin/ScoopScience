@@ -29,7 +29,7 @@ export default function UserDropDownMenu() {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Hello {user.username}!</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <Link to="dashboard">
+          <Link to="/control/dashboard">
             <DropdownMenuItem>Dashboard</DropdownMenuItem>
           </Link>
 

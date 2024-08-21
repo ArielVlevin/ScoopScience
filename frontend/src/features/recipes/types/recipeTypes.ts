@@ -33,6 +33,7 @@ export type RecipeData = {
   isPublic: boolean;
 };
 
+//CHANGE TO NEWRECIPE AND RECIPE
 export type Recipe = {
   user_id?: {
     _id?: number;
@@ -42,6 +43,10 @@ export type Recipe = {
   recipeData: RecipeData;
   recipeRating: RecipeRating;
   recipeIngredient: Ingredients;
+};
+
+export type ExistingRecipe = Recipe & {
+  createdAt: Date;
 };
 
 export type RecipeFormData = {

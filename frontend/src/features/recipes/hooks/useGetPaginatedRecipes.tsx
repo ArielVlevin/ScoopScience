@@ -1,6 +1,6 @@
 import queryClient from "@/config/query";
 import { fetchData } from "@/services/apiFunctions";
-import { Recipe } from "@/types";
+import { ExistingRecipe, Recipe } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 type useGetPaginatedRecipesProps = {
@@ -20,7 +20,7 @@ export function useGetPaginatedRecipes({
     queryKey: ["recipes", type, page, limit, order],
     queryFn: () =>
       fetchData<{
-        recipes: Recipe[];
+        recipes: ExistingRecipe[] | Recipe[];
         totalPages: number;
         totalRecipes: number;
         currentPage: number;
