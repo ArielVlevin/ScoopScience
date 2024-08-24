@@ -3,21 +3,31 @@ import Loading from "@/pages/loading.tsx";
 import ErrorPage from "@/pages/error.tsx";
 import Page from "@/components/class/page";
 import { useGetIngredientsArray } from "../hooks/useGetIngredientArray";
-import { MilkIcon, NutIcon } from "@/components/icons/icon";
 import Grid from "@/components/class/grid";
-import {
-  CandyIcon,
-  CircleEllipsisIcon,
-  CitrusIcon,
-  DropletIcon,
-  EllipsisIcon,
-} from "lucide-react";
+import { EllipsisIcon } from "lucide-react";
 import Title from "@/components/class/title";
 import { Separator } from "@/components/ui/separator";
+import { categoryIcons } from "../types/icons";
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui";
+import IngredientCard from "../components/ingredientCard";
 
 export default function IngredientsPage() {
   const { ingredientsByCategory, isLoading, isError, error } =
     useGetIngredientsArray();
+
+  const [selectedIngredient, setSelectedIngredient] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const openDialog = (ingredient: string) => {
+    setSelectedIngredient(ingredient);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedIngredient("");
+  };
 
   if (isLoading) return <Loading />;
   if (isError && error) return <ErrorPage error={error?.message} />;
@@ -45,33 +55,20 @@ export default function IngredientsPage() {
                     className="group flex flex-col items-center size-48"
                     key={ingredient._id}
                   >
-                    <div className="inline-block rounded-full bg-background p-4 ">
-                      {category === "dairy" ? (
-                        <MilkIcon className="size-24 text-blue-200" />
-                      ) : category === "sugars" ? (
-                        <CandyIcon className="size-24 text-red-500" />
-                      ) : category === "stabilizer" ? (
-                        <CandyIcon className="size-24 " />
-                      ) : category === "fruits" ? (
-                        <CitrusIcon className="size-24 text-green-300" />
-                      ) : category === "nuts" ? (
-                        <NutIcon className="size-24 text-orange-300" />
-                      ) : category === "liquid" ? (
-                        <DropletIcon className="size-24 text-blue-300" />
-                      ) : (
-                        <CircleEllipsisIcon className="size-24 text-blue-300" />
-                      )}
+                    <div className="inline-block rounded-full bg-background p-4">
+                      {categoryIcons[category as keyof typeof categoryIcons]}
                     </div>
-                    <Link
-                      to={`/ingredients/${ingredient._id}`}
+                    <div
+                      className="group flex flex-col items-center size-48 cursor-pointer"
                       key={ingredient._id}
+                      onClick={() => openDialog(ingredient._id)}
                     >
                       <div className="mt-2 text-center">
                         <h3 className="text-lg font-medium group-hover:text-primary transition-colors hover:underline">
                           {ingredient.name}
                         </h3>
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 ))}
                 {/* "See More" Button */}
@@ -97,6 +94,13 @@ export default function IngredientsPage() {
           );
         })}
       </div>
+      {isDialogOpen && selectedIngredient && (
+        <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
+          <DialogContent className="p-0 overflow-hidden  bg-gray-100">
+            <IngredientCard _id={selectedIngredient} />
+          </DialogContent>
+        </Dialog>
+      )}
     </Page>
   );
 }

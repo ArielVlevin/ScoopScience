@@ -12,7 +12,6 @@ const ingredientWithWeightSchema = new Schema({
   totalSolids: { type: Number, required: true },
   msnf: { type: Number, required: true },
   protein: { type: Number, required: true },
-  image: { type: String, required: true },
   allergies: { type: allergiesSchema, default: {} },
   weight: { type: Number, required: true },
 });
@@ -55,6 +54,11 @@ const recipeDataSchema = new Schema({
 // Schema for recipe rating
 const recipeRatingSchema = new Schema({
   likes: { type: Number, required: true },
+  likesUsers: [
+    {
+      user_id: { type: Number, required: true, ref: "User" },
+    },
+  ],
   ratingValue: { type: Number, required: true },
   ratingAmount: { type: Number, required: true },
   ratingUsers: [

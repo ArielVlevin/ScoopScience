@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { IceCreamConeIcon } from "@/components/icons/icon";
@@ -7,7 +7,6 @@ import "./navbarBtn.css";
 import UserDropDownMenu from "../components/navbar/userDropDownMenu";
 import Search from "@/components/class/search";
 import { ModeToggle } from "@/components/navbar/modeToggle";
-import NewRecipeDialog from "@/features/recipes/components/newRecipe/newRecipe";
 
 export default function NavBar() {
   const [activeTab, setActiveTab] = useState<"create" | "explore">("create");

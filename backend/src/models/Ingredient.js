@@ -16,10 +16,15 @@ const ingredientSchema = new Schema(
     calories: { type: Number, required: true },
     sugar: { type: Number, required: true },
     fat: { type: Number, required: true },
+    saturates: { type: Number, required: true },
+
+    fatLevel: { type: String },
+    saturatesLevel: { type: String },
+    sugarsLevel: { type: String },
+
     totalSolids: { type: Number, required: true },
     msnf: { type: Number, required: true },
     protein: { type: Number, required: true },
-    image: { type: String, required: true },
     allergies: { type: allergiesSchema, default: {} },
   },
   { timestamps: true }

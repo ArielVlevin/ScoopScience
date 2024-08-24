@@ -12,7 +12,11 @@ export default function authenticateUser(req, res, next) {
 
     req.user = decoded;
     next();
-  } catch (ex) {
-    res.status(400).send("Invalid token.");
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      console.log("Token expired");
+      return res.status(401).json({ message: "Token expired" });
+    }
+    return res.status(401).json({ message: "Invalid token" });
   }
 }

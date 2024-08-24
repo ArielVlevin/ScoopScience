@@ -26,12 +26,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
-    const { user, isAuthenticated, logout } = useAuth();
-    const navigate = useNavigate();
+    //const { logout } = useAuth();
+    //const navigate = useNavigate();
     if (error.response?.status === 401) {
       console.error("Unauthorized access - maybe token expired.");
-      if (user || isAuthenticated) await logout();
-      navigate("/auth");
+      // await logout();
+      //  navigate("/auth");
     }
     return Promise.reject(error);
   }

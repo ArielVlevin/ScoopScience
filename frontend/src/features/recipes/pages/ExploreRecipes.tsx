@@ -1,5 +1,3 @@
-import Page from "@/components/class/page";
-
 import {
   LoadMoreButton,
   RecipeFound,
@@ -10,6 +8,8 @@ import { usePaginatedRecipes } from "../hooks/usePaginatedRecipes";
 import ErrorPage from "@/pages/error";
 import { useEffect } from "react";
 import Title from "@/components/class/title";
+import Sidebar from "../../../components/class/sideBar";
+import SearchBar from "@/layouts/searchBar";
 
 export default function ExploreRecipesPage() {
   const {
@@ -28,63 +28,41 @@ export default function ExploreRecipesPage() {
     return <ErrorPage error={error?.message} />;
   }
   return (
-    <Page>
-      <Title>Explore Recipes</Title>
-      <Separator className="mt-6 mb-6" />
+    <div className="flex min-h-screen w-full">
+      <Sidebar />
+      <div className="flex-1">
+        <main className="p-6">
+          <Title>Explore Recipes</Title>
+          <SearchBar />
+          <Separator className="mt-6 mb-6" />
 
-      {/* Show the number of recipes found */}
-      <RecipeFound
-        recipesLength={totalRecipes}
-        isShowRecipeFound={true}
-        className="mb-4"
-      />
+          {/* Show the number of recipes found */}
+          <RecipeFound
+            recipesLength={totalRecipes}
+            isShowRecipeFound={true}
+            className="mb-4"
+          />
 
-      {/* Display the grid of recipes */}
-      <RecipeGridList
-        recipes={allRecipes}
-        itemsPerPage={allRecipes.length}
-        className="mb-8"
-      />
+          {/* Display the grid of recipes */}
+          <RecipeGridList
+            recipes={allRecipes}
+            itemsPerPage={allRecipes.length}
+            className="mb-8"
+          />
 
-      {/* Load More button */}
+          {/* Load More button */}
 
-      {page < (totalPages || 0) && (
-        <LoadMoreButton
-          itemsPerPage={allRecipes.length}
-          totalRecipes={totalRecipes}
-          onLoadMore={handleLoadMore}
-          className="mt-6"
-          isLoading={isLoading}
-        />
-      )}
-    </Page>
+          {page < (totalPages || 0) && (
+            <LoadMoreButton
+              itemsPerPage={allRecipes.length}
+              totalRecipes={totalRecipes}
+              onLoadMore={handleLoadMore}
+              className="mt-6"
+              isLoading={isLoading}
+            />
+          )}
+        </main>
+      </div>
+    </div>
   );
 }
-
-/*
-      <div>
-        <a className="text-3xl font-bold text-primary ">Explore Recipes</a>
-        <Separator className="mt-6 mb-6" />
-      </div>
-      <Page>
-        <a className="text-3xl font-bold text-primary ">Explore Recipes</a>
-        <Separator className="mt-6 mb-6" />
-        {/* ----Toolbar----- 
-            <div className="w-11/12 mx-auto">
-       <SortRecipesBar />
-      </div>
-      }
-
-        <RecipeFound className="mb-4" recipesLength={recipes.length} />
-        <RecipeGridList recipes={recipes} itemsPerPage={itemsPerPage} />
-      </Page>
-      <LoadMoreButton
-        className="mb-12"
-        itemsPerPage={itemsPerPage}
-        totalRecipes={recipes.length}
-        onLoadMore={handleLoadMore}
-      />
-    </>
-  );
-}
-*/

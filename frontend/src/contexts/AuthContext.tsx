@@ -54,13 +54,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         console.log("Token expired, refreshing...");
         const newAccessToken = await refreshAccessToken(refreshToken);
-        localStorage.setItem("token", newAccessToken);
-        // Schedule the next refresh
-        const decodedToken: any = jwtDecode(newAccessToken);
-        scheduleTokenRefresh(
-          refreshToken,
-          decodedToken.exp - Date.now() / 1000
-        );
+        if (newAccessToken) {
+          localStorage.setItem("token", newAccessToken);
+          const decodedToken: any = jwtDecode(newAccessToken);
+          scheduleTokenRefresh(
+            refreshToken,
+            decodedToken.exp - Date.now() / 1000
+          );
+        } else {
+          console.error("Failed to refresh token, logging out...");
+          handleLogout();
+        }
       } catch (err) {
         console.error("Error refreshing access token:", err);
 
@@ -232,9 +236,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const storedUser = localStorage.getItem("user");
 
     if (token && storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
+      try {
+        const decodedToken: any = jwtDecode(token);
+
+        // בדיקה אם הטוקן פג תוקף
+        if (decodedToken.exp * 1000 < Date.now()) {
+          console.warn("Token has expired. Logging out...");
+          handleLogout(); // ניתוק המשתמש אם הטוקן פג תוקף
+        } else {
+          // אם הטוקן תקף, שחזר את פרטי המשתמש
+          setUser(JSON.parse(storedUser));
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+        handleLogout(); // ניתוק המשתמש אם יש שגיאה בפענוח הטוקן
+      }
     }
+
     setLoading(false);
   }, []);
 

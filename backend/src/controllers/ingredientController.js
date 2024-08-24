@@ -1,4 +1,5 @@
 import { Ingredient } from "../models/Ingredient.js";
+import { getNutrientCategory } from "../utils/ingredientUtils.js";
 
 const getLastIngredientID = async (category) => {
   const lastIngredient = await Ingredient.findOne({ category }).sort({
@@ -9,25 +10,25 @@ const getLastIngredientID = async (category) => {
 
 export const createIngredient = async (req, res, next) => {
   try {
-    const { name, category, calories, sugar, fat, totalSolids, msnf, protein } =
-      req.body;
+    const { fat, saturates, sugars } = req.body;
+
+    const fatLevel = getNutrientCategory("fat", fat);
+    const saturatesLevel = getNutrientCategory("saturates", saturates);
+    const sugarsLevel = getNutrientCategory("sugars", sugars);
+
     const newID = (await getLastIngredientID(category)) + 1;
 
     const newIngredient = new Ingredient({
+      ...req.body,
       _id: newID,
-      name,
-      category,
-      calories,
-      sugar,
-      fat,
-      totalSolids,
-      msnf,
-      protein,
-      image: "/ingredients/vanila.jpg",
+      fatLevel,
+      saturatesLevel,
+      sugarsLevel,
     });
 
     await newIngredient.save();
 
+    console.log("New Ingredient saved:", newIngredient);
     res.status(201).json(newIngredient);
   } catch (error) {
     console.error("Error inserting ingredient:", error);

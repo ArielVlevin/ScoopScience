@@ -8,6 +8,7 @@ const getLastRecipeID = async () => {
 };
 
 export const createRecipe = async (req, res, next) => {
+  console.log("its in");
   try {
     const new_id = (await getLastRecipeID()) + 1;
 
@@ -111,6 +112,14 @@ export const deleteRecipe = async (req, res, next) => {
     await Recipe.findByIdAndDelete(recipeId);
 
     res.status(200).json({ message: "Recipe deleted successfully" });
+    console.log(
+      "\nRecipe deleted successfully:\nid: ",
+      recipeId,
+      ", name:",
+      recipe.recipeData.recipeName,
+      ", user_id:",
+      recipe.user_id
+    );
   } catch (error) {
     next(error);
   }

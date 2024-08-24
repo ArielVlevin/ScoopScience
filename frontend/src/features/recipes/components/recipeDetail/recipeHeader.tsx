@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Recipe } from "@/types";
 import { Rating } from "@smastrom/react-rating";
@@ -21,20 +21,43 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
   const { user, isAuthenticated } = useAuth();
   //
   const [rating, setRating] = useState(recipe.recipeRating.ratingValue);
+  const [ratingAmount, setRatingAmount] = useState<number>(
+    recipe.recipeRating.ratingAmount
+  );
 
   const handleRating = async (value: number) => {
-    if (!isAuthenticated) return alert("You must be logged in to rate recipes");
+    if (!isAuthenticated || !user)
+      return alert("You must be logged in to rate recipes");
 
     setRating(value);
     try {
+      if (
+        recipe.recipeRating.ratingUsers.find(
+          (likeuser) => likeuser.user_id !== user._id
+        )
+      )
+        setRatingAmount((prevAmount) => prevAmount + 1);
+
       await postData(`/recipes/id/${recipe._id}/rate`, {
         user_id: user?._id,
         ratingValue: value,
       });
     } catch (error) {
       console.error("Failed to submit rating:", error);
+      setRatingAmount((prevAmount) => prevAmount - 1);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      const userRating = recipe.recipeRating.ratingUsers.find(
+        (likeuser) => likeuser.user_id === user._id
+      );
+      if (userRating) {
+        setRating(userRating.ratingValue);
+      }
+    }
+  }, [user, recipe.recipeRating.ratingUsers]);
 
   return (
     <Box className="h-full items-center justify-center">
@@ -55,9 +78,7 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
             handleRating(star);
           }}
         />
-        <span className="text-muted-foreground text-sm">
-          ({recipe?.recipeRating.ratingAmount})
-        </span>
+        <span className="text-muted-foreground text-sm">({ratingAmount})</span>
       </div>
       <div className="flex justify-center text-muted-foreground mb-4">
         {recipe?.recipeData.description}

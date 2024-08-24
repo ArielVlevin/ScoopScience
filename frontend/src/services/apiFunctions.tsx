@@ -22,7 +22,7 @@ export async function fetchData<T>(endpoint: string): Promise<T> {
 export async function postData<T>(endpoint: string, data: T): Promise<T> {
   try {
     const response = await api.post(endpoint, data);
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("Error posting data:", error);
     throw error;

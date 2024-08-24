@@ -1,20 +1,29 @@
 import Page from "@/components/class/page";
-import { MilkIcon } from "@/components/icons/icon";
+import { Dialog, DialogContent } from "@/components/ui";
 import ErrorPage from "@/pages/error";
 import { Ingredient } from "@/types";
-import {
-  CandyIcon,
-  CircleEllipsisIcon,
-  CitrusIcon,
-  DropletIcon,
-  NutIcon,
-} from "lucide-react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import IngredientCard from "../components/ingredientCard";
+import { categoryIcons } from "../types/icons";
 
 export default function IngredientsCategoryPage() {
   const { category } = useParams();
   const location = useLocation();
   const ingredients = (location.state?.ingredients as Ingredient[]) || [];
+
+  const [selectedIngredient, setSelectedIngredient] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const openDialog = (ingredient: string) => {
+    setSelectedIngredient(ingredient);
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedIngredient("");
+  };
 
   if (!ingredients.length) {
     return <ErrorPage error="No ingredients found." />;
@@ -29,33 +38,30 @@ export default function IngredientsCategoryPage() {
             key={ingredient._id}
             className="group flex flex-col items-center size-48"
           >
-            <div className="binline-block rounded-full bg-muted p-4 ">
-              {category === "dairy" ? (
-                <MilkIcon className="size-24 text-blue-300" />
-              ) : category === "sugars" ? (
-                <CandyIcon className="size-24 text-blue-300" />
-              ) : category === "stabilizer" ? (
-                <CandyIcon className="size-24 text-blue-300" />
-              ) : category === "fruits" ? (
-                <CitrusIcon className="size-24 text-blue-300" />
-              ) : category === "nuts" ? (
-                <NutIcon className="size-24 text-blue-300" />
-              ) : category === "liquid" ? (
-                <DropletIcon className="size-24 text-blue-300" />
-              ) : (
-                <CircleEllipsisIcon className="size-24 text-blue-300" />
-              )}
+            <div className="inline-block rounded-full bg-my p-4">
+              {categoryIcons[category as keyof typeof categoryIcons]}
             </div>
-            <Link to={`/ingredients/${ingredient._id}`} key={ingredient._id}>
+            <div
+              className="group flex flex-col items-center size-48 cursor-pointer"
+              key={ingredient._id}
+              onClick={() => openDialog(ingredient._id as unknown as string)}
+            >
               <div className="mt-2 text-center">
                 <h3 className="text-lg font-medium group-hover:text-primary transition-colors hover:underline">
                   {ingredient.name}
                 </h3>
               </div>
-            </Link>
+            </div>
           </div>
         ))}
       </div>
+      {isDialogOpen && selectedIngredient && (
+        <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
+          <DialogContent className="p-0 overflow-hidden  bg-gray-100">
+            <IngredientCard _id={selectedIngredient} />
+          </DialogContent>
+        </Dialog>
+      )}
     </Page>
   );
 }
