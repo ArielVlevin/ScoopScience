@@ -1,30 +1,8 @@
 import * as React from "react";
-import {
-  Check,
-  ChevronsUpDown,
-  User as UserIcon,
-  Apple,
-  UtensilsCrossed,
-  View,
-} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import api from "@/config/api";
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Ingredient, Recipe } from "@/types";
 import { User } from "@/auth/types/userTypes";
-import { cn } from "@/utils/cn";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");

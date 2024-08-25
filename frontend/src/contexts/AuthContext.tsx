@@ -18,6 +18,7 @@ interface User extends JwtPayload {
   _id: number;
   username: string;
   email: string;
+  isAdmin: boolean;
   favorites: number[];
   recipes: number[];
 }
@@ -32,7 +33,9 @@ export interface AuthContextType {
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+
   isAuthenticated: boolean;
+  isAdmin: boolean;
 
   handleFavorite: (recipe_id: number) => void;
   updateUserRecipes: (recipe_id: number, action: "add" | "remove") => void;
@@ -266,6 +269,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         login: handleLogin,
         logout: handleLogout,
         isAuthenticated: !!user,
+        isAdmin: user?.isAdmin || false,
         handleFavorite,
         updateUserRecipes,
       }}

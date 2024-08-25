@@ -186,7 +186,7 @@ export default function NewRecipe() {
                 <Separator className="mt-6 mb-6 " />
                 <Label className="text-lg font-medium ">Totals</Label>
 
-                <TotalsCard className="w-full mt-2 mb-6" totals={totals} />
+                <TotalsCard className="w-full mt-2 mb-6" rows={rows} />
                 <RecipeBulletCharts
                   recipeType={formData.recipeKind}
                   totals={totals}

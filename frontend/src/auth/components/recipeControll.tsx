@@ -66,9 +66,7 @@ export default function RecipeControl() {
       console.log("New order:", event.data.array);
     });
 
-    return () => {
-      swapy.destroy(); // Clean up on component unmount
-    };
+    return () => {};
   }, []);
 
   if (isError && error) {

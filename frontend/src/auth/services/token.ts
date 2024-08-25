@@ -29,7 +29,7 @@ interface JwtPayloadWithExp {
 
 const isTokenExpired = (token: string): boolean => {
   const { exp } = jwtDecode<JwtPayloadWithExp>(token);
-  return Date.now() >= exp * 1000; // Convert exp from seconds to milliseconds
+  return Date.now() >= exp * 1000;
 };
 
 export { isTokenExpired };

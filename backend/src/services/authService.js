@@ -5,7 +5,12 @@ import config from "../config/config.js";
 
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
-    { _id: user._id, username: user.username, email: user.email },
+    {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    },
     config.jwtSecret,
     { expiresIn: "2h" }
   );
@@ -67,6 +72,7 @@ export const login = async ({ email, password }) => {
       _id: user._id,
       username: user.username,
       email: user.email,
+      isAdmin: user.isAdmin,
       favorites: user.favorites || [],
       recipes: user.recipes || [],
     },

@@ -12,6 +12,8 @@ import { roundToTwoDecimalPlaces } from "@/utils/math";
 import calculateTotals from "@/features/recipes/calc/calculateTotals";
 import EditWeightDialog from "./editWeight";
 import EditTotalWeight from "./editTotalWeight";
+import { calculateAndRound } from "../../calc/calculateAndRound";
+
 type NewRecipeTableProops = {
   className?: string;
   rows: Row[];
@@ -37,6 +39,7 @@ export default function NewRecipeTable({
   const [isEditingWeight, setIsEditingWeight] = useState<boolean>(false);
   const [isEditingTotalWeight, setIsEditingTotalWeight] =
     useState<boolean>(false);
+
   useEffect(() => {
     setTotals(calculateTotals(rows));
   }, [rows, setTotals]);
@@ -64,6 +67,10 @@ export default function NewRecipeTable({
         row._id === selectedRow?._id
           ? {
               ...row,
+              sugar: calculateAndRound(row.sugar, row.weight, newWeight),
+              fat: calculateAndRound(row.fat, row.weight, newWeight),
+              protein: calculateAndRound(row.protein, row.weight, newWeight),
+              calories: calculateAndRound(row.calories, row.weight, newWeight),
               weight: roundToTwoDecimalPlaces(newWeight),
             }
           : row

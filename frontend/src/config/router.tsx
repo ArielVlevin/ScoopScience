@@ -4,12 +4,9 @@ import Layout from "@/components/layout/Layout";
 import ErrorPage from "@/pages/error";
 import AuthPage from "@/auth/pages/auth";
 import Loading from "@/pages/loading";
-import PrivateRoute from "@/config/privateRoute";
+import PrivateRoute, { AdminRoute } from "@/config/privateRoute";
 import DashBoard from "@/auth/pages/dashboard";
 import Logout from "@/auth/components/logout";
-
-import NewRecipe from "@/features/recipes/pages/newRecipePage";
-import Page from "@/components/class/page";
 
 const HomePage = lazy(() => import("@/pages/homePage"));
 
@@ -25,7 +22,7 @@ const IngredientDetailPage = lazy(
 const IngredientsCategoryPage = lazy(
   () => import("@/features/ingredients/pages/IngredientsCategories")
 );
-const RecipesPage = lazy(
+const ExploreRecipesPage = lazy(
   () => import("@/features/recipes/pages/ExploreRecipes")
 );
 
@@ -33,22 +30,25 @@ const ExploreNewsetRecipesPage = lazy(
   () => import("@/features/recipes/pages/newestRecipes")
 );
 
+const NewRecipe = lazy(() => import("@/features/recipes/pages/newRecipePage"));
+
 const ExploreTopRatedRecipesPage = lazy(
   () => import("@/features/recipes/pages/topRatedRecipes")
 );
-const RecipeDetailPage = lazy(
-  () => import("@/features/recipes/pages/recipeDetail")
-);
-const MakeRecipe = lazy(() => import("@/features/recipes/pages/make"));
+
+const MakeRecipe = lazy(() => import("@/features/recipes/pages/makeRecipe"));
 
 const EditRecipeComponent = lazy(
   () => import("@/features/recipes/components/editRecipe/editRecipe")
 );
 
+const RecipeDetailPage = lazy(
+  () => import("@/features/recipes/pages/recipeDetail")
+);
+
 const FavoritesRecipesPage = lazy(
   () => import("@/features/recipes/pages/favorites")
 );
-
 const UserRecipesPage = lazy(
   () => import("@/features/recipes/pages/userRecipes")
 );
@@ -112,7 +112,7 @@ const router = createBrowserRouter([
         path: "recipes",
         element: (
           <Suspense fallback={<Loading />}>
-            <RecipesPage />
+            <ExploreRecipesPage />
           </Suspense>
         ),
       },
@@ -133,7 +133,6 @@ const router = createBrowserRouter([
         ),
       },
 
-      //todo: change to user/{user_id}/recipes/newrecipe
       {
         path: "newrecipe",
         element: (
@@ -225,32 +224,30 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "login",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Login />
-          </Suspense>
-        ),
-      },
-      {
-        path: "register",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Register />
-          </Suspense>
-        ),
-      },
-
-      {
         path: "logout",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Logout />
-          </Suspense>
-        ),
+        element: <PrivateRoute />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Logout />
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },
+  {
+    path: "contact",
+    element: (
+      <Suspense fallback={<Loading />}>
+        <ContactUs />
+      </Suspense>
+    ),
+  },
+
   {
     path: "control/dashboard",
     element: <PrivateRoute />,
@@ -268,7 +265,7 @@ const router = createBrowserRouter([
 
   {
     path: "control/admin",
-    element: <PrivateRoute />,
+    element: <AdminRoute />,
     children: [
       {
         index: true,
@@ -278,14 +275,8 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-    ],
-  },
-  {
-    path: "control/admin/recipe",
-    element: <PrivateRoute />,
-    children: [
       {
-        index: true,
+        path: "recipe",
         element: (
           <Suspense fallback={<Loading />}>
             <RecipeController />
@@ -293,14 +284,6 @@ const router = createBrowserRouter([
         ),
       },
     ],
-  },
-  {
-    path: "contact",
-    element: (
-      <Suspense fallback={<Loading />}>
-        <ContactUs />
-      </Suspense>
-    ),
   },
 ]);
 

@@ -8,4 +8,10 @@ const PrivateRoute = () => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/auth" />;
 };
 
+const AdminRoute = () => {
+  const { isAdmin } = useAuth();
+  return isAdmin ? <Outlet /> : <Navigate to="/" />;
+};
+
+export { AdminRoute };
 export default PrivateRoute;

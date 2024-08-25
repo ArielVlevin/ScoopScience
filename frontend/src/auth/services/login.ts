@@ -5,6 +5,7 @@ interface LoginResponse {
     _id: number;
     username: string;
     email: string;
+    isAdmin: boolean;
     favorites: number[];
     recipes: number[];
   };

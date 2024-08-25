@@ -1,28 +1,24 @@
 import { Card, CardContent } from "@/components/ui/card";
 
-import { roundToTwoDecimalPlaces } from "@/utils/math";
-import { Totals } from "@/features/recipes/types/totalsTypes";
+import calculateTotals from "../../calc/calculateTotals";
+import { Row } from "@/types";
 
 type TotalsCardProps = {
   className?: string;
-  totals: Totals;
+  rows: Row[];
 };
 
-export default function TotalsCard({ className, totals }: TotalsCardProps) {
-  const totalWeight = roundToTwoDecimalPlaces(totals.totalWeight);
-  const totalCalories = roundToTwoDecimalPlaces(totals.totalCalories);
-  const totalSugar = roundToTwoDecimalPlaces(totals.totalSugar);
-  const totalSugarPercentage = roundToTwoDecimalPlaces(
-    (totals.totalSugar / totals.totalWeight) * 100
-  );
-  const totalFat = roundToTwoDecimalPlaces(totals.totalFat);
-  const totalFatPercentage = roundToTwoDecimalPlaces(
-    (totals.totalFat / totals.totalWeight) * 100
-  );
-  const totalMsnf = roundToTwoDecimalPlaces(totals.totalMsnf);
-  const totalSolidPercentage = roundToTwoDecimalPlaces(
-    (totals.totalSolidPercentage / totals.totalWeight) * 100
-  );
+export default function TotalsCard({ className, rows }: TotalsCardProps) {
+  const {
+    totalWeight,
+    totalFat,
+    totalCalories,
+    totalSugar,
+    totalMsnf,
+    totalSolidPercentage,
+    totalFatPercentage,
+    totalSugarPercentage,
+  } = calculateTotals(rows);
 
   return (
     <div className={className}>

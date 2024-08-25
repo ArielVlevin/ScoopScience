@@ -20,11 +20,24 @@ export default function calculateTotals(rows: Row[]): Totals {
 
     totalWeight += weight;
     totalFat += fat;
-    totalSolidsWeight += (solidsPercentage * weight) / 100;
-    totalCalories += calories * (weight / 100);
-    totalSugar += sugars * (weight / 100);
-    totalMSNF += (msnf * weight) / 100;
+    totalSugar += sugars;
+    totalSolidsWeight += (solidsPercentage / 100) * weight;
+    totalCalories += calories;
+    totalMSNF += msnf * (weight / 100);
   });
+
+  if (totalWeight === 0) {
+    return {
+      totalWeight: 0,
+      totalFat: 0,
+      totalCalories: 0,
+      totalSugar: 0,
+      totalMsnf: 0,
+      totalSolidPercentage: 0,
+      totalFatPercentage: 0,
+      totalSugarPercentage: 0,
+    };
+  }
 
   const totalFatPercentage = (totalFat / totalWeight) * 100;
   const totalSugarPercentage = (totalSugar / totalWeight) * 100;
