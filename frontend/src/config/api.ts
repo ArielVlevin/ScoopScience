@@ -6,7 +6,7 @@ import axios, {
 
 const api = axios.create({
   baseURL:
-    "https://vercel-scoop-server-d9fqzhgis-arielvlevins-projects.vercel.app/:3000/api",
+    "https://vercel-scoop-server-d9fqzhgis-arielvlevins-projects.vercel.app:3000/api",
 });
 
 api.interceptors.request.use(
