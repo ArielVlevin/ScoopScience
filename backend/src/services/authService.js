@@ -10,6 +10,8 @@ const generateTokens = (user) => {
       username: user.username,
       email: user.email,
       isAdmin: user.isAdmin,
+      recipes: user.recipes || [],
+      favorites: user.favorites || [],
     },
     config.jwtSecret,
     { expiresIn: "2h" }

@@ -7,6 +7,7 @@ type usePaginatedRecipesProps = {
   initialPage?: number;
   limit?: number;
   order?: "asc" | "desc";
+  showMore?: boolean;
 };
 
 export function usePaginatedRecipes({
@@ -14,6 +15,7 @@ export function usePaginatedRecipes({
   initialPage = 1,
   limit = 6,
   order,
+  showMore = true,
 }: usePaginatedRecipesProps) {
   const [page, setPage] = useState(initialPage);
   const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
@@ -47,8 +49,9 @@ export function usePaginatedRecipes({
 
   useEffect(() => {
     if (recipes && recipes.length > 0) {
-      //setAllRecipes((prevRecipes) => [...prevRecipes, ...recipes]);
-      setAllRecipes(recipes);
+      if (showMore)
+        setAllRecipes((prevRecipes) => [...prevRecipes, ...recipes]);
+      else setAllRecipes(recipes);
     }
   }, [recipes]);
 

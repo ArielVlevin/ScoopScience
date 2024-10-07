@@ -53,6 +53,10 @@ const UserRecipesPage = lazy(
   () => import("@/features/recipes/pages/userRecipes")
 );
 
+const UserIngredients = lazy(
+  () => import("@/features/ingredients/pages/userIngredients")
+);
+
 const AdminControllPanel = lazy(
   () => import("@/auth/components/adminControllPanel")
 );
@@ -204,6 +208,20 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<Loading />}>
                 <UserRecipesPage />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: "user/ingredients",
+        element: <PrivateRoute />,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <UserIngredients />
               </Suspense>
             ),
           },

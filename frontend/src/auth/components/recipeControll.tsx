@@ -44,7 +44,11 @@ export default function RecipeControl() {
     handleSetPage,
     isError,
     error,
-  } = usePaginatedRecipes({ type: "getRecipesByDate", limit: 10 });
+  } = usePaginatedRecipes({
+    type: "getRecipesByDate",
+    limit: 10,
+    showMore: false,
+  });
 
   //
   const handlePageChange = (newPage: number) => {

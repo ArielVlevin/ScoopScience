@@ -38,7 +38,7 @@ export default function IngredientsCategoryPage() {
             key={ingredient._id}
             className="group flex flex-col items-center size-48"
           >
-            <div className="inline-block rounded-full bg-my p-4">
+            <div className="inline-block rounded-full bg-background p-4">
               {categoryIcons[category as keyof typeof categoryIcons]}
             </div>
             <div

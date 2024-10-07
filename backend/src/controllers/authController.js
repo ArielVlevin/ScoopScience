@@ -50,7 +50,14 @@ export const refreshAccessToken = async (req, res) => {
     const decoded = jwt.verify(refreshToken, config.refreshTokenSecret);
 
     const accessToken = jwt.sign(
-      { _id: decoded._id, username: decoded.username, email: decoded.email },
+      {
+        _id: decoded._id,
+        username: decoded.username,
+        email: decoded.email,
+        isAdmin: decoded.isAdmin,
+        favorite: decoded.favorite,
+        recipes: decoded.recipes,
+      },
       config.jwtSecret,
       { expiresIn: "2h" }
     );

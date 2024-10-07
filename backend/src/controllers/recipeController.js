@@ -8,7 +8,6 @@ const getLastRecipeID = async () => {
 };
 
 export const createRecipe = async (req, res, next) => {
-  console.log("its in");
   try {
     const new_id = (await getLastRecipeID()) + 1;
 
@@ -23,7 +22,7 @@ export const createRecipe = async (req, res, next) => {
 
     const photoPath = req.file
       ? `/assets/${req.file.path.split("/assets/")[1]}`
-      : "/assets/recipe/default_recipe_image.jpg"; // Default image if none provided
+      : "/assets/recipe/default_recipe_image.jpg";
 
     const newRecipeData = {
       _id: new_id,
@@ -164,7 +163,7 @@ export const getRecipesByKind = async (req, res, next) => {
     if (recipes.length > 0) {
       res.status(200).json(recipes);
     } else if (recipes.length === 0) {
-      res.status(200).json([]); //Return an empty array if no recipes found
+      res.status(200).json([]);
     }
   } catch (error) {
     next(error);

@@ -73,13 +73,13 @@ export default function IngredientsPage() {
                 ))}
                 {/* "See More" Button */}
                 {ingredients.length > 7 && (
-                  <div className="group flex flex-col items-center size-48">
+                  <div className="group flex flex-col items-center size-48 ml-2">
                     <Link
                       to={`/IngredientsCategory/${category}`}
                       state={{ ingredients: ingredientsByCategory[category] }}
                     >
                       <div className="inline-block rounded-full bg-background p-4 ">
-                        <EllipsisIcon className="size-24 text-primary/80" />
+                        <EllipsisIcon className="h-6 w-6 text-primary/80" />
                       </div>
                       <div className="mt-2 text-center">
                         <h3 className="text-lg font-medium group-hover:text-primary transition-colors hover:underline">

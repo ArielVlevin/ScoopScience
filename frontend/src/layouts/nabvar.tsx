@@ -5,27 +5,12 @@ import { IceCreamConeIcon } from "@/components/icons/icon";
 
 import "./navbarBtn.css";
 import UserDropDownMenu from "../components/navbar/userDropDownMenu";
-import Search from "@/components/class/search";
 import { ModeToggle } from "@/components/navbar/modeToggle";
+import SearchBar from "./searchBar";
+import { createLinks, exploreLinks } from "@/types";
 
 export default function NavBar() {
   const [activeTab, setActiveTab] = useState<"create" | "explore">("create");
-
-  const createLinks = [
-    //todo:{ name: "New Recipe", href: "/newrecipe" },
-    { name: "My Recipes", href: "/user/recipes" },
-    {
-      name: "My Favorites",
-      href: "/user/favorites",
-    },
-  ];
-
-  const exploreLinks = [
-    { name: "Explore Recipes", href: "/recipes" },
-    { name: "Top Rated", href: "/recipes/toprated" },
-    { name: "Newest", href: "/recipes/newest" },
-    { name: "Ingredients", href: "/Ingredients" },
-  ];
 
   const navLinks = activeTab === "create" ? createLinks : exploreLinks;
 
@@ -56,7 +41,7 @@ export default function NavBar() {
         </div>
 
         <div className="relative flex-1 w-1/3 items-center ">
-          <Search url="/search" className="w-full" />
+          <SearchBar className="w-full" />
         </div>
 
         <div className="w-1/3 flex items-center gap-4 justify-end p-6">

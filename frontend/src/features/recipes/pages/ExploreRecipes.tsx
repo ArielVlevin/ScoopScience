@@ -9,7 +9,7 @@ import ErrorPage from "@/pages/error";
 import { useEffect } from "react";
 import Title from "@/components/class/title";
 import Sidebar from "../../../components/class/sideBar";
-import SearchBar from "@/layouts/searchBar";
+import Page from "@/components/class/page";
 
 export default function ExploreRecipesPage() {
   const {
@@ -30,28 +30,29 @@ export default function ExploreRecipesPage() {
   return (
     <div className="flex min-h-screen w-full">
       <Sidebar />
+
       <div className="flex-1">
         <main className="p-6">
-          <Title>Explore Recipes</Title>
-          <SearchBar />
-          <Separator className="mt-6 mb-6" />
+          <Page>
+            <Title>Explore Recipes</Title>
+            <Separator className="mt-6 mb-6" />
 
-          {/* Show the number of recipes found */}
-          <RecipeFound
-            recipesLength={totalRecipes}
-            isShowRecipeFound={true}
-            className="mb-4"
-          />
+            {/* Show the number of recipes found */}
+            <RecipeFound
+              recipesLength={totalRecipes}
+              isShowRecipeFound={true}
+              className="mb-4"
+            />
 
-          {/* Display the grid of recipes */}
-          <RecipeGridList
-            recipes={allRecipes}
-            itemsPerPage={allRecipes.length}
-            className="mb-8"
-          />
+            {/* Display the grid of recipes */}
+            <RecipeGridList
+              recipes={allRecipes}
+              itemsPerPage={allRecipes.length}
+              className="mb-8"
+            />
 
-          {/* Load More button */}
-
+            {/* Load More button */}
+          </Page>
           {page < (totalPages || 0) && (
             <LoadMoreButton
               itemsPerPage={allRecipes.length}

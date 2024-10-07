@@ -5,12 +5,22 @@ import {
   CalendarIcon,
   ChevronLeftCircleIcon,
   ChevronRightCircleIcon,
+  CircuitBoardIcon,
+  GaugeIcon,
   HomeIcon,
   LayoutDashboardIcon,
   MenuIcon,
   Package2Icon,
   SettingsIcon,
+  TrelloIcon,
+  UsersIcon,
 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../ui/accordion";
 
 const Sidebar = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
@@ -55,12 +65,12 @@ const Sidebar = () => {
         }}
       >
         <nav
-          className="flex-1 overflow-auto px-2 py-4"
+          className="flex-1 overflow-auto px-2 py-4 bg-muted"
           style={{
             width: isSidebarVisible ? sidebarWidth : 0,
           }}
         >
-          <div className="flex h-14 items-center justify-between border-b px-4">
+          <div className="flex h-14 items-center justify-between border-b px-4  ">
             <Link to="#" className="flex items-center gap-2 font-semibold">
               <Package2Icon className="h-6 w-6" />
               <span>Acme Inc</span>
@@ -70,54 +80,80 @@ const Sidebar = () => {
               <span className="sr-only">Toggle sidebar</span>
             </Button>
           </div>
-          <div className="grid gap-2">
-            <Link
-              to="#"
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <HomeIcon className="h-5 w-5" />
-              Home
-            </Link>
-            <Link
-              to="#"
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <LayoutDashboardIcon className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              to="#"
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <CalendarIcon className="h-5 w-5" />
-              Calendar
-            </Link>
-            <Link
-              to="#"
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <SettingsIcon className="h-5 w-5" />
-              Settings
-            </Link>
+
+          <div className="w-full">
+            <Accordion type="single" collapsible className="m-4">
+              <AccordionItem value="projects" className="">
+                <AccordionTrigger className="text-base bg-foreground text-white rounded-md h-10 ">
+                  <TrelloIcon className="size-4 mr-2 ml-2 " />
+                  Category
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="grid gap-2">
+                    <Link
+                      to="#"
+                      className="flex items-center gap-2 px-2.5 text-muted-foreground hover:text-foreground mt-2"
+                    >
+                      <CircuitBoardIcon className="size-4 mr-2 ml-2 " />
+                      Gelato
+                    </Link>
+                    <Link
+                      to="#"
+                      className="flex items-center gap-2 px-2.5 text-muted-foreground hover:text-foreground"
+                    >
+                      <CircuitBoardIcon className="size-4 mr-2 ml-2 " />
+                      Ice cream
+                    </Link>
+                    <Link
+                      to="#"
+                      className="flex items-center gap-2 px-2.5 text-muted-foreground hover:text-foreground"
+                    >
+                      <CircuitBoardIcon className="size-4 mr-2 ml-2 " />
+                      sorbet
+                    </Link>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="teams">
+                <AccordionTrigger className="text-base bg-foreground text-white rounded-md h-10 ">
+                  <UsersIcon className="size-4 mr-2 ml-2 " />
+                  Teams
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="grid gap-2"></div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="status">
+                <AccordionTrigger className="text-base bg-foreground text-white rounded-md h-10 ">
+                  <GaugeIcon className="size-4 mr-2 ml-2 " />
+                  Status
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="grid gap-2"></div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </nav>
         <div
-          className="absolute top-0 right-0 h-full w-4 cursor-col-resize bg-muted/50 hover:bg-muted flex items-center justify-center"
+          className="absolute top-0 right-0 h-full w-1 cursor-col-resize bg-gray-300/40 hover:bg-gray-300/60 flex items-center justify-center"
           onMouseDown={handleMouseDown}
         />
       </div>
       <div
         onClick={toggleSidebar}
-        className={`cursor-pointer fixed top-1/2 transform -translate-y-1/2 z-50 transition-all duration-300 
+        className={`cursor-pointer fixed top-1/2 transform -translate-y-1/2 z-50 transition-all duration-300 hover:scale-110 hover:bg-muted/50 hover:text-foreground
+          
+        }
         `}
         style={{
-          left: isSidebarVisible ? sidebarWidth : "-8px",
+          left: isSidebarVisible ? `${sidebarWidth - 14}px` : "-2px",
         }}
       >
         {isSidebarVisible ? (
-          <ChevronLeftCircleIcon className="h-8 w-8" />
+          <ChevronLeftCircleIcon className="size-7 bg-white/80 rounded-full text-gray-600 hover:scale-110" />
         ) : (
-          <ChevronRightCircleIcon className="h-8 w-8" />
+          <ChevronRightCircleIcon className="size-7 bg-white/80 rounded-full text-gray-600 hover:scale-110" />
         )}
       </div>
     </div>

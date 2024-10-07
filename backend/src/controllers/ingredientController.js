@@ -10,7 +10,7 @@ const getLastIngredientID = async (category) => {
 
 export const createIngredient = async (req, res, next) => {
   try {
-    const { fat, saturates, sugars } = req.body;
+    const { fat, saturates, sugars, category, ...rest } = req.body;
 
     const fatLevel = getNutrientCategory("fat", fat);
     const saturatesLevel = getNutrientCategory("saturates", saturates);
@@ -19,7 +19,11 @@ export const createIngredient = async (req, res, next) => {
     const newID = (await getLastIngredientID(category)) + 1;
 
     const newIngredient = new Ingredient({
-      ...req.body,
+      ...rest,
+      fat,
+      category,
+      saturates,
+      sugars,
       _id: newID,
       fatLevel,
       saturatesLevel,
