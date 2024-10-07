@@ -5,7 +5,6 @@ import ErrorPage from "@/pages/error";
 import Loading from "@/pages/loading";
 import RecipeHeader from "../recipeDetail/recipeHeader";
 import NewRecipeTable from "../recipeTable/table";
-import RecipeInstructions from "../recipeDetail/recipeInstructions";
 import { Row, Totals } from "@/types";
 import { useEffect, useState } from "react";
 import calculateTotals from "../../calc/calculateTotals";
@@ -19,6 +18,7 @@ export default function EditRecipe() {
   //
   //
   //
+
   const [imageUrl, setImageUrl] = useState("/placeholder.svg");
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
@@ -30,6 +30,9 @@ export default function EditRecipe() {
     if (file) {
       setImageUrl(URL.createObjectURL(file));
       setShowDeleteButton(true);
+
+      //todo:: delete
+      console.log("what the fk is:", imageUrl);
     }
   };
   //

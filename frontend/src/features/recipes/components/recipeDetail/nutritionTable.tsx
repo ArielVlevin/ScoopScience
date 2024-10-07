@@ -40,7 +40,7 @@ export default function NutritionTable({
       <p className="text-sm">Servings Per Container 8</p>
       <div className="border-t border-black my-2" />
       <div className="flex justify-between font-bold">
-        <span>Calories 200</span>
+        <span>Calories {recipe.recipeIngredient.totalData.totalCalories}</span>
         <span>Calories from Fat 130</span>
       </div>
       <div className="border-t border-black my-2" />

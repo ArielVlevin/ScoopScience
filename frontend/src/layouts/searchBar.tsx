@@ -97,11 +97,11 @@ export default function SearchBar({ className }: SearchBarProps) {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
-      ) {
+    //todo:: fix that:
+    /*        !searchRef.current.contains(event.target as Node)*/
+
+    const handleClickOutside = () => {
+      if (searchRef.current) {
         setShowAutocomplete(false);
       }
     };
@@ -200,6 +200,22 @@ export default function SearchBar({ className }: SearchBarProps) {
                   </ul>
                 </div>
               )}
+
+              <div>
+                <ul>
+                  <li
+                    onClick={() => alert("fix that " + results.ingredients)}
+                    className="p-2 hover:bg-gray-200 cursor-pointer"
+                  >
+                    <div className="flex gap-2">
+                      <CircleIcon className="size-8 text-orange-800 align-self-center" />
+                      <div>
+                        <a className="font-bold">more of {query}...</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

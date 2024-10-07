@@ -37,10 +37,7 @@ export default function RecipeControl() {
     recipes,
     page,
     totalPages,
-    totalRecipes,
-    isLoading,
-    handleLoadMore,
-    handleBack,
+
     handleSetPage,
     isError,
     error,
@@ -122,7 +119,9 @@ export default function RecipeControl() {
                         {recipe.recipeData.recipeName}
                       </TableCell>
                       <TableCell>{recipe.recipeData.recipeKind}</TableCell>
-                      <TableCell>{recipe.createdAt.slice(0, 10)}</TableCell>
+                      <TableCell>
+                        {String(recipe.createdAt).slice(0, 10)}
+                      </TableCell>
                       <TableCell className="text-xs">
                         {recipe.recipeIngredient.ingredients
                           .map((i) => i.name)

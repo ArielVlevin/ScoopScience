@@ -79,7 +79,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   //useStates
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   //
   const handleRegister = async (
@@ -267,7 +266,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         register: handleRegister,
         login: handleLogin,
         logout: handleLogout,
-        isAuthenticated: !!user,
+        isAuthenticated: isAuthenticated,
         isAdmin: user?.isAdmin || false,
         handleFavorite,
         updateUserRecipes,

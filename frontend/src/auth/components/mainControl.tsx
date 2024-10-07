@@ -22,7 +22,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { MoveHorizontalIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import ErrorPage from "@/pages/error";
 import { useGetPaginatedRecipes } from "@/features/recipes/hooks/useGetPaginatedRecipes";
 import Title from "@/components/class/title";
@@ -33,11 +33,8 @@ export default function MainControl() {
 
   const {
     recipes,
-    page,
-    totalPages,
     totalRecipes,
     isLoading: isLoadingRecipes,
-    handleLoadMore: handleLoadMoreRecipes,
     isError: isErrorRecipes,
     error: errorRecipes,
   } = useGetPaginatedRecipes({ type: "getRecipesByDate", limit: 5 });
@@ -124,7 +121,9 @@ export default function MainControl() {
                             {recipe.recipeData.recipeName}
                           </TableCell>
                           <TableCell>{recipe.recipeData.recipeKind}</TableCell>
-                          <TableCell>{recipe.createdAt.slice(0, 10)}</TableCell>
+                          <TableCell>
+                            {String(recipe.createdAt).slice(0, 10)}
+                          </TableCell>
                           <TableCell>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>

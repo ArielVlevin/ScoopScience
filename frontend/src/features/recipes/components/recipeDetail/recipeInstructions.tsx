@@ -10,6 +10,8 @@ export default function RecipeInstructions({
   return (
     <Box>
       <h2 className="text-xl font-bold mb-4">Instructions</h2>
+
+      <h3> delete: {recipe.recipeData.recipeKind}</h3>
       <ol className="space-y-4">
         <li>
           <h3 className="font-medium mb-2">Prepare the Ice Cream Base</h3>

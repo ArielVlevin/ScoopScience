@@ -63,8 +63,6 @@ const AdminControllPanel = lazy(
 
 const RecipeController = lazy(() => import("@/auth/components/recipe"));
 const ContactUs = lazy(() => import("@/pages/contact"));
-const Login = lazy(() => import("@/auth/pages/login"));
-const Register = lazy(() => import("@/auth/pages/register"));
 
 const router = createBrowserRouter([
   {

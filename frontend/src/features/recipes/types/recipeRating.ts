@@ -1,9 +1,9 @@
 export type RecipeRating = {
   likes: number;
-  likesUsers: [{ user_id: number }];
+  likesUsers?: [{ user_id: number }];
   ratingValue: number;
   ratingAmount: number;
-  ratingUsers: [
+  ratingUsers?: [
     {
       user_id: number;
       ratingValue: number;

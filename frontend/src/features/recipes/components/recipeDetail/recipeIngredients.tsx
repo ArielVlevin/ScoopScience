@@ -1,6 +1,6 @@
 import Box from "@/components/class/box";
 import Grid from "@/components/class/grid";
-import { IngredientWithWeight, Recipe } from "@/types";
+import { Ingredient, Recipe } from "@/types";
 
 type RecipeIngredientsProps = {
   className?: string;
@@ -9,7 +9,7 @@ type RecipeIngredientsProps = {
 
 type IngredientListProps = {
   title: string;
-  ingredients: IngredientWithWeight[];
+  ingredients: Ingredient[];
 };
 
 const IngredientList = ({ title, ingredients }: IngredientListProps) => (

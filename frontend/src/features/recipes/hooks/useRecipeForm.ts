@@ -30,8 +30,6 @@ import {
   saveToLocalStorage,
 } from "../utils/localStorage";
 
-const STORAGE_KEY = "recipe_in_progress";
-
 export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"
 ) {

@@ -32,7 +32,7 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
     setRating(value);
     try {
       if (
-        recipe.recipeRating.ratingUsers.find(
+        recipe.recipeRating.ratingUsers?.find(
           (likeuser) => likeuser.user_id !== user._id
         )
       )
@@ -50,7 +50,7 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
 
   useEffect(() => {
     if (user) {
-      const userRating = recipe.recipeRating.ratingUsers.find(
+      const userRating = recipe.recipeRating.ratingUsers?.find(
         (likeuser) => likeuser.user_id === user._id
       );
       if (userRating) {

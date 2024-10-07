@@ -2,16 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
-  CalendarIcon,
   ChevronLeftCircleIcon,
   ChevronRightCircleIcon,
   CircuitBoardIcon,
   GaugeIcon,
-  HomeIcon,
-  LayoutDashboardIcon,
   MenuIcon,
   Package2Icon,
-  SettingsIcon,
   TrelloIcon,
   UsersIcon,
 } from "lucide-react";

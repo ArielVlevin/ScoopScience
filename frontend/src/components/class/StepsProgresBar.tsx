@@ -25,7 +25,7 @@ export default function StepsProgressBar({
         <div className="absolute top-0 left-0 w-full flex justify-between">
           {tasks.map((task, index) => (
             <div
-              key={index}
+              key={task.title} //maybe change key to index
               className="flex flex-col items-center"
               style={{ left: `${(index / (tasks.length - 1)) * 100}%` }}
             >

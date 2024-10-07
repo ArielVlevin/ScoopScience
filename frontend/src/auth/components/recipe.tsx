@@ -31,7 +31,6 @@ import MainControl from "./mainControl";
 import { IceCreamConeIcon } from "@/components/icons/icon";
 import UserDropDownMenu from "@/components/navbar/userDropDownMenu";
 import { ModeToggle } from "@/components/navbar/modeToggle";
-import RecipeControl from "./recipeControll";
 
 export default function RecipeController() {
   return (
