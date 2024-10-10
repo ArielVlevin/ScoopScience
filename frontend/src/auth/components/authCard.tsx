@@ -10,12 +10,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AppleIcon, ChromeIcon, GithubIcon } from "lucide-react";
+import { AppleIcon, GithubIcon } from "lucide-react";
 import { useAuthCard } from "../hooks/useAuthCard";
 import { Link } from "react-router-dom";
 import Grid from "@/components/class/grid";
 import { ShowErrors } from "./showErrors";
 import { Separator } from "@/components/ui/separator";
+import GoogleAuthButton from "./googleAuthButton";
 
 export default function AuthCard() {
   const { formData, errors, setActiveTab, handleInputChange, handleSubmit } =
@@ -182,10 +183,7 @@ export default function AuthCard() {
                   />
                 </Grid>
                 <Grid gap={4} mdcols={2}>
-                  <Button variant="outline">
-                    <ChromeIcon className="mr-2 h-4 w-4" />
-                    Sign in with Google
-                  </Button>
+                  <GoogleAuthButton />
                   <Button variant="outline">
                     <AppleIcon className="mr-2 h-4 w-4" />
                     Sign in with Apple

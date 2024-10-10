@@ -67,7 +67,7 @@ export default function RecipeDetailPage() {
 
       <Grid mdcols={2} gap={6} className="w-full mb-6">
         <img
-          src={`http://localhost:3000${recipe.recipeData.photo}`}
+          src={`http://api.scoopscience.com${recipe.recipeData.photo}`}
           alt="Creamy Vanilla Ice Cream"
           loading="lazy"
           className="size-full rounded-lg object-cover hover:scale-105 duration-500"

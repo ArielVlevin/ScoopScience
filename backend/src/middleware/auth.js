@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 export default function authenticateUser(req, res, next) {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const to = req.header("Authorization");
+  const token = to ? to.replace("Bearer ", "") : null;
 
   if (!token) {
     return res.status(401).send("Access denied. No token provided.");

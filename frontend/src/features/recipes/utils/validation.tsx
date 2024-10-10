@@ -10,9 +10,9 @@ export const MISSING_INGREDIENTS_ERROR =
 
 export const TIME_ERROR = "Please enter a valid time.";
 export const MISSING_DATA_ERROR = "Please fill all required fields.";
-const RECIPE_NAME_REGEX = /^[a-zA-Z0-9_]{4,20}$/;
-const RECIPE_DESCRIPTION_REGEX = /^[a-zA-Z0-9_]{4,50}$/;
-const RECIPE_INSTRUCTIONS_REGEX = /^[a-zA-Z0-9_]{4,100}$/;
+const RECIPE_NAME_REGEX = /^[a-zA-Z0-9_ !()?]{4,20}$/;
+const RECIPE_DESCRIPTION_REGEX = /^[a-zA-Z0-9_ !()?]{4,50}$/;
+const RECIPE_INSTRUCTIONS_REGEX = /^[a-zA-Z0-9_ !()?]{4,100}$/;
 
 export function validateRecipeName(name: string): boolean {
   return RECIPE_NAME_REGEX.test(name);

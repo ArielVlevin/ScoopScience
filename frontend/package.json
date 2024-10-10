@@ -17,6 +17,7 @@
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
+    "@react-oauth/google": "^0.12.1",
     "@smastrom/react-rating": "^1.5.0",
     "@tanstack/react-query": "^5.51.16",
     "axios": "^1.7.2",

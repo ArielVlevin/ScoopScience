@@ -54,7 +54,7 @@ export function RecipeCard({
           <div className=" w-full h-auto aspect-video	">
             <img
               loading="lazy"
-              src={`http://localhost:3000${recipe.recipeData.photo}`}
+              src={`http://api.scoopscience.com${recipe.recipeData.photo}`}
               alt={recipe.recipeData.description}
               className="w-full h-full object-cover object-center"
             />

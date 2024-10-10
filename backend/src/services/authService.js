@@ -2,6 +2,9 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(config.googleClientId);
 
 const generateTokens = (user) => {
   const accessToken = jwt.sign(
@@ -79,4 +82,51 @@ export const login = async ({ email, password }) => {
       recipes: user.recipes || [],
     },
   };
+};
+
+export const googleLogin = async (googleToken) => {
+  try {
+    // Verify Google token
+    const ticket = await client.verifyIdToken({
+      idToken: googleToken,
+      audience: config.googleClientId,
+    });
+
+    const payload = ticket.getPayload();
+    const email = payload.email;
+
+    // Find the user by email
+    let user = await User.findOne({ email });
+
+    // If the user doesn't exist, create a new user
+    if (!user) {
+      const newID = (await getLastUserID()) + 1;
+      user = new User({
+        _id: newID,
+        username: payload.name, // Use Google name
+        email: email,
+        googleId: payload.sub, // Store Google ID for future reference
+        password: "", // No password since it's Google OAuth
+      });
+      await user.save();
+    }
+
+    // Generate access and refresh tokens
+    const { accessToken, refreshToken } = generateTokens(user);
+
+    return {
+      accessToken,
+      refreshToken,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        favorites: user.favorites || [],
+        recipes: user.recipes || [],
+      },
+    };
+  } catch (error) {
+    throw new Error("Google login failed");
+  }
 };

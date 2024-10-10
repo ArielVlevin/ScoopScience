@@ -39,6 +39,29 @@ export const login = async (req, res, next) => {
   }
 };
 
+export const googleLogin = async (req, res, next) => {
+  try {
+    const googleToken = req.body.token; // Expecting the Google token in the request body
+
+    // Use authService to handle the login
+    const { accessToken, refreshToken, user } = await authService.googleLogin(
+      googleToken
+    );
+
+    console.log(
+      "\nUser Logged In with Google:\n",
+      user._id,
+      user.username,
+      user.email,
+      "\n"
+    );
+
+    res.json({ accessToken, refreshToken, user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const refreshAccessToken = async (req, res) => {
   const { refreshToken } = req.body;
 

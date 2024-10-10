@@ -1,6 +1,5 @@
 import { connect } from "mongoose";
 import config from "../config/config.js";
-
 export default async function connectDB() {
   try {
     await connect(config.mongoUri);

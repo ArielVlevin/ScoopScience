@@ -4,9 +4,9 @@ import axios, {
   AxiosError,
 } from "axios";
 
+const apiUrl = "https://api.scoopscience.com/api";
 const api = axios.create({
-  baseURL:
-    "https://vercel-scoop-server-3ihu3l0jr-arielvlevins-projects.vercel.app/api",
+  baseURL: apiUrl,
 });
 
 api.interceptors.request.use(
