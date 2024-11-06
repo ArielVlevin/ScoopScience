@@ -5,11 +5,10 @@ import {
   RecipeFound,
   RecipeGridList,
 } from "../components/recipeGrid/recipeGrid";
-import { Separator } from "@/components/ui/separator";
 import { usePaginatedRecipes } from "../hooks/usePaginatedRecipes";
 import ErrorPage from "@/pages/error";
 import { useEffect } from "react";
-import Title from "@/components/class/title";
+import PageCard from "@/components/class/pageCard";
 
 export default function ExploreTopRatedRecipesPage() {
   const {
@@ -30,23 +29,21 @@ export default function ExploreTopRatedRecipesPage() {
   return (
     <>
       <Page>
-        <Title>Explore The Top Rated Recipes</Title>
-        <Separator className="mt-6 mb-6" />
+        <PageCard title="Top Rated">
+          {/* Show the number of recipes found */}
+          <RecipeFound
+            recipesLength={totalRecipes}
+            isShowRecipeFound={true}
+            className="mb-4"
+          />
 
-        {/* Show the number of recipes found */}
-        <RecipeFound
-          recipesLength={totalRecipes}
-          isShowRecipeFound={true}
-          className="mb-4"
-        />
-
-        {/* Display the grid of recipes */}
-        <RecipeGridList
-          recipes={allRecipes}
-          itemsPerPage={allRecipes.length}
-          className="mb-8"
-        />
-
+          {/* Display the grid of recipes */}
+          <RecipeGridList
+            recipes={allRecipes}
+            itemsPerPage={allRecipes.length}
+            className="mb-6"
+          />
+        </PageCard>
         {/* Load More button */}
       </Page>
       {page < (totalPages || 0) && (

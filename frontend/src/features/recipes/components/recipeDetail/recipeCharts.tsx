@@ -2,7 +2,7 @@ import Grid from "@/components/class/grid";
 import { Recipe } from "@/types";
 import { RecipePieChart } from "./pie";
 import RecipeBulletCharts from "../recipeBulletChart";
-import Box from "@/components/class/box";
+import PageBox from "@/components/class/pageBox";
 
 type RecipechartsProps = {
   recipe: Recipe;
@@ -11,7 +11,7 @@ export default function Recipecharts({ recipe }: RecipechartsProps) {
   const recipeTotals = recipe.recipeIngredient.totalData;
 
   return (
-    <Box>
+    <PageBox>
       <Grid mdcols={2} gap={6} className="w-full mb-8">
         <div className="w-full">
           <h2 className="text-xl font-bold mb-4">Data chart</h2>
@@ -22,6 +22,6 @@ export default function Recipecharts({ recipe }: RecipechartsProps) {
         </div>
         <RecipePieChart />
       </Grid>
-    </Box>
+    </PageBox>
   );
 }

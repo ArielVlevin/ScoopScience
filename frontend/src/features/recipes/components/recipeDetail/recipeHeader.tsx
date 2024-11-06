@@ -11,7 +11,7 @@ import {
 } from "@/components/icons/icon";
 import { postData } from "@/services/apiFunctions";
 import { useAuth } from "@/contexts/AuthContext";
-import Box from "@/components/class/box";
+import PageBox from "@/components/class/pageBox";
 
 type RecipeHeaderProps = {
   recipe: Recipe;
@@ -60,7 +60,7 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
   }, [user, recipe.recipeRating.ratingUsers]);
 
   return (
-    <Box className="h-full items-center justify-center">
+    <PageBox>
       <div className="flex justify-center text-xs font-bold uppercase mb-1  ">
         {recipe?.recipeData.recipeKind}
       </div>
@@ -116,6 +116,6 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
           </div>
         ) : null}
       </div>
-    </Box>
+    </PageBox>
   );
 }

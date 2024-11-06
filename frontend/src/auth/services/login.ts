@@ -50,7 +50,7 @@ export async function login(
 
 export async function googleLogin(googleToken: string): Promise<LoginResponse> {
   try {
-    const response = await api.post<LoginResponse>("/auth/logingoogle", {
+    const response = await api.post<LoginResponse>("/auth/google", {
       token: googleToken,
     });
     return response.data;

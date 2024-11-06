@@ -3,29 +3,24 @@ import {
   GoogleLogin,
   GoogleOAuthProvider,
 } from "@react-oauth/google";
-import { googleLogin } from "../services/login";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const GoogleAuthButton = () => {
-  async function handleLogin(response: CredentialResponse) {
-    if (response.credential) {
-      const res = await googleLogin(response.credential);
-      alert("Login successful");
-      return res;
-    } else {
-      alert("Login failed");
-    }
-  }
+  const navigate = useNavigate();
+  const { loginGoogle } = useAuth();
+
   const handleLoginSuccess = async (response: CredentialResponse) => {
     try {
-      const res = handleLogin(response);
-      //const data = await res.json();
-      console.log("Login success:", res);
+      await loginGoogle(response.credential as string);
+      navigate("/");
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   const handleLoginFailure = () => {
+    alert("Google Login failed! try again");
     console.error("Google login failed");
   };
 

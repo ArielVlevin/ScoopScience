@@ -1,6 +1,6 @@
 import { Ingredient } from "../models/Ingredient.js";
 import { getNutrientCategory } from "../utils/ingredientUtils.js";
-
+import { fetchIngredientsOpenFoodApi } from "../services/ingredientService.js";
 const getLastIngredientID = async (category) => {
   const lastIngredient = await Ingredient.findOne({ category }).sort({
     _id: -1,
@@ -93,6 +93,22 @@ export const getIngredientsByRecipe = async (req, res, next) => {
 
   try {
     const ingredients = await Ingredient.find({ _id: { $in: ingredientIds } });
+
+    res.status(200).json(ingredients);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getIngredientsFromOpenFoodApi = async (req, res, next) => {
+  try {
+    const { query } = req.body;
+
+    if (!query) {
+      return res.status(400).json({ error: "Search query is required" });
+    }
+
+    const ingredients = await fetchIngredientsOpenFoodApi(query);
 
     res.status(200).json(ingredients);
   } catch (error) {

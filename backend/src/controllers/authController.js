@@ -41,9 +41,10 @@ export const login = async (req, res, next) => {
 
 export const googleLogin = async (req, res, next) => {
   try {
-    const googleToken = req.body.token; // Expecting the Google token in the request body
+    const googleToken = req.body.token;
 
-    // Use authService to handle the login
+    console.log("/authController.js: google token: " + googleToken);
+
     const { accessToken, refreshToken, user } = await authService.googleLogin(
       googleToken
     );

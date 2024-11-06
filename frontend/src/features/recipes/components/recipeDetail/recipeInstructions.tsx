@@ -1,4 +1,4 @@
-import Box from "@/components/class/box";
+import PageBox from "@/components/class/pageBox";
 import { Recipe } from "@/types";
 
 type RecipeInstructionsProps = {
@@ -8,7 +8,7 @@ export default function RecipeInstructions({
   recipe,
 }: RecipeInstructionsProps) {
   return (
-    <Box>
+    <PageBox>
       <h2 className="text-xl font-bold mb-4">Instructions</h2>
 
       <h3> delete: {recipe.recipeData.recipeKind}</h3>
@@ -46,6 +46,6 @@ export default function RecipeInstructions({
           </p>
         </li>
       </ol>
-    </Box>
+    </PageBox>
   );
 }

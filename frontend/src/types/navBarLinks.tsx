@@ -8,7 +8,7 @@ export const createLinks = [
 ];
 
 export const exploreLinks = [
-  { name: "Explore Recipes", href: "/recipes" },
+  //{ name: "Explore Recipes", href: "/recipes" },
   { name: "Top Rated", href: "/recipes/toprated" },
   { name: "Newest", href: "/recipes/newest" },
   { name: "Ingredients", href: "/Ingredients" },

@@ -21,11 +21,13 @@ const Page = ({
 }: PageProps) => {
   const base = wide ? BASE : cn(BASE, `container mx-auto `);
   return (
-    <div className={cn(base, className)}>
-      <div className="gap-6 p-6 mt-6  bg-muted rounded-lg  h-full items-center justify-center drop-shadow-xl">
-        {returnTo && <BackToPrevPage />}
+    <div className="container mx-auto flex items-center justify-center w-full">
+      <div className="gap-6 p-6 mt-6 w-full ">
+        <div className="mx-auto p-8 mb-10 max-w-5xl  ">
+          {returnTo && <BackToPrevPage />}
 
-        {children}
+          {children}
+        </div>
       </div>
     </div>
   );

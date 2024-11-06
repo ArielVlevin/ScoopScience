@@ -6,6 +6,7 @@ import {
   WheatIcon,
 } from "@/components/icons/icon";
 import { Allergies, IngredientCategory } from "@/types";
+import { cn } from "@/utils/cn";
 import {
   AppleIcon,
   BicepsFlexedIcon,
@@ -31,4 +32,22 @@ export const categoryIcons: Record<IngredientCategory, React.ReactNode> = {
   nuts: <NutIcon className="h-6 w-6" />,
   liquid: <DropletIcon className="h-6 w-6" />,
   other: <EllipsisIcon className="h-6 w-6" />,
+};
+
+export const getCategoryIcon = (
+  category: IngredientCategory,
+  className = "h-12 w-12 text-white"
+): React.ReactNode => {
+  const icons: Record<IngredientCategory, React.ReactNode> = {
+    dairy: <MilkIcon className={cn(className, "text-white")} />,
+    sugars: <CandyIcon className={cn(className, "text-white")} />,
+    stabilizer: <BicepsFlexedIcon className={cn(className, "text-white")} />,
+    fruits: <AppleIcon className={cn(className, "text-white")} />,
+    adding: <CookieIcon className={cn(className, "text-white")} />,
+    nuts: <NutIcon className={cn(className, "text-white")} />,
+    liquid: <DropletIcon className={cn(className, "text-white")} />,
+    other: <EllipsisIcon className={cn(className, "text-white")} />,
+  };
+
+  return icons[category];
 };

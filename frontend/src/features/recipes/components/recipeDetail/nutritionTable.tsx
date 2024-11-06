@@ -1,4 +1,4 @@
-import Box from "@/components/class/box";
+import PageBox from "@/components/class/pageBox";
 import {
   Select,
   SelectTrigger,
@@ -17,7 +17,7 @@ export default function NutritionTable({
   recipe,
 }: NutritionTableProps) {
   return (
-    <Box className={className}>
+    <PageBox className={className}>
       <h2 className="text-xl font-bold ">Nurtional Table</h2>
       <div className="mt-2">
         <label htmlFor="serving-size" className="block text-sm font-medium">
@@ -140,6 +140,6 @@ export default function NutritionTable({
         <br />
         Fat 9 • Carbohydrate 4 • Protein 4
       </p>
-    </Box>
+    </PageBox>
   );
 }

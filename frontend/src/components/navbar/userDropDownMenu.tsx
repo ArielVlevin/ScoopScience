@@ -29,12 +29,16 @@ export default function UserDropDownMenu() {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Hello {user.username}!</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <Link to="/control/dashboard">
-            <DropdownMenuItem>Dashboard</DropdownMenuItem>
-          </Link>
 
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {user.isAdmin && (
+            <>
+              <Link to="/control/dashboard">
+                <DropdownMenuItem>Dashboard</DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem
             onClick={() => {
               logout();

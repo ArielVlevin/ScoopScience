@@ -4,7 +4,7 @@ import axios, {
   AxiosError,
 } from "axios";
 
-const apiUrl = "https://api.scoopscience.com/api";
+const apiUrl = "http://127.0.0.1:3000/api"; //"https://api.scoopscience.com/api";
 const api = axios.create({
   baseURL: apiUrl,
 });

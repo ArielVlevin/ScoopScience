@@ -1,28 +1,20 @@
-import {
-  Allergies,
-  IngredientCategory,
-  ingredientCategoryArray,
-  NewIngredient,
-} from "@/types";
+import { Allergies, IngredientCategory, NewIngredient } from "@/types";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Checkbox,
-  Input,
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui";
 import { useState } from "react";
 import { useAddIngredient } from "../hooks/useAddngredient";
+import IngredientSearch from "../components/newIngredient/searchIngredient";
+import { FoodItem } from "../types/searchInredientType";
+import { Separator } from "@/components/ui/separator";
+
+import AllergyCheckboxes from "../components/newIngredient/allergyCheckBox";
+import CategorySelect from "../components/newIngredient/categorySelect";
+import {
+  NameInput,
+  NutritionalInputs,
+  WeightInput,
+} from "../components/newIngredient/newIngredientInputs";
+import PageCard from "@/components/class/pageCard";
+import Page from "@/components/class/page";
 
 const AddIngredientForm = () => {
   const [ingredient, setIngredient] = useState<NewIngredient>({
@@ -69,112 +61,74 @@ const AddIngredientForm = () => {
     }));
   };
 
+  const handleSelectIngredient = (selectedIngredient: FoodItem) => {
+    setIngredient({
+      ...ingredient,
+      name: selectedIngredient.product_name || "",
+      weight: 100,
+      calories: selectedIngredient.nutriments?.["energy-kcal_100g"] || 0,
+      sugar: selectedIngredient.nutriments?.sugars_100g || 0,
+      fat: selectedIngredient.nutriments?.fat_100g || 0,
+      saturates: selectedIngredient.nutriments?.["saturated-fat_100g"] || 0,
+      protein: selectedIngredient.nutriments?.proteins_100g || 0,
+      //todo: add totalSolids and msnf - use the calc
+      totalSolids: 0,
+      msnf: 0,
+      allergies: {
+        milk: false,
+        nuts: false,
+        egg: false,
+        soy: false,
+        wheat: false,
+      },
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("New Ingredient:", ingredient);
     addIngredientMutation.mutate(ingredient);
-    // Here you would typically send the data to your backend or perform other actions
   };
 
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle>New Ingredient</CardTitle>
-        <CardDescription>Add a new ingredient to your database</CardDescription>
-      </CardHeader>
+    <Page>
+      <IngredientSearch
+        onSelectIngredient={handleSelectIngredient}
+        className="mb-10"
+      />
+
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              name="name"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+        <PageCard
+          title="New Ingredient Data"
+          cardFooter={<Button type="submit">Send</Button>}
+        >
+          {/* Name Input */}
+          <NameInput value={ingredient.name} onChange={handleInputChange} />
 
-          <div className="space-y-2">
-            <Label htmlFor="weight">Weight (g)</Label>
-            <Input
-              id="weight"
-              name="weight"
-              type="number"
-              placeholder="100"
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+          {/* Category Select */}
+          <CategorySelect
+            value={ingredient.category}
+            onChange={handleCategoryChange}
+          />
+          <Separator className="my-4" />
+          {/* Weight Input */}
+          <WeightInput value={ingredient.weight} />
+          {/*Nutritional Inputs */}
+          <NutritionalInputs
+            ingredient={ingredient}
+            onChange={handleInputChange}
+          />
 
-          <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
-            <Select
-              value={ingredient.category}
-              onValueChange={handleCategoryChange}
-            >
-              <SelectTrigger id="category">
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {ingredientCategoryArray.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <Separator className="my-4" />
 
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              "calories",
-              "sugar",
-              "fat",
-              "saturates",
-              "protein",
-              "totalSolids",
-              "msnf",
-            ].map((field) => (
-              <div key={field} className="space-y-2">
-                <Label htmlFor={field}>
-                  {field.charAt(0).toUpperCase() + field.slice(1)}
-                </Label>
-                <Input
-                  id={field}
-                  name={field}
-                  type="number"
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            ))}
-          </div>
-
-          <div className="space-y-2">
-            <Label>Allergies</Label>
-            <div className="flex flex-wrap gap-4">
-              {Object.keys(ingredient.allergies).map((allergy) => (
-                <div key={allergy} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={allergy}
-                    checked={ingredient.allergies[allergy as keyof Allergies]}
-                    onCheckedChange={() =>
-                      handleAllergyChange(allergy as keyof Allergies)
-                    }
-                  />
-                  <Label htmlFor={allergy}>
-                    {allergy.charAt(0).toUpperCase() + allergy.slice(1)}
-                  </Label>
-                </div>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button type="submit">Add Ingredient</Button>
-        </CardFooter>
+          {/* Allergy Checkboxes */}
+          <AllergyCheckboxes
+            allergies={ingredient.allergies}
+            onChange={handleAllergyChange}
+          />
+        </PageCard>
       </form>
-    </Card>
+    </Page>
   );
 };
 

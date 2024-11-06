@@ -1,6 +1,6 @@
-import Box from "@/components/class/box";
 import Grid from "@/components/class/grid";
 import { Ingredient, Recipe } from "@/types";
+import PageBox from "@/components/class/pageBox";
 
 type RecipeIngredientsProps = {
   className?: string;
@@ -37,7 +37,7 @@ export default function RecipeIngredients({
   const ingredientsArray = recipe.recipeIngredient.ingredients;
 
   return (
-    <Box className={className}>
+    <PageBox className={className}>
       <h2 className="text-xl font-bold mb-4">Ingredients</h2>
       <Grid mdcols={2} gap={8} className="w-full">
         {categories.map(({ title, filter }) => {
@@ -62,6 +62,6 @@ export default function RecipeIngredients({
           );
         })}
       </Grid>
-    </Box>
+    </PageBox>
   );
 }

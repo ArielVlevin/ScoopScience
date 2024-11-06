@@ -19,10 +19,7 @@ export function NewRecipeTableHeads({ isEditable }: NewRecipeTableHeadsProps) {
   return (
     <TableRow>
       {tableHeader.map((header) => (
-        <TableHead
-          key={header}
-          className="text-center text-foreground font-bold"
-        >
+        <TableHead key={header} className="text-center text-white font-bold">
           {header}
         </TableHead>
       ))}
@@ -46,24 +43,32 @@ export default function TableCells({
 }: TableCellsProps) {
   return (
     <>
-      <TableCell className="text-center text-foreground">{row.name}</TableCell>
-      <TableCell className="text-center text-foreground">
+      <TableCell className="text-center text-foreground bg-primary/60">
+        {row.name}
+      </TableCell>
+      <TableCell className="text-center text-foreground bg-primary/60">
         {row.weight}
       </TableCell>
 
-      <TableCell className="text-center text-foreground">
+      <TableCell className="text-center text-foreground bg-primary/60">
         {row.category}
       </TableCell>
-      <TableCell className="text-center text-foreground">{row.sugar}</TableCell>
-      <TableCell className="text-center text-foreground">{row.fat}</TableCell>
-      <TableCell className="text-center text-foreground">
+      <TableCell className="text-center text-foreground bg-primary/60">
+        {row.sugar}
+      </TableCell>
+      <TableCell className="text-center text-foreground bg-primary/60">
+        {row.fat}
+      </TableCell>
+      <TableCell className="text-center text-foreground bg-primary/60">
         {row.totalSolids}
       </TableCell>
-      <TableCell className="text-center text-foreground">{row.msnf}</TableCell>
+      <TableCell className="text-center text-foreground bg-primary/60">
+        {row.msnf}
+      </TableCell>
 
       {isEditable ? (
-        <TableCell className="flex justify-center items-center text-muted-foreground">
-          <div className="flex items-center justify-end gap-3">
+        <TableCell className=" text-muted-primary justify-center items-center  bg-primary/60">
+          <div className="flex gap-3">
             {/* ----- EDIT BUTTON ----- */}
             <div
               onClick={() => {

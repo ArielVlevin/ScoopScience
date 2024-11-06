@@ -9,6 +9,7 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 import {
   register,
   login,
+  googleLogin,
   logout as logoutUser,
   refreshAccessToken,
 } from "@/auth/services";
@@ -32,6 +33,7 @@ export interface AuthContextType {
     password: string
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  loginGoogle: (googleToken: string) => Promise<void>;
   logout: () => void;
 
   isAuthenticated: boolean;
@@ -95,9 +97,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  //TODO::: make this 1 function / combain the two functions
   const handleLogin = async (email: string, password: string) => {
     try {
       const { accessToken, refreshToken } = await login(email, password);
+
+      const decodedToken: any = jwtDecode(accessToken);
+
+      const decodedUser = jwtDecode<User>(accessToken);
+      setUser(decodedUser);
+
+      scheduleTokenRefresh(refreshToken, decodedToken.exp - Date.now() / 1000);
+
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("user", JSON.stringify(decodedUser));
+
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+  const handleGoogleLogin = async (token: string) => {
+    try {
+      const { accessToken, refreshToken } = await googleLogin(token);
 
       const decodedToken: any = jwtDecode(accessToken);
 
@@ -265,6 +289,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loading,
         register: handleRegister,
         login: handleLogin,
+        loginGoogle: handleGoogleLogin,
         logout: handleLogout,
         isAuthenticated: isAuthenticated,
         isAdmin: user?.isAdmin || false,

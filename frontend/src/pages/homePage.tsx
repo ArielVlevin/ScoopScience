@@ -5,7 +5,7 @@ function HomePage() {
   const title = "Welcome to ScoopScience";
   const subTitle = "Your ultimate destination for heavenly ice cream recipes.";
   const btnTitle = "Get Started";
-  const btnLink = "recipes/newRecipeLanding";
+  const btnLink = "recipes";
 
   return (
     <Hero

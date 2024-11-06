@@ -10,8 +10,7 @@ import {
   RecipeGridList,
 } from "../components/recipeGrid/recipeGrid";
 import { useState } from "react";
-import { Separator } from "@/components/ui/separator";
-import Title from "@/components/class/title";
+import PageCard from "@/components/class/pageCard";
 
 export default function FavoritesRecipesPage() {
   const { user } = useAuth();
@@ -48,23 +47,20 @@ export default function FavoritesRecipesPage() {
   }
 
   return (
-    <>
-      <Page>
-        <Title>My Favorites Recipes</Title>
-        <Separator className="mt-6 mb-6" />
-        {/* ----Cards----- */}
+    <Page>
+      <PageCard title="My Favorites">
         <RecipeGridList
           recipes={recipes}
           itemsPerPage={itemsPerPage}
           isFavoriteCard
         />
-      </Page>
-      <LoadMoreButton
-        className="mb-12"
-        itemsPerPage={itemsPerPage}
-        totalRecipes={recipes.length}
-        onLoadMore={handleLoadMore}
-      />
-    </>
+        <LoadMoreButton
+          className="mb-12"
+          itemsPerPage={itemsPerPage}
+          totalRecipes={recipes.length}
+          onLoadMore={handleLoadMore}
+        />
+      </PageCard>
+    </Page>
   );
 }

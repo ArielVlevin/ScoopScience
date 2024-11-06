@@ -15,7 +15,7 @@ import {
   SelectItem,
   Input,
   DialogDescription,
-} from "@/components/ui"; // Adjust this import path based on your actual path
+} from "@/components/ui";
 import { Ingredient, Row } from "@/types";
 import { useGetIngredientsArray } from "@/features/ingredients/hooks/useGetIngredientArray";
 import useGetIngredient from "@/features/ingredients/hooks/useGetIngredient";
@@ -87,7 +87,9 @@ function AddIngredientToTable({
       }}
     >
       <DialogTrigger asChild>
-        <Button>Add Ingredient</Button>
+        <Button className="bg-green-700 hover:bg-green-500 dark:bg-green-900 dark:hover:bg-green-700 text-white">
+          Add Ingredient
+        </Button>
       </DialogTrigger>
       <DialogContent
         className="w-[400px] p-4"

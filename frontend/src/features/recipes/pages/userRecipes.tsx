@@ -13,6 +13,7 @@ import {
   LoadMoreButton,
   RecipeGridList,
 } from "../components/recipeGrid/recipeGrid";
+import PageCard from "@/components/class/pageCard";
 import { Separator } from "@/components/ui/separator";
 
 export default function UserRecipesPage() {
@@ -52,34 +53,31 @@ export default function UserRecipesPage() {
   return (
     <>
       <Page>
-        <p className="text-3xl font-sans  font-medium text-primary mb-4 ">
-          My Recipes
-        </p>
+        <PageCard title="My Recipes">
+          {/* ----add new recipe----- */}
 
-        <Separator className="mt-6 mb-6" />
+          <Link to="/newRecipe">
+            <Button className="w-40 h-12 text-md ">
+              <PlusIcon className="size-4 mr-2" />
+              New Recipe
+            </Button>
+          </Link>
+          <Separator />
 
-        {/* ----add new recipe----- */}
-
-        <Link to="/newRecipe">
-          <Button className="w-40 h-12 text-md mb-6">
-            <PlusIcon className="size-4 mr-2" />
-            New Recipe
-          </Button>
-        </Link>
-
-        {/* ----Cards----- */}
-        <RecipeGridList
-          recipes={recipes}
+          {/* ----Cards----- */}
+          <RecipeGridList
+            recipes={recipes}
+            itemsPerPage={itemsPerPage}
+            isFavoriteCard
+          />
+        </PageCard>
+        <LoadMoreButton
+          className="mb-12"
           itemsPerPage={itemsPerPage}
-          isFavoriteCard
+          totalRecipes={recipes.length}
+          onLoadMore={handleLoadMore}
         />
       </Page>
-      <LoadMoreButton
-        className="mb-12"
-        itemsPerPage={itemsPerPage}
-        totalRecipes={recipes.length}
-        onLoadMore={handleLoadMore}
-      />
     </>
   );
 }

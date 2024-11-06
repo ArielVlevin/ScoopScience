@@ -3,8 +3,8 @@ dotenv.config();
 
 export default {
   port: process.env.PORT || 3000,
-  allowedOrigins: ["https://scoopscience.com", "http://localhost:3000"],
-  jwtSecret: process.env.JWT_SECRET,
+  allowedOrigins: ["https://scoopscience.com", "http://localhost:5173"],
+  jwtSecret: "p8cqeqlwBfsmCpeMETZsZ4laijAzVldT",
   mongoUri:
     "mongodb+srv://arielvlevin:izoehktcEV1puuVl@ariel.vhe225s.mongodb.net/Gelato?retryWrites=true&w=majority&appName=Ariel",
   googleClientId:

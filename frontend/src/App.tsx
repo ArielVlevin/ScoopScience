@@ -10,13 +10,16 @@ import router from "@/config/router.tsx";
 import queryClient from "@/config/query.ts";
 
 import { Toaster } from "./components/ui/toaster";
+import { IsMobileProvider } from "./contexts/IsMobileContext";
 
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <RouterProvider router={router} />
-        <Toaster />
+        <IsMobileProvider>
+          <RouterProvider router={router} />
+          <Toaster />
+        </IsMobileProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

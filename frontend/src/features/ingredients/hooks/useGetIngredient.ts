@@ -17,3 +17,21 @@ export default function useGetIngredient(ingredientId: string | undefined) {
     error,
   };
 }
+
+export function useGetIngredientOpenFoodApi(query: string | undefined) {
+  const endpoint = query ? `ingredients/openFoodApi/${query}` : undefined;
+  const {
+    data: ingredientData,
+    isLoading,
+    isError,
+    error,
+  } = useFetchData<Ingredient>(["ingredients", query!], endpoint);
+
+  console.log("\ningredientData:", ingredientData);
+  return {
+    ingredientData,
+    isLoading,
+    isError,
+    error,
+  };
+}

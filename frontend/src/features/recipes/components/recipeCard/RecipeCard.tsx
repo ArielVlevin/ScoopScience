@@ -1,13 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 
 import { HeartIcon } from "@/components/icons/icon";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Recipe } from "@/types";
 import { useNavigate } from "react-router-dom";
 import RecipeCardIcons from "./RecipeCardIcons";
 import { useAuth } from "@/contexts/AuthContext";
 import { Rating } from "@smastrom/react-rating";
+import CardButton from "./cardButton";
 
 export type cardInfo = {
   recipe: Recipe;
@@ -49,7 +49,7 @@ export function RecipeCard({
 
   return (
     <div key={recipe._id!} className="w-full ">
-      <Card className="shadow-lg rounded-lg bg-muted overflow-hidden  hover:scale-105 duration-500">
+      <Card className="shadow-lg rounded-lg bg-background/80 overflow-hidden  hover:scale-105 duration-500">
         <div className="relative">
           <div className=" w-full h-auto aspect-video	">
             <img
@@ -103,30 +103,22 @@ export function RecipeCard({
 
           <div className="flex flex-col gap-2">
             {isFavoriteCard ? (
-              <Button
-                className="w-full bg-orange-700 hover:bg-orange-500"
-                onClick={goToMakePage}
-              >
+              <CardButton color="orange" onClick={goToMakePage}>
                 Make
-              </Button>
+              </CardButton>
             ) : null}
             {isEditable ? (
-              <Button
-                className="w-full bg-orange-700 hover:bg-orange-500"
-                onClick={goToEditPage}
-              >
+              <CardButton color="blue" onClick={goToEditPage}>
                 Edit
-              </Button>
+              </CardButton>
             ) : null}
-            <Button
-              className="w-full"
-              variant="default"
+            <CardButton
               onClick={() => {
                 navigate(`/recipes/${recipe._id!}`);
               }}
             >
               View Recipe
-            </Button>
+            </CardButton>
           </div>
         </CardContent>
       </Card>

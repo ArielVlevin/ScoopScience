@@ -5,7 +5,7 @@ import ErrorPage from "@/pages/error";
 import AuthPage from "@/auth/pages/auth";
 import Loading from "@/pages/loading";
 import PrivateRoute, { AdminRoute } from "@/config/privateRoute";
-import DashBoard from "@/auth/pages/dashboard";
+import DashBoard from "@/features/dashboard/pages/dashboard";
 import Logout from "@/auth/components/logout";
 
 const HomePage = lazy(() => import("@/pages/homePage"));
@@ -58,10 +58,12 @@ const UserIngredients = lazy(
 );
 
 const AdminControllPanel = lazy(
-  () => import("@/auth/components/adminControllPanel")
+  () => import("@/features/dashboard/components/adminControllPanel")
 );
 
-const RecipeController = lazy(() => import("@/auth/components/recipe"));
+const RecipeController = lazy(
+  () => import("@/features/dashboard/components/recipe")
+);
 const ContactUs = lazy(() => import("@/pages/contact"));
 
 const router = createBrowserRouter([

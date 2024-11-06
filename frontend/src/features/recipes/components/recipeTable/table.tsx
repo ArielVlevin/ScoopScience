@@ -11,8 +11,8 @@ import NewRecipeTableCells, { NewRecipeTableHeads } from "./tableSetUp";
 import { roundToTwoDecimalPlaces } from "@/utils/math";
 import calculateTotals from "@/features/recipes/calc/calculateTotals";
 import EditWeightDialog from "./editWeight";
-import EditTotalWeight from "./editTotalWeight";
 import { calculateAndRound } from "../../calc/calculateAndRound";
+import WeightTableFooter from "./tableFooter";
 
 type NewRecipeTableProops = {
   className?: string;
@@ -84,7 +84,7 @@ export default function NewRecipeTable({
   };
 
   return (
-    <div>
+    <div className={className}>
       <EditWeightDialog
         isOpen={isEditingWeight}
         onClose={handleClose}
@@ -92,69 +92,49 @@ export default function NewRecipeTable({
         onSave={handleSaveEdit}
       />
       {/* ----- TABLE ----- */}
-      <div className={className}>
-        <div className="relative w-full overflow-auto">
-          <Table>
-            <TableHeader className="bg-muted">
-              <NewRecipeTableHeads isEditable={isEditable} />
-            </TableHeader>
+      <Table className="mx-auto w-full">
+        <TableHeader className="bg-primary hover:bg-primary/90 ">
+          <NewRecipeTableHeads isEditable={isEditable} />
+        </TableHeader>
 
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row._id}
-                  onClick={() => setSelectedRow(row)}
-                  className={`${
-                    selectedRow && selectedRow._id === row._id
-                      ? "bg-muted/50 h-16"
-                      : "hover:bg-muted/20 cursor-pointer h-12"
-                  }`}
-                >
-                  {/*---------Ingredients--------- */}
-                  <NewRecipeTableCells
-                    row={row}
-                    selectedRow={selectedRow}
-                    handleEditWeight={handleEditWeight}
-                    handleDelete={handleDelete}
-                    isEditable={isEditable}
-                  />
-                </TableRow>
-              ))}
-            </TableBody>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row._id}
+              onClick={() => setSelectedRow(row)}
+              className={`${
+                selectedRow && selectedRow._id === row._id
+                  ? "bg-muted/50 h-16 "
+                  : "hover:bg-muted/20 cursor-pointer h-12 "
+              }`}
+            >
+              {/*---------Ingredients--------- */}
+              <NewRecipeTableCells
+                row={row}
+                selectedRow={selectedRow}
+                handleEditWeight={handleEditWeight}
+                handleDelete={handleDelete}
+                isEditable={isEditable}
+              />
+            </TableRow>
+          ))}
+        </TableBody>
 
-            {/* ----- FOOTER FOR TOTAL WEIGHT ----- */}
-            {isTotalsVisible && rows.length > 0 ? (
-              <TableFooter className="">
-                <TableRow>
-                  <td className="font-bold text-left p-2 " colSpan={2}>
-                    Total Weight:
-                  </td>
-                  <td className="text-center font-medium p-2 " colSpan={2}>
-                    {totals.totalWeight}g
-                  </td>
-                  <td colSpan={4} className="text-right p-2 ">
-                    <EditTotalWeight
-                      isOpen={isEditingTotalWeight}
-                      onClose={handleCloseTotalWeight}
-                      rows={rows}
-                      setRows={setRows}
-                      totals={totals}
-                      setTotals={setTotals}
-                    />
-                    <button
-                      type="button"
-                      onClick={handleEditTotalWeight}
-                      className="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-3 rounded "
-                    >
-                      Adjust Weight
-                    </button>
-                  </td>
-                </TableRow>
-              </TableFooter>
-            ) : null}
-          </Table>
-        </div>
-      </div>
+        {/* ----- FOOTER FOR TOTAL WEIGHT ----- */}
+        {isTotalsVisible && rows.length > 0 ? (
+          <TableFooter className="">
+            <WeightTableFooter
+              totals={totals}
+              setRows={setRows}
+              setTotals={setTotals}
+              handleEditTotalWeight={handleEditTotalWeight}
+              handleCloseTotalWeight={handleCloseTotalWeight}
+              isEditingTotalWeight={isEditingTotalWeight}
+              rows={rows}
+            />
+          </TableFooter>
+        ) : null}
+      </Table>
 
       {/* -----/--- TABLE ----- */}
     </div>

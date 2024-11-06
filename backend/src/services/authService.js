@@ -95,21 +95,29 @@ export const googleLogin = async (googleToken) => {
     const payload = ticket.getPayload();
     const email = payload.email;
 
+    console.log(
+      "/services/authService.js: googleLogin function, $payload:\n",
+      payload
+    );
+
     // Find the user by email
     let user = await User.findOne({ email });
 
+    const googleusername = "g" + payload.given_name;
     // If the user doesn't exist, create a new user
     if (!user) {
+      console.log("the google user doesn't exist creating new user! ");
       const newID = (await getLastUserID()) + 1;
       user = new User({
         _id: newID,
-        username: payload.name, // Use Google name
+        username: googleusername, // Use Google name
         email: email,
-        googleId: payload.sub, // Store Google ID for future reference
-        password: "", // No password since it's Google OAuth
+        password: "nopasswordneeded", // No password since it's Google OAuth
       });
       await user.save();
     }
+
+    console.log("user created/ login: ", user);
 
     // Generate access and refresh tokens
     const { accessToken, refreshToken } = generateTokens(user);

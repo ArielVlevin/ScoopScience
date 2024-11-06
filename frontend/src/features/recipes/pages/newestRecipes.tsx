@@ -5,10 +5,9 @@ import {
   RecipeFound,
   RecipeGridList,
 } from "../components/recipeGrid/recipeGrid";
-import { Separator } from "@/components/ui/separator";
 import { usePaginatedRecipes } from "../hooks/usePaginatedRecipes";
 import ErrorPage from "@/pages/error";
-import Title from "@/components/class/title";
+import PageCard from "@/components/class/pageCard";
 
 export default function ExploreNewsetRecipesPage() {
   const {
@@ -29,31 +28,30 @@ export default function ExploreNewsetRecipesPage() {
   return (
     <div>
       <Page>
-        <Title>Explore The Newest Recipes</Title>
-        <Separator className="mt-6 mb-6" />
+        <PageCard title="Newest Recipes">
+          {/* Show the number of recipes found */}
+          <RecipeFound
+            recipesLength={totalRecipes}
+            isShowRecipeFound={true}
+            className="mb-4"
+          />
 
-        {/* Show the number of recipes found */}
-        <RecipeFound
-          recipesLength={totalRecipes}
-          isShowRecipeFound={true}
-          className="mb-4"
-        />
+          {/* Display the grid of recipes */}
+          <RecipeGridList
+            recipes={allRecipes}
+            itemsPerPage={allRecipes.length}
+            className="mb-6"
+          />
 
-        {/* Display the grid of recipes */}
-        <RecipeGridList
-          recipes={allRecipes}
-          itemsPerPage={allRecipes.length}
-          className="mb-8"
-        />
-
-        {/* Load More button */}
+          {/* Load More button */}
+        </PageCard>
       </Page>
       {page < (totalPages || 0) && (
         <LoadMoreButton
           itemsPerPage={allRecipes.length}
           totalRecipes={totalRecipes}
           onLoadMore={handleLoadMore}
-          className="mb-12"
+          className=" mb-12"
           isLoading={isLoading}
         />
       )}
