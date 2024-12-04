@@ -150,6 +150,124 @@ export const getAllRecipes = async (req, res, next) => {
     next(error);
   }
 };
+
+export const setRate = async (req, res, next) => {
+  const { user_id, ratingValue } = req.body;
+  const recipeId = req.params.id;
+
+  try {
+    const recipe = await Recipe.findById(recipeId);
+    const existingRating = recipe.recipeRating.ratingUsers.find(
+      (rating) => rating.user_id === user_id
+    );
+
+    if (existingRating) {
+      existingRating.ratingValue = ratingValue;
+    } else {
+      recipe.recipeRating.ratingUsers.push({ user_id, ratingValue });
+    }
+
+    const totalRatingValue = recipe.recipeRating.ratingUsers.reduce(
+      (acc, rating) => acc + rating.ratingValue,
+      0
+    );
+
+    recipe.recipeRating.ratingValue =
+      totalRatingValue / recipe.recipeRating.ratingUsers.length;
+
+    recipe.recipeRating.ratingAmount = recipe.recipeRating.ratingUsers.length;
+
+    await recipe.save();
+    res.status(200).json({ message: "Rating updated", recipe });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const fetchRecipes = async (req, res, next) => {
+  try {
+    const {
+      // Default
+      limit = 9,
+      page = 1,
+      order = "desc",
+      sortBy = "createdAt",
+      userId, // Optional filter by user
+      recipeKind, // Optional filter by recipe kind
+      minRating, // Optional filter by minimum rating
+      maxRating, // Optional filter by maximum rating
+      search, // Optional search by recipe name or description
+    } = req.query;
+
+    const filters = {};
+
+    // Apply filters
+    if (userId) {
+      filters["user_id"] = userId;
+    }
+
+    if (recipeKind) {
+      filters["recipeData.recipeKind"] = recipeKind;
+    }
+    if (minRating || maxRating) {
+      filters["recipeRating.ratingValue"] = {};
+      if (minRating)
+        filters["recipeRating.ratingValue"].$gte = parseFloat(minRating);
+      if (maxRating)
+        filters["recipeRating.ratingValue"].$lte = parseFloat(maxRating);
+    }
+    if (search) {
+      filters["recipeData.recipeName"] = { $regex: search, $options: "i" };
+    }
+
+    const skip = (page - 1) * parseInt(limit, 10);
+
+    console.log("req.query: ", req.query);
+
+    // Query the database with filters and sort options
+    const recipes = await Recipe.find(filters)
+      .sort({ [sortBy]: order === "asc" ? 1 : -1 })
+      .skip(skip)
+      .limit(parseInt(limit, 10))
+      .populate("user_id", "username")
+      .exec();
+
+    const totalRecipes = await Recipe.countDocuments(filters);
+
+    res.status(200).json({
+      recipes,
+      totalRecipes,
+      currentPage: parseInt(page, 10),
+      totalPages: Math.ceil(totalRecipes / parseInt(limit, 10)),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/*
+
+export const getRecipeSummaries = async (req, res, next) => {
+  try {
+    // Fetch only the fields you need: name, id, and kind
+    const recipes = await Recipe.find(
+      {},
+      { _id: 1, "recipeData.recipeName": 1, "recipeData.recipeKind": 1 }
+    );
+
+    // Format the response for better readability if needed
+    const formattedRecipes = recipes.map((recipe) => ({
+      id: recipe._id,
+      name: recipe.recipeData.recipeName,
+      kind: recipe.recipeData.recipeKind,
+    }));
+
+    res.status(200).json(formattedRecipes);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getRecipesByKind = async (req, res, next) => {
   const recipeKind = req.params.kind;
 
@@ -169,6 +287,9 @@ export const getRecipesByKind = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
 
 export const getPaginatedRecipes = async (req, res, next) => {
   try {
@@ -238,35 +359,5 @@ export const getRecipesByRate = async (req, res, next) => {
   }
 };
 
-export const setRate = async (req, res, next) => {
-  const { user_id, ratingValue } = req.body;
-  const recipeId = req.params.id;
 
-  try {
-    const recipe = await Recipe.findById(recipeId);
-    const existingRating = recipe.recipeRating.ratingUsers.find(
-      (rating) => rating.user_id === user_id
-    );
-
-    if (existingRating) {
-      existingRating.ratingValue = ratingValue;
-    } else {
-      recipe.recipeRating.ratingUsers.push({ user_id, ratingValue });
-    }
-
-    const totalRatingValue = recipe.recipeRating.ratingUsers.reduce(
-      (acc, rating) => acc + rating.ratingValue,
-      0
-    );
-
-    recipe.recipeRating.ratingValue =
-      totalRatingValue / recipe.recipeRating.ratingUsers.length;
-
-    recipe.recipeRating.ratingAmount = recipe.recipeRating.ratingUsers.length;
-
-    await recipe.save();
-    res.status(200).json({ message: "Rating updated", recipe });
-  } catch (error) {
-    next(error);
-  }
-};
+*/

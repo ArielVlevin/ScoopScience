@@ -81,7 +81,7 @@ export default function IngredientsPage() {
       </Grid>
       {isDialogOpen && selectedIngredient && (
         <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
-          <DialogContent className="p-0 overflow-hidden  bg-gray-100">
+          <DialogContent className="p-0 overflow-hidden bg-red-100">
             <IngredientCard _id={selectedIngredient} />
           </DialogContent>
         </Dialog>

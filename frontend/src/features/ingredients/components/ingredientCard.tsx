@@ -10,28 +10,7 @@ import {
 import { getLevelColor } from "@/utils/level";
 import useGetIngredient from "../hooks/useGetIngredient";
 import { allergenIcons, categoryIcons } from "../types/icons";
-
-/*
-// Mock ingredient data for demonstration
-const mockIngredient: Ingredient = {
-  name: "Heavy Cream",
-  weight: 100, // standard weight for nutritional info
-  category: "dairy",
-  calories: 340,
-  sugar: 2.8,
-  fat: 36,
-  saturates: 0.5,
-  protein: 2.1,
-  totalSolids: 40.9,
-  msnf: 4.9,
-
-  fatLevel: "High",
-  saturatesLevel: "Low",
-  sugarsLevel: "High",
-
-  allergies: { milk: true, nuts: false, egg: false, soy: false, wheat: false },
-};
-*/
+import { Separator } from "@/components/ui/separator";
 
 type IngredientCardProps = {
   _id: string;
@@ -58,18 +37,24 @@ export default function IngredientCard({ _id }: IngredientCardProps) {
     <Card>
       {isLoading && <p>Loading...</p>}
       {isError && <p>Error: {error?.message}</p>}
-      <CardHeader className="flex flex-row items-center space-x-4">
-        <div className="bg-primary/10 p-3 rounded-full">
-          {categoryIcons[ingredientData.category]}
+      <CardHeader className="bg-background/80">
+        <div className="flex flex-row items-center space-x-4 mb-2 ">
+          <div className="bg-primary text-white p-3 rounded-full">
+            {categoryIcons[ingredientData.category]}
+          </div>
+          <div>
+            <CardTitle className="text-3xl">{ingredientData.name}</CardTitle>
+            <Badge
+              variant="secondary"
+              className="mt-1 bg-primary/60 text-white"
+            >
+              {ingredientData.category}
+            </Badge>
+          </div>
         </div>
-        <div>
-          <CardTitle className="text-3xl">{ingredientData.name}</CardTitle>
-          <Badge variant="secondary" className="mt-1">
-            {ingredientData.category}
-          </Badge>
-        </div>
+        <Separator className=" h-1.5 bg-primary/80 rounded-md" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="bg-background/80">
         <div className="space-y-6">
           <div>
             <h3 className="text-xl font-semibold mb-2">
@@ -80,7 +65,7 @@ export default function IngredientCard({ _id }: IngredientCardProps) {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 ">
               {nutritionalInfo.map(([key, value]) => (
-                <div key={key} className="bg-yellow-300/20 p-2 rounded-md">
+                <div key={key} className="bg-orange-300/20 p-2 rounded-md">
                   <span className="font-semibold capitalize">{key}: </span>
                   <span>
                     {value as number}
@@ -103,8 +88,8 @@ export default function IngredientCard({ _id }: IngredientCardProps) {
                           <div
                             className={`p-2 rounded-full ${
                               hasAllergy
-                                ? "bg-destructive/20"
-                                : "bg-green-300/20"
+                                ? "text-background bg-destructive hover:bg-destructive/80 dark:text-white dark:bg-destructive dark:hover:bg-destructive/80"
+                                : "bg-green-700 hover:bg-green-700/80 text-background dark:bg-green-900 dark:hover:bg-green-900/80 dark:text-white"
                             }`}
                           >
                             {allergenIcons[allergen as keyof Allergies]}
@@ -121,41 +106,45 @@ export default function IngredientCard({ _id }: IngredientCardProps) {
               </div>
             </div>
           )}
-          <div>
-            <h3 className="text-xl font-semibold mb-2">
-              Additional Information
-            </h3>
-            <ul className="flex flex-wrap gap-4">
-              {ingredientData.fatLevel && (
-                <li
-                  className={`${getLevelColor(
-                    ingredientData.fatLevel!
-                  )} text-white rounded-md p-1`}
-                >
-                  Fat Level: {ingredientData.fatLevel}
-                </li>
-              )}
+          {ingredientData.saturatesLevel ||
+          ingredientData.sugarsLevel ||
+          ingredientData.fatLevel ? (
+            <div>
+              <h3 className="text-xl font-semibold mb-2">
+                Additional Information
+              </h3>
+              <ul className="flex flex-wrap gap-4">
+                {ingredientData.fatLevel && (
+                  <li
+                    className={`${getLevelColor(
+                      ingredientData.fatLevel!
+                    )} text-white rounded-md p-1`}
+                  >
+                    Fat Level: {ingredientData.fatLevel}
+                  </li>
+                )}
 
-              {ingredientData.saturatesLevel && (
-                <li
-                  className={`${getLevelColor(
-                    ingredientData.saturatesLevel!
-                  )} text-white rounded-md p-1`}
-                >
-                  Saturates Level: {ingredientData.saturatesLevel}
-                </li>
-              )}
-              {ingredientData.sugarsLevel && (
-                <li
-                  className={`${getLevelColor(
-                    ingredientData.sugarsLevel!
-                  )} text-white rounded-md p-1`}
-                >
-                  Sugars Level: {ingredientData.sugarsLevel}
-                </li>
-              )}
-            </ul>
-          </div>
+                {ingredientData.saturatesLevel && (
+                  <li
+                    className={`${getLevelColor(
+                      ingredientData.saturatesLevel!
+                    )} text-white rounded-md p-1`}
+                  >
+                    Saturates Level: {ingredientData.saturatesLevel}
+                  </li>
+                )}
+                {ingredientData.sugarsLevel && (
+                  <li
+                    className={`${getLevelColor(
+                      ingredientData.sugarsLevel!
+                    )} text-white rounded-md p-1`}
+                  >
+                    Sugars Level: {ingredientData.sugarsLevel}
+                  </li>
+                )}
+              </ul>
+            </div>
+          ) : null}
         </div>
       </CardContent>
     </Card>

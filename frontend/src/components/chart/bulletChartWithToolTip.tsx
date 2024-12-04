@@ -7,7 +7,7 @@ import {
 } from "@/components/ui";
 import { RecipeKind } from "@/types";
 import { BulletmarkersMap } from "@/features/recipes/types/bulletMarker";
-import { RecipeBulletChart } from "@/features/recipes/components/recipeBulletChart";
+import { RecipeBulletChart } from "@/features/recipes/components/BulletChart/recipeBulletChart";
 
 interface BulletChartWithTooltipProps {
   recipeType: RecipeKind;

@@ -9,7 +9,6 @@ import {
 } from "@/types";
 import calculateTotals from "../calc/calculateTotals";
 import { postRecipe } from "@/features/recipes/services/api";
-import { useGetRecipesByKind } from "./useGetRecipesByKind";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import invalidInputToast from "@/components/class/inputToast";
@@ -29,6 +28,8 @@ import {
   loadFromLocalStorage,
   saveToLocalStorage,
 } from "../utils/localStorage";
+import { useFetchRecipes } from "./useFetchRecipes";
+import { FetchRecipesParams } from "../utils/fetchRecipes";
 
 export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"
@@ -96,10 +97,20 @@ export function useRecipeForm(
   });
 
   //load recipes
-  const { recipes, isLoading, isError, error, refetch } = useGetRecipesByKind(
+
+  const [filters, setFilters] = useState<FetchRecipesParams>({
+    limit: 9,
+    page: 1,
+    order: "desc",
+    recipeKind: formData.recipeKind,
+  });
+
+  const { data, isLoading, isError, error } = useFetchRecipes(filters);
+
+  /*const { recipes, isLoading, isError, error, refetch } = useGetRecipesByKind(
     formData.recipeKind
   );
-
+*/
   useEffect(() => {
     const recipeFormState: RecipeFormState = {
       formData,
@@ -111,8 +122,11 @@ export function useRecipeForm(
   }, [formData, rows, totals, currentStep, userKey]);
 
   useEffect(() => {
-    refetch();
-  }, [formData.recipeKind, refetch]);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      recipeKind: formData.recipeKind,
+    }));
+  }, [formData.recipeKind, setFilters]);
 
   useEffect(() => {
     setFormData((prevData) => ({
@@ -218,7 +232,7 @@ export function useRecipeForm(
   };
 
   const handleAdditionalSelectChange = (value: string) => {
-    const selectedRecipe = recipes.find(
+    const selectedRecipe = data?.recipes.find(
       (recipe) => recipe.recipeData.recipeName === value
     );
     if (selectedRecipe) {
@@ -308,7 +322,7 @@ export function useRecipeForm(
   };
 
   return {
-    recipes,
+    recipes: data?.recipes || [],
     isAdditionalSelectVisible,
     isOpen,
     setIsOpen,

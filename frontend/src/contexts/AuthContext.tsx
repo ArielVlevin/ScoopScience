@@ -25,7 +25,7 @@ interface User extends JwtPayload {
 }
 
 export interface AuthContextType {
-  user: User | null;
+  user: User;
   loading: boolean;
   register: (
     username: string,
@@ -78,8 +78,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, timeout);
   }
 
+  const nullUser: User = {
+    _id: 0,
+    username: "Guest",
+    email: "Guest@Guest",
+    isAdmin: false,
+    favorites: [],
+    recipes: [],
+  };
+
   //useStates
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>(nullUser);
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   //
@@ -143,7 +152,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const handleLogout = () => {
     logoutUser();
-    setUser(null);
+    setUser(nullUser);
     setIsAuthenticated(false);
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -159,7 +168,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    * */
 
   const handleFavorite = (recipe_id: number) => {
-    if (!user || !recipe_id) return;
+    if (!user || !recipe_id || user._id === 0) return;
 
     if (user.favorites === undefined) {
       user.favorites = [];
@@ -307,5 +316,8 @@ export const useAuth = () => {
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
-  return context;
+  return {
+    ...context,
+    isGuest: context.user?._id === 0,
+  };
 };

@@ -6,10 +6,7 @@ import {
   getRecipe,
   setRate,
   getAllRecipes,
-  getRecipesByKind,
-  getPaginatedRecipes,
-  getRecipesByDate,
-  getRecipesByRate,
+  fetchRecipes,
 } from "../controllers/recipeController.js";
 import { upload } from "../middleware/staticFiles.js";
 
@@ -24,11 +21,15 @@ router.delete("/id/:id", authenticateUser, deleteRecipe);
 
 router.get("/id/:id", getRecipe);
 router.get("/recipesArray", getAllRecipes);
-router.get("/kind/:kind", getRecipesByKind);
+router.get("/fetchRecipes", fetchRecipes);
 
+/*
+router.get("/kind/:kind", getRecipesByKind);
+router.get("/summary", getRecipeSummaries);
 router.get("/paginated", getPaginatedRecipes);
 router.get("/getRecipesByDate", getRecipesByDate);
 router.get("/getRecipesByRate", getRecipesByRate);
+*/
 
 router.post("/id/:id/rate", authenticateUser, setRate);
 

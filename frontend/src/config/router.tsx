@@ -23,34 +23,38 @@ const IngredientsCategoryPage = lazy(
   () => import("@/features/ingredients/pages/IngredientsCategories")
 );
 const ExploreRecipesPage = lazy(
-  () => import("@/features/recipes/pages/ExploreRecipes")
+  () => import("@/features/recipes/pages/global/ExploreRecipes")
 );
 
 const ExploreNewsetRecipesPage = lazy(
-  () => import("@/features/recipes/pages/newestRecipes")
+  () => import("@/features/recipes/pages/global/newestRecipes")
 );
 
-const NewRecipe = lazy(() => import("@/features/recipes/pages/newRecipePage"));
+const NewRecipe = lazy(
+  () => import("@/features/recipes/pages/user/newRecipePage")
+);
 
 const ExploreTopRatedRecipesPage = lazy(
-  () => import("@/features/recipes/pages/topRatedRecipes")
+  () => import("@/features/recipes/pages/global/topRatedRecipes")
 );
 
-const MakeRecipe = lazy(() => import("@/features/recipes/pages/makeRecipe"));
+const MakeRecipe = lazy(
+  () => import("@/features/recipes/pages/user/makeRecipe")
+);
 
 const EditRecipeComponent = lazy(
-  () => import("@/features/recipes/components/editRecipe/editRecipe")
+  () => import("@/features/recipes/components/Edit/editRecipe")
 );
 
 const RecipeDetailPage = lazy(
-  () => import("@/features/recipes/pages/recipeDetail")
+  () => import("@/features/recipes/pages/global/recipeDetail")
 );
 
 const FavoritesRecipesPage = lazy(
-  () => import("@/features/recipes/pages/favorites")
+  () => import("@/features/recipes/pages/user/favorites")
 );
 const UserRecipesPage = lazy(
-  () => import("@/features/recipes/pages/userRecipes")
+  () => import("@/features/recipes/pages/user/userRecipes")
 );
 
 const UserIngredients = lazy(
