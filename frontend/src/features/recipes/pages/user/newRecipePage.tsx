@@ -1,11 +1,11 @@
 import { useRecipeForm } from "../../hooks/useRecipeForm";
 import { useState } from "react";
 import StepsProgressBar from "@/components/chart/StepsProgresBar";
-import FixedButtomBar from "@/components/class/fixedButtonBar";
+import FixedButtomBar from "@/components/Button/fixedButtonBar";
 import RecipeRecipePreview from "../../components/New/recipePreview";
 import { ContinueRecipeModal } from "../../components/New/continueModal";
-import Page from "@/components/class/page";
-import PageCard from "@/components/class/pageCard";
+import Page from "@/components/pages/page";
+import PageCard from "@/components/pages/pageCard";
 
 import Step1 from "../../components/New/step1";
 import Step2 from "../../components/New/step2";

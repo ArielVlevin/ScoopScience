@@ -1,4 +1,4 @@
-import PageCard from "@/components/class/pageCard";
+import PageCard from "@/components/pages/pageCard";
 import { Row } from "@/types";
 import NewRecipeTable from "../Table/0table";
 import AddIngredientToTable from "../Table/AddIngredientToTable";

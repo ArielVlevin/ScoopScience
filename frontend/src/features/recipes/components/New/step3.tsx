@@ -1,6 +1,6 @@
 import { Input, Textarea } from "@/components/ui";
 import Grid from "@/components/class/grid";
-import PageCard from "@/components/class/pageCard";
+import PageCard from "@/components/pages/pageCard";
 import RequiredLabel from "@/components/class/requiredLabel";
 
 type Step3Props = {

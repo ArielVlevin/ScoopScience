@@ -11,7 +11,7 @@ import Logout from "@/auth/components/logout";
 const HomePage = lazy(() => import("@/pages/homePage"));
 
 const IngredientsPage = lazy(
-  () => import("@/features/ingredients/pages/ingredients")
+  () => import("@/features/ingredients/pages/exploreIngredients")
 );
 const AddIngredientForm = lazy(
   () => import("@/features/ingredients/pages/newIngredients")

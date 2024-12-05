@@ -16,8 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui";
 import { Loader2, Search } from "lucide-react";
-import Describe from "@/components/class/text";
-import PageCard from "@/components/class/pageCard";
+import Describe from "@/components/Text/text";
+import PageCard from "@/components/pages/pageCard";
 
 interface IngredientSearchProps {
   onSelectIngredient: (ingredient: FoodItem) => void;

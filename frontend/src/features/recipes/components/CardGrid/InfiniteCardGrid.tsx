@@ -6,26 +6,30 @@ import { useEffect, useState } from "react";
 import { useFetchRecipes } from "../../hooks/useFetchRecipes";
 import { delay } from "@/utils/delay";
 import ErrorPage from "@/pages/error";
+import { FetchRecipesParams } from "@/types";
+import { Separator } from "@/components/ui/separator";
+import SortBadge from "@/components/icons/SortBadge";
 
-type InfiniteRecipeGridProps = {
+type InfiniteCardGridProps = {
   className?: string;
-  initialFilters: {
-    limit: number;
-    page: number;
-    order: "asc" | "desc";
-    sortBy: string;
-  };
+
+  filters: FetchRecipesParams;
+  setFilters: React.Dispatch<React.SetStateAction<FetchRecipesParams>>;
+
+  filterKey?: keyof FetchRecipesParams;
+  sortOptions?: string[];
 };
 
-export default function InfiniteRecipeGrid({
+export default function InfiniteCardGrid({
   className,
-  initialFilters,
-}: InfiniteRecipeGridProps) {
-  const [filters, setFilters] = useState(initialFilters);
+  filters,
+  setFilters,
+  filterKey,
+  sortOptions,
+}: InfiniteCardGridProps) {
+  const { data, isLoading, isError, error } = useFetchRecipes(filters); // fetch Recipes
 
-  const { data, isLoading, isError, error } = useFetchRecipes(filters);
-
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false); // loading(more than the first page)
 
   const handleLoadMore = async () => {
     if (!data || data.currentPage >= data.totalPages) return;
@@ -60,19 +64,31 @@ export default function InfiniteRecipeGrid({
   return (
     <div className={className}>
       {isLoading ? (
-        <SkeletonCardGrid length={filters.limit} />
+        <SkeletonCardGrid length={filters.limit || 9} />
       ) : (
         <>
+          {sortOptions && filterKey && (
+            <SortBadge
+              filterKey={filterKey}
+              options={sortOptions}
+              filters={filters}
+              setFilters={setFilters}
+              className="mb-6 flex justify-center"
+            />
+          )}
+
+          <Separator className="mb-4" />
           <RecipeFound
             recipesLength={data?.totalRecipes || 0}
-            isShowRecipeFound={true}
+            className="mb-4"
           />
+
           <CardGrid
             recipes={data?.recipes || []}
-            itemsPerPage={filters.limit}
+            itemsPerPage={filters.limit || 9}
           />
           {isLoadingMore && (
-            <SkeletonCardGrid length={filters.limit} className="mt-4" />
+            <SkeletonCardGrid length={filters.limit || 9} className="mt-4" />
           )}
         </>
       )}

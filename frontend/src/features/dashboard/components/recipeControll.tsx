@@ -27,7 +27,7 @@ import {
 import { ArrowRightIcon, MenuIcon, MoveHorizontalIcon } from "lucide-react";
 import { ArrowLeftIcon, PlusIcon } from "@/components/icons/icon";
 import { Separator } from "@/components/ui/separator";
-import Title from "@/components/class/title";
+import Title from "@/components/Text/title";
 import { usePaginatedRecipes } from "@/features/recipes/hooks/usePaginatedRecipes";
 import ErrorPage from "@/pages/error";
 import { useEffect, useRef } from "react";

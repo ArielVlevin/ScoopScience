@@ -1,6 +1,6 @@
 import Grid from "@/components/class/grid";
 import { Ingredient, Recipe } from "@/types";
-import PageBox from "@/components/class/pageBox";
+import PageBox from "@/components/pages/pageBox";
 
 type RecipeIngredientsProps = {
   className?: string;

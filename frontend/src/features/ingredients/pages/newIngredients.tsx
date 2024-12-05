@@ -13,8 +13,8 @@ import {
   NutritionalInputs,
   WeightInput,
 } from "../components/newIngredient/newIngredientInputs";
-import PageCard from "@/components/class/pageCard";
-import Page from "@/components/class/page";
+import PageCard from "@/components/pages/pageCard";
+import Page from "@/components/pages/page";
 
 const AddIngredientForm = () => {
   const [ingredient, setIngredient] = useState<NewIngredient>({

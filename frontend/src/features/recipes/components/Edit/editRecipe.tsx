@@ -8,11 +8,11 @@ import ErrorPage from "@/pages/error";
 import Loading from "@/pages/loading";
 import { useGetRecipe } from "../../hooks/useGetRecipe";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Title from "@/components/class/title";
+import Title from "@/components/Text/title";
 import { Separator } from "@/components/ui/separator";
 import { updateRecipe } from "../../services/api";
-import FixedButtomBar from "@/components/class/fixedButtonBar";
-import Page from "@/components/class/page";
+import FixedButtomBar from "@/components/Button/fixedButtonBar";
+import Page from "@/components/pages/page";
 import { RecipeKind, typeOptions } from "@/types";
 import {
   Select,

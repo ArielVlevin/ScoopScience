@@ -25,7 +25,7 @@ import { MoveHorizontalIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import ErrorPage from "@/pages/error";
 import { useGetPaginatedRecipes } from "@/features/recipes/hooks/useGetPaginatedRecipes";
-import Title from "@/components/class/title";
+import Title from "@/components/Text/title";
 import { createSwapy } from "swapy";
 
 export default function MainControl() {

@@ -1,13 +1,13 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useGetRecipes } from "../../hooks/useGetRecipes";
-import Page from "@/components/class/page";
+import Page from "@/components/pages/page";
 import Loading from "@/pages/loading";
 import ErrorPage from "@/pages/error";
 import { FileHeartIcon } from "@/components/icons/icon";
-import ZeroStatePage from "@/components/class/zeroStatePage";
+import ZeroStatePage from "@/components/pages/zeroStatePage";
 
 import { useState } from "react";
-import PageCard from "@/components/class/pageCard";
+import PageCard from "@/components/pages/pageCard";
 import { CardGrid } from "../../components/CardGrid/CardGrid";
 import { LoadMoreButton } from "../../components/CardGrid/loadMore";
 

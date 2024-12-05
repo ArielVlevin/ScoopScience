@@ -23,14 +23,6 @@ router.get("/id/:id", getRecipe);
 router.get("/recipesArray", getAllRecipes);
 router.get("/fetchRecipes", fetchRecipes);
 
-/*
-router.get("/kind/:kind", getRecipesByKind);
-router.get("/summary", getRecipeSummaries);
-router.get("/paginated", getPaginatedRecipes);
-router.get("/getRecipesByDate", getRecipesByDate);
-router.get("/getRecipesByRate", getRecipesByRate);
-*/
-
 router.post("/id/:id/rate", authenticateUser, setRate);
 
 export default router;

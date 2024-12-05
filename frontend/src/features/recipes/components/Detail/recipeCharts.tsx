@@ -1,7 +1,7 @@
 import Grid from "@/components/class/grid";
 import { Recipe } from "@/types";
 import { RecipePieChart } from "./pie";
-import PageBox from "@/components/class/pageBox";
+import PageBox from "@/components/pages/pageBox";
 import RecipeBulletCharts from "../BulletChart/recipeBulletChart";
 
 type RecipechartsProps = {

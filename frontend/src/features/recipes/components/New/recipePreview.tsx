@@ -1,5 +1,5 @@
 import Grid from "@/components/class/grid";
-import Page from "@/components/class/page";
+import Page from "@/components/pages/page";
 import { Button } from "@/components/ui/button";
 
 import NutritionTable from "../Detail/nutritionTable";

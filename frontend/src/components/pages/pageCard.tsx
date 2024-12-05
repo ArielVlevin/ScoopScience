@@ -2,6 +2,8 @@ import React from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui";
 import { Separator } from "../ui/separator";
 import { cn } from "@/utils/cn";
+import { useTheme } from "@/contexts/ThemeProvider";
+import Title from "../Text/title";
 
 interface PageCardProps {
   className?: string;
@@ -16,13 +18,15 @@ const PageCard = ({
   children,
   cardFooter,
 }: PageCardProps) => {
+  const { settings } = useTheme();
+
   return (
-    <Card className={cn("bg-muted", className)}>
+    <Card className={cn(settings.cardGradient, className)}>
       <CardHeader>
         {title ? (
           <>
-            <CardTitle className="text-2xl font-bold mt-2 mb-4">
-              {title}
+            <CardTitle className="text-2xl font-bold mt-2 mb-4 text-center">
+              <Title> {title}</Title>
             </CardTitle>
             <Separator />
           </>

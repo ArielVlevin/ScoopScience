@@ -1,4 +1,4 @@
-import PageBox from "@/components/class/pageBox";
+import PageBox from "@/components/pages/pageBox";
 import { Recipe } from "@/types";
 
 type RecipeInstructionsProps = {

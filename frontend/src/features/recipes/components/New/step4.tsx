@@ -1,5 +1,5 @@
 import { Switch, Label } from "@/components/ui";
-import PageCard from "@/components/class/pageCard";
+import PageCard from "@/components/pages/pageCard";
 import RequiredLabel from "@/components/class/requiredLabel";
 import { Separator } from "@/components/ui/separator";
 

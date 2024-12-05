@@ -1,6 +1,23 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { themeSettings } from "./themeSettings";
 
 type Theme = "dark" | "light" | "system";
+
+type ThemeSettings = (typeof themeSettings)[Theme];
+
+type ThemeProviderState = {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  settings: ThemeSettings;
+};
+
+const initialState: ThemeProviderState = {
+  theme: "system",
+  setTheme: () => null,
+  settings: themeSettings.light,
+};
+
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -8,27 +25,19 @@ type ThemeProviderProps = {
   storageKey?: string;
 };
 
-type ThemeProviderState = {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-};
-
-const initialState: ThemeProviderState = {
-  theme: "system",
-  setTheme: () => null,
-};
-
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
-
 export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "vite-ui-theme",
-  ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
+  const [theme, setThemeState] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   );
+
+  const setTheme = (theme: Theme) => {
+    localStorage.setItem(storageKey, theme);
+    setThemeState(theme);
+  };
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -40,24 +49,23 @@ export function ThemeProvider({
         .matches
         ? "dark"
         : "light";
-
       root.classList.add(systemTheme);
-      return;
+    } else {
+      root.classList.add(theme);
     }
-
-    root.classList.add(theme);
   }, [theme]);
 
-  const value = {
-    theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
-    },
-  };
+  const currentSettings =
+    theme === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? themeSettings.dark
+        : themeSettings.light
+      : themeSettings[theme];
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeProviderContext.Provider
+      value={{ theme, setTheme, settings: currentSettings }}
+    >
       {children}
     </ThemeProviderContext.Provider>
   );

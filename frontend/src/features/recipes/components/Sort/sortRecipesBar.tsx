@@ -14,7 +14,7 @@ import {
   ListOrderedIcon,
 } from "@/components/icons/icon";
 import { Button } from "@/components/ui/button";
-import Search from "@/components/class/search";
+import Search from "@/components/layout/search";
 
 type CheckBoxWithTextProops = {
   id: string;

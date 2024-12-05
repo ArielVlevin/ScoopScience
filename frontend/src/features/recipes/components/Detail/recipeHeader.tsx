@@ -11,7 +11,7 @@ import {
 } from "@/components/icons/icon";
 import { postData } from "@/services/apiFunctions";
 import { useAuth } from "@/contexts/AuthContext";
-import PageBox from "@/components/class/pageBox";
+import PageBox from "@/components/pages/pageBox";
 
 type RecipeHeaderProps = {
   recipe: Recipe;

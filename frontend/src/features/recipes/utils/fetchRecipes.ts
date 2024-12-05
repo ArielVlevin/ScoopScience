@@ -1,24 +1,11 @@
 import { fetchData } from "@/services/apiFunctions";
-import { Recipe, SORT_OPTIONS } from "@/types";
+import { FetchRecipesParams, Recipe, Recipe_Sort_Option } from "@/types";
 export interface FetchRecipesResponse {
   recipes: Recipe[];
   totalRecipes: number;
   currentPage: number;
   totalPages: number;
 }
-
-export interface FetchRecipesParams {
-  limit?: number;
-  page?: number;
-  order?: "asc" | "desc";
-  sortBy?: string;
-  recipeKind?: string;
-  minRating?: number;
-  maxRating?: number;
-  search?: string;
-  userId?: string;
-}
-
 export async function fetchRecipes(
   params: FetchRecipesParams
 ): Promise<FetchRecipesResponse> {
@@ -27,7 +14,8 @@ export async function fetchRecipes(
   if (params.limit) query.append("limit", params.limit.toString());
   if (params.page) query.append("page", params.page.toString());
   if (params.order) query.append("order", params.order);
-  if (params.sortBy) query.append("sortBy", SORT_OPTIONS[params.sortBy].field);
+  if (params.sortBy)
+    query.append("sortBy", Recipe_Sort_Option[params.sortBy].field);
   if (params.userId) query.append("userId", params.userId);
   if (params.recipeKind) query.append("recipeKind", params.recipeKind);
   if (params.minRating) query.append("minRating", params.minRating.toString());

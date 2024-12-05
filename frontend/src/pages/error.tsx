@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import errorImg from "@/assets/error.jpeg";
-import Page from "@/components/class/page.tsx";
+import Page from "@/components/pages/page";
 
 const madeUpError =
   "It looks like a scoop of ice cream has fallen on the floor. We're sorry for the mess, but don't worry, we'l clean it up in no time.";

@@ -1,5 +1,5 @@
 import Grid from "@/components/class/grid";
-import Page from "@/components/class/page";
+import Page from "@/components/pages/page";
 import { Button } from "@/components/ui/button";
 
 import { useParams, useNavigate } from "react-router-dom";
@@ -22,11 +22,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui";
+import { CardButtons } from "../../components/Card/cardButtons";
 
 export default function RecipeDetailPage() {
   const navigate = useNavigate();
 
-  const { user, isAuthenticated, handleFavorite } = useAuth();
+  const { user, isGuest, handleFavorite } = useAuth();
 
   const { recipeId } = useParams<{ recipeId: string }>();
   const recipe_id = parseInt(recipeId!, 10);
@@ -45,7 +46,7 @@ export default function RecipeDetailPage() {
   if (isError && error) return <ErrorPage error={error?.message} />;
 
   const handleAddToFavorite = async () => {
-    if (!isAuthenticated || !recipe._id)
+    if (isGuest || !recipe._id)
       return alert("You must be logged in to save recipes");
 
     handleFavorite(recipe._id);
@@ -101,6 +102,13 @@ export default function RecipeDetailPage() {
               </Button>
             </DialogContent>
           </Dialog>
+
+          <CardButtons
+            recipeId={recipe._id!}
+            type={
+              user && user._id === recipe.user_id?._id ? "editable" : "favorite"
+            }
+          />
 
           <Button
             onClick={handleAddToFavorite}

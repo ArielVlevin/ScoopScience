@@ -1,69 +1,90 @@
-import Page from "@/components/class/page";
-import { Dialog, DialogContent } from "@/components/ui";
 import ErrorPage from "@/pages/error";
-import { Ingredient } from "@/types";
+import { useParams } from "react-router-dom";
+import PageCard from "@/components/pages/pageCard";
+import { useFetchIngredients } from "../hooks/useFetchingredients";
+import IngredientGridIcon from "../components/ingredientGridIcon";
+import { IngredientCategory } from "../types";
+import { isIngredientCategory } from "../utils/isIngredientCategory";
+import IngredientDialog from "../components/ingredientDialog";
+import PageWithDialog from "@/components/pages/pageWithDialog";
 import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import IngredientCard from "../components/ingredientCard";
-import { categoryIcons } from "../types/icons";
-import PageCard from "@/components/class/pageCard";
+import { Button } from "@/components/ui";
 
 export default function IngredientsCategoryPage() {
   const { category } = useParams();
-  const location = useLocation();
-  const ingredients = (location.state?.ingredients as Ingredient[]) || [];
 
-  const [selectedIngredient, setSelectedIngredient] = useState<string>("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const { data, isLoading, isError, error } = useFetchIngredients({
+    category: category as string,
+    limit: 9,
+    page: page,
+  });
 
-  const openDialog = (ingredient: string) => {
-    setSelectedIngredient(ingredient);
-    setIsDialogOpen(true);
-  };
+  if (isError && error) return <ErrorPage error={error?.message} />;
 
-  const closeDialog = () => {
-    setIsDialogOpen(false);
-    setSelectedIngredient("");
-  };
-
-  if (!ingredients.length) {
-    return <ErrorPage error="No ingredients found." />;
-  }
+  if (!category || !isIngredientCategory(category))
+    return <ErrorPage error="Invalid Category" />;
 
   return (
-    <Page>
-      <PageCard title={category}>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ingredients.map((ingredient) => (
-            <div
-              key={ingredient._id}
-              className="group flex flex-col items-center size-48"
-            >
-              <div className="inline-block rounded-full bg-background p-4">
-                {categoryIcons[category as keyof typeof categoryIcons]}
+    <PageWithDialog
+      dialogRenderer={({ isOpen, data, onClose }) => (
+        <IngredientDialog
+          isOpen={isOpen}
+          ingredientId={data as string}
+          onClose={onClose}
+        />
+      )}
+    >
+      {({ openDialog }) => (
+        <>
+          <PageCard title={category}>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : !data || data.totalIngredients === 0 ? (
+              <div className="text-center">No ingredients found</div>
+            ) : (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {data?.ingredients.map((ingredient) => (
+                  <IngredientGridIcon
+                    key={ingredient._id}
+                    id={String(ingredient._id)}
+                    header={ingredient.name}
+                    category={category as IngredientCategory}
+                    onClick={openDialog}
+                  />
+                ))}
               </div>
-              <div
-                className="group flex flex-col items-center size-48 cursor-pointer"
-                key={ingredient._id}
-                onClick={() => openDialog(ingredient._id as unknown as string)}
+            )}
+            <div className="flex justify-end">
+              <Button
+                className="align-self-center w-52 h-16 text-xl bg-primary/85"
+                onClick={() => setPage(page - 1)}
+                disabled={
+                  data?.totalIngredients === 0 ||
+                  !data?.currentPage ||
+                  !data?.totalPages ||
+                  data.currentPage === 1
+                }
               >
-                <div className="mt-2 text-center">
-                  <h3 className="text-lg font-medium group-hover:text-primary transition-colors hover:underline">
-                    {ingredient.name}
-                  </h3>
-                </div>
-              </div>
+                prev page
+              </Button>
+
+              <Button
+                className="align-self-center w-52 h-16 text-xl bg-primary/85"
+                onClick={() => setPage(page + 1)}
+                disabled={
+                  data?.totalIngredients === 0 ||
+                  !data?.currentPage ||
+                  !data?.totalPages ||
+                  data.currentPage >= data.totalPages
+                }
+              >
+                next page
+              </Button>
             </div>
-          ))}
-        </div>
-        {isDialogOpen && selectedIngredient && (
-          <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
-            <DialogContent className="p-0 overflow-hidden  bg-gray-100">
-              <IngredientCard _id={selectedIngredient} />
-            </DialogContent>
-          </Dialog>
-        )}
-      </PageCard>
-    </Page>
+          </PageCard>
+        </>
+      )}
+    </PageWithDialog>
   );
 }

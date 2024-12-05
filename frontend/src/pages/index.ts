@@ -5,7 +5,7 @@ export * from "./loading.tsx";
 
 export * from "../auth/pages/auth.tsx";
 
-export * from "../features/ingredients/pages/ingredients.tsx";
+export * from "../features/ingredients/pages/exploreIngredients.tsx";
 export * from "../features/ingredients/pages/ingredientDetails.tsx";
 export * from "../features/ingredients/pages/newIngredients.tsx";
 

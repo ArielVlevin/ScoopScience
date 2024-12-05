@@ -11,7 +11,7 @@ import {
 import { Recipe, typeOptions } from "@/types";
 import Grid from "@/components/class/grid";
 import RequiredLabel from "@/components/class/requiredLabel";
-import PageCard from "@/components/class/pageCard";
+import PageCard from "@/components/pages/pageCard";
 
 type Step1Props = {
   formData: any;

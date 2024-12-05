@@ -1,5 +1,5 @@
 import React from "react";
-import Page from "@/components/class/page";
+import Page from "@/components/pages/page";
 import { Link } from "react-router-dom";
 import PageCard from "./pageCard";
 

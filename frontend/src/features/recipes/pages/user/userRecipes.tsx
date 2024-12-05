@@ -1,15 +1,15 @@
-import Page from "@/components/class/page";
+import Page from "@/components/pages/page";
 import Loading from "@/pages/loading";
 import ErrorPage from "@/pages/error";
 import { useAuth } from "@/contexts/AuthContext";
-import ZeroStatePage from "@/components/class/zeroStatePage";
+import ZeroStatePage from "@/components/pages/zeroStatePage";
 import { FileAddIcon, PlusIcon } from "@/components/icons/icon";
 
 import { Button } from "@/components/ui";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-import PageCard from "@/components/class/pageCard";
+import PageCard from "@/components/pages/pageCard";
 import { Separator } from "@/components/ui/separator";
 import { FetchRecipesParams } from "../../utils/fetchRecipes";
 import { useFetchRecipes } from "../../hooks/useFetchRecipes";

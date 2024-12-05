@@ -1,4 +1,4 @@
-import Page from "@/components/class/page";
+import Page from "@/components/pages/page";
 import { useSearchParams } from "react-router-dom";
 import { useGetRecipe } from "../../hooks/useGetRecipe";
 import ErrorPage from "@/pages/error";

@@ -1,6 +1,6 @@
 import { RecipeRating, Totals, Allergies, Row, Ingredient } from "@/types";
 
-export const typeOptions = [
+export const typeOptions: string[] = [
   "gelato",
   "iceCream",
   "custard",

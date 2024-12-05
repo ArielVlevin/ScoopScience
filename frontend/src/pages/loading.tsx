@@ -1,4 +1,4 @@
-import Page from "@/components/class/page";
+import Page from "@/components/pages/page";
 import { IceCreamConeIcon } from "@/components/icons/icon";
 
 export default function Loading() {

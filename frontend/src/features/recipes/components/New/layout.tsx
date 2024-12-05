@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import StepsProgressBar from "@/components/chart/StepsProgresBar";
-import Page from "@/components/class/page";
-import PageCard from "@/components/class/pageCard";
-import FixedButtomBar from "@/components/class/fixedButtonBar";
+import Page from "@/components/pages/page";
+import PageCard from "@/components/pages/pageCard";
+import FixedButtomBar from "@/components/Button/fixedButtonBar";
 
 interface RecipeLayoutProps {
   children: ReactNode;

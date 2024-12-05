@@ -1,4 +1,4 @@
-import Hero from "@/components/class/hero";
+import Hero from "@/components/pages/hero";
 import img from "@/assets/ice-cream-back2.jpeg";
 
 function HomePage() {

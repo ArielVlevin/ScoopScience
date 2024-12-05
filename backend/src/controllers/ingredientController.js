@@ -74,6 +74,97 @@ export const getAllIngredients = async (req, res, next) => {
   }
 };
 
+export const fetchIngredients = async (req, res, next) => {
+  try {
+    const {
+      limit = 10,
+      page = 1,
+      order = "asc",
+      sortBy = "name",
+      category,
+      minCalories,
+      maxCalories,
+      minSugar,
+      maxSugar,
+      minFat,
+      maxFat,
+      search,
+      ...allergies
+    } = req.query;
+
+    const filters = {};
+
+    if (category) filters.category = category;
+    if (minCalories || maxCalories) {
+      filters.calories = {};
+      if (minCalories) filters.calories.$gte = parseFloat(minCalories);
+      if (maxCalories) filters.calories.$lte = parseFloat(maxCalories);
+    }
+    if (minSugar || maxSugar) {
+      filters.sugar = {};
+      if (minSugar) filters.sugar.$gte = parseFloat(minSugar);
+      if (maxSugar) filters.sugar.$lte = parseFloat(maxSugar);
+    }
+    if (minFat || maxFat) {
+      filters.fat = {};
+      if (minFat) filters.fat.$gte = parseFloat(minFat);
+      if (maxFat) filters.fat.$lte = parseFloat(maxFat);
+    }
+    if (search) filters.name = { $regex: search, $options: "i" };
+
+    // Handle allergies
+    Object.entries(allergies).forEach(([key, value]) => {
+      if (value === "true") filters[`allergies.${key}`] = true;
+    });
+
+    const skip = (page - 1) * parseInt(limit, 10);
+
+    const ingredients = await Ingredient.find(filters)
+      .sort({ [sortBy]: order === "asc" ? 1 : -1 })
+      .skip(skip)
+      .limit(parseInt(limit, 10))
+      .exec();
+
+    const totalIngredients = await Ingredient.countDocuments(filters);
+
+    res.status(200).json({
+      ingredients,
+      totalIngredients,
+      currentPage: parseInt(page, 10),
+      totalPages: Math.ceil(totalIngredients / parseInt(limit, 10)),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const fetchIngredientsByCategory = async (req, res, next) => {
+  try {
+    const { limit = 9, order = "asc", sortBy = "name" } = req.query;
+
+    // Aggregate ingredients by category
+    const ingredientsByCategory = await Ingredient.aggregate([
+      { $sort: { [sortBy]: order === "asc" ? 1 : -1 } }, // Sort by the specified field
+      {
+        $group: {
+          _id: "$category", // Group by category
+          ingredients: { $push: "$$ROOT" }, // Push the full document
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          ingredients: { $slice: ["$ingredients", parseInt(limit, 10)] }, // Limit to 'limit' items
+        },
+      },
+    ]);
+
+    res.status(200).json(ingredientsByCategory);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getIngredientsByRecipe = async (req, res, next) => {
   const recipeName = req.params.recipe;
 

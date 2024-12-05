@@ -1,10 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  fetchRecipes,
-  FetchRecipesParams,
-  FetchRecipesResponse,
-} from "../utils/fetchRecipes";
+import { fetchRecipes, FetchRecipesResponse } from "../utils/fetchRecipes";
 import queryClient from "@/config/query";
+import { FetchRecipesParams } from "@/types";
 
 export const useFetchRecipes = (params: FetchRecipesParams) => {
   const queryKey = ["recipes", params];

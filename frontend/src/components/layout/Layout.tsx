@@ -6,6 +6,7 @@ import { ThemeProvider } from "../../contexts/ThemeProvider";
 type LayoutProps = {
   plain?: boolean;
 };
+
 function Layout({ plain = false }: LayoutProps) {
   if (plain) {
     return (

@@ -11,7 +11,7 @@ import calculateTotals from "../calc/calculateTotals";
 import { postRecipe } from "@/features/recipes/services/api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import invalidInputToast from "@/components/class/inputToast";
+import invalidInputToast from "@/components/layout/inputToast";
 import {
   MISSING_DATA_ERROR,
   MISSING_INGREDIENTS_ERROR,
