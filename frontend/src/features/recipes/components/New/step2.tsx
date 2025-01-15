@@ -3,8 +3,8 @@ import { Row } from "@/types";
 import NewRecipeTable from "../Table/0table";
 import AddIngredientToTable from "../Table/AddIngredientToTable";
 import TotalsCard from "./totalsCard";
-import RecipeBulletCharts from "../recipeBulletChart";
 import calculateTotals from "../../calc/calculateTotals";
+import RecipeBulletCharts from "../BulletChart/recipeBulletChart";
 
 type Step2Props = {
   rows: Row[];

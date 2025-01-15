@@ -44,3 +44,8 @@ export async function fetchIngredientsByCategory(limit = 9) {
   const endpoint = `/ingredients/fetchIngredientsByCategory?limit=${limit}`;
   return fetchData<IngredientByCategory[]>(endpoint);
 }
+
+export async function fetchIngredientCategories(): Promise<string[]> {
+  const endpoint = `/ingredients/fetchCategories`;
+  return fetchData<string[]>(endpoint);
+}

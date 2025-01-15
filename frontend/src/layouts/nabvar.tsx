@@ -6,7 +6,7 @@ import { IceCreamConeIcon } from "@/components/icons/icon";
 import "./navbarBtn.css";
 import UserDropDownMenu from "../components/navbar/userDropDownMenu";
 import { ModeToggle } from "@/components/navbar/modeToggle";
-import SearchBar from "./searchBar";
+import SearchBar from "../features/search/components/searchBar";
 import { createLinks, exploreLinks } from "@/types";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { Menu, X } from "lucide-react";

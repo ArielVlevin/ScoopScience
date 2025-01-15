@@ -12,6 +12,7 @@ export interface FetchIngredientsParams {
   page?: number;
   order?: "asc" | "desc";
   sortBy?: "name" | "category" | "calories" | "sugar" | "fat";
+  namesOnly?: boolean;
   category?: string;
   minCalories?: number;
   maxCalories?: number;

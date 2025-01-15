@@ -140,7 +140,14 @@ export const fetchIngredients = async (req, res, next) => {
 
 export const fetchIngredientsByCategory = async (req, res, next) => {
   try {
-    const { limit = 9, order = "asc", sortBy = "name" } = req.query;
+    const {
+      limit = 9,
+      order = "asc",
+      sortBy = "name",
+      namesOnly = false,
+    } = req.query;
+
+    const parsedLimit = limit === 0 ? null : parseInt(limit, 10);
 
     // Aggregate ingredients by category
     const ingredientsByCategory = await Ingredient.aggregate([
@@ -148,13 +155,15 @@ export const fetchIngredientsByCategory = async (req, res, next) => {
       {
         $group: {
           _id: "$category", // Group by category
-          ingredients: { $push: "$$ROOT" }, // Push the full document
+          ingredients: {
+            $push: namesOnly ? { _id: "$$_id", name: "$name" } : "$$ROOT",
+          }, // Push the full document or just the name
         },
       },
       {
         $project: {
           _id: 1,
-          ingredients: { $slice: ["$ingredients", parseInt(limit, 10)] }, // Limit to 'limit' items
+          ingredients: { $slice: ["$ingredients", parsedLimit] }, // Limit
         },
       },
     ]);
@@ -165,27 +174,11 @@ export const fetchIngredientsByCategory = async (req, res, next) => {
   }
 };
 
-export const getIngredientsByRecipe = async (req, res, next) => {
-  const recipeName = req.params.recipe;
-
-  // TODO:make an array of ingredient IDs based on the recipe
-  // TODO: add more recipes
-  // TODO: the array should be with ingredient with weight
-  let ingredientIds = [51001];
-  if (recipeName === "gelato") {
-    ingredientIds = [51001, 52001];
-  } else if (recipeName === "iceCream") {
-    ingredientIds = [51001, 52001, 58001];
-  } else if (recipeName === "sorbet") {
-    ingredientIds = [57001, 52001, 54001];
-  } else if (recipeName === "other") {
-    ingredientIds = [57001, 52001, 56001];
-  }
-
+export const fetchIngredientCategories = async (req, res, next) => {
   try {
-    const ingredients = await Ingredient.find({ _id: { $in: ingredientIds } });
+    const categories = await Ingredient.distinct("category");
 
-    res.status(200).json(ingredients);
+    res.status(200).json(categories);
   } catch (error) {
     next(error);
   }

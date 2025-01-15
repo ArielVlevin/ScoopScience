@@ -18,6 +18,7 @@ export default function IngredientsCategoryPage() {
     category: category as string,
     limit: 9,
     page: page,
+    namesOnly: true,
   });
 
   if (isError && error) return <ErrorPage error={error?.message} />;

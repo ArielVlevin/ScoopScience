@@ -27,7 +27,6 @@ export function useGetIngredientOpenFoodApi(query: string | undefined) {
     error,
   } = useFetchData<Ingredient>(["ingredients", query!], endpoint);
 
-  console.log("\ningredientData:", ingredientData);
   return {
     ingredientData,
     isLoading,

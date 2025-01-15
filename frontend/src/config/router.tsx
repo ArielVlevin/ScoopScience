@@ -65,6 +65,10 @@ const AdminControllPanel = lazy(
   () => import("@/features/dashboard/components/adminControllPanel")
 );
 
+const SearchResultsPage = lazy(
+  () => import("@/features/search/pages/searchResult")
+);
+
 const RecipeController = lazy(
   () => import("@/features/dashboard/components/recipe")
 );
@@ -81,6 +85,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <HomePage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "search/:query",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SearchResultsPage />
           </Suspense>
         ),
       },

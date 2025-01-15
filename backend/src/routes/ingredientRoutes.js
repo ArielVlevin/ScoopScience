@@ -5,8 +5,8 @@ import {
   getAllIngredients,
   fetchIngredients,
   fetchIngredientsByCategory,
-  getIngredientsByRecipe,
   getIngredientsFromOpenFoodApi,
+  fetchIngredientCategories,
 } from "../controllers/ingredientController.js";
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.get("/getAll", getAllIngredients);
 router.get("/fetchIngredients", fetchIngredients);
 router.get("/fetchIngredientsByCategory", fetchIngredientsByCategory);
 
-router.get("/recipe/:recipe", getIngredientsByRecipe);
+router.get("/fetchCategories", fetchIngredientCategories);
 
 router.post("/search", getIngredientsFromOpenFoodApi);
 

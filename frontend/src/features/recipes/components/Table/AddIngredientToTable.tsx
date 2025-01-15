@@ -17,8 +17,9 @@ import {
   DialogDescription,
 } from "@/components/ui";
 import { Ingredient, Row } from "@/types";
-import { useGetIngredientsArray } from "@/features/ingredients/hooks/useGetIngredientArray";
 import useGetIngredient from "@/features/ingredients/hooks/useGetIngredient";
+import { useFetchIngredientCategories } from "@/features/ingredients/hooks/useFetchCategories";
+import { useFetchIngredients } from "@/features/ingredients/hooks/useFetchingredients";
 
 function AddIngredientToTable({
   rows,
@@ -36,7 +37,34 @@ function AddIngredientToTable({
   const [weight, setWeight] = useState<number>(0);
   const [ingredient, setIngredient] = useState<Ingredient | null>(null);
 
-  const { ingredientsByCategory } = useGetIngredientsArray();
+  const {
+    data: ingredientsByCategory,
+    isLoading,
+    isError,
+    error,
+  } = useFetchIngredientCategories();
+
+  const {
+    data: ingredients,
+    isLoading: isLoadingIngredients,
+    isError: isErrorIngredients,
+    error: errorIngredients,
+  } = useFetchIngredients({
+    category: category || undefined,
+    limit: 0,
+    namesOnly: true,
+  });
+
+  const categoryOptions = useMemo(
+    () =>
+      ingredientsByCategory?.map((category) => (
+        <SelectItem key={category} value={category}>
+          {category}
+        </SelectItem>
+      )) || [],
+    [ingredientsByCategory]
+  );
+
   const { ingredientData } = useGetIngredient(selectedIngredient);
 
   useEffect(() => {
@@ -68,16 +96,6 @@ function AddIngredientToTable({
     handleDialogClose();
   }, [ingredient, rows, weight, setRows, handleDialogClose]);
 
-  const categoryOptions = useMemo(
-    () =>
-      Object.keys(ingredientsByCategory).map((categoryKey) => (
-        <SelectItem key={categoryKey} value={categoryKey}>
-          {categoryKey}
-        </SelectItem>
-      )),
-    [ingredientsByCategory]
-  );
-
   return (
     <Dialog
       open={isAddingIngredient}
@@ -104,27 +122,42 @@ function AddIngredientToTable({
         </DialogHeader>
         <div className="grid gap-4">
           <Label htmlFor="category">Category</Label>
-          <Select onValueChange={setCategory}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>{categoryOptions}</SelectContent>
-          </Select>
+
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : isError && error ? (
+            <div>{error.message}</div>
+          ) : (
+            <Select onValueChange={setCategory}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>{categoryOptions}</SelectContent>
+            </Select>
+          )}
+
           {category ? (
             <>
               <Label htmlFor="ingredients">Ingredients</Label>
-              <Select onValueChange={setSelectedIngredient}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select ingredients" />
-                </SelectTrigger>
-                <SelectContent>
-                  {ingredientsByCategory[category].map((ingredient, index) => (
-                    <SelectItem key={index} value={ingredient._id}>
-                      {ingredient.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {isLoadingIngredients ? (
+                <div>Loading...</div>
+              ) : isErrorIngredients && errorIngredients ? (
+                <div>{errorIngredients.message}</div>
+              ) : (
+                <Select onValueChange={setSelectedIngredient}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select ingredients" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ingredients?.ingredients.map((ingredient, index) => (
+                      <SelectItem key={index} value={String(ingredient._id)}>
+                        {ingredient.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+
               {ingredient ? (
                 <>
                   <Label htmlFor="weight">Weight</Label>
