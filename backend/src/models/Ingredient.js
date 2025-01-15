@@ -11,6 +11,7 @@ export const allergiesSchema = new Schema({
 const ingredientSchema = new Schema(
   {
     _id: { type: Number },
+    slug: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     category: { type: String, required: true },
     calories: { type: Number, required: true },
@@ -29,5 +30,12 @@ const ingredientSchema = new Schema(
   },
   { timestamps: true }
 );
+
+ingredientSchema.pre("save", function (next) {
+  if (this.isModified("name")) {
+    this.slug = slugify(this.name, { lower: true, strict: true });
+  }
+  next();
+});
 
 export const Ingredient = model("Ingredient", ingredientSchema, "Ingredients");

@@ -24,11 +24,25 @@ export const createRecipe = async (req, res, next) => {
       ? `/assets/${req.file.path.split("/assets/")[1]}`
       : "/assets/recipe/default_recipe_image.jpg";
 
+    // Generate a unique slug for the recipe
+    let baseSlug = slugify(data.recipeName, { lower: true, strict: true });
+    let uniqueSlug = baseSlug;
+
+    // Check for existing slugs and ensure uniqueness
+    let counter = 1;
+    while (await Recipe.exists({ slug: uniqueSlug })) {
+      uniqueSlug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+
     const newRecipeData = {
       _id: new_id,
       user_id,
+      slug: uniqueSlug,
+
       recipeData: {
         ...data,
+
         photo: photoPath,
       },
       recipeRating,

@@ -73,6 +73,7 @@ const recipeRatingSchema = new Schema({
 const recipeSchema = new Schema(
   {
     _id: { type: Number },
+    slug: { type: String, required: true, unique: true },
     user_id: { type: Number, required: true, ref: "User" },
     recipeData: { type: recipeDataSchema, required: true },
     recipeRating: { type: recipeRatingSchema, required: true },

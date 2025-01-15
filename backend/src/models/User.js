@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
   _id: { type: Number },
+  slug: { type: String, required: true, unique: true },
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -10,6 +11,8 @@ const UserSchema = new mongoose.Schema({
   favorites: [{ type: Number, ref: "Recipe" }],
   recipes: [{ type: Number, ref: "Recipe" }],
 });
+
+UserSchema.index({ userName: "text" });
 
 const User = mongoose.model("User", UserSchema, "Users");
 

@@ -3,23 +3,27 @@ import { Ingredient } from "../models/Ingredient.js";
 import { Recipe } from "../models/Recipe.js";
 
 export const search = async (req, res, next) => {
-  const query = req.query.q || "";
-
-  console.log("searched:", query);
+  const query = req.query.search || "";
   try {
-    // חיפוש מתכונים
+    const regexQuery = new RegExp(query, "i"); // Create a case-insensitive regex
+
+    // Search for recipes
     const recipes = await Recipe.find({
-      "recipeData.recipeName": { $regex: query, $options: "i" },
+      $or: [
+        { "recipeData.recipeName": { $regex: regexQuery } },
+        { "recipeData.description": { $regex: regexQuery } },
+        { "recipeIngredient.ingredients.name": { $regex: regexQuery } },
+      ],
     });
 
-    // חיפוש משתמשים
+    // Search for users
     const users = await User.find({
-      userName: { $regex: query, $options: "i" },
+      userName: { $regex: regexQuery },
     });
 
-    // חיפוש רכיבים
+    // Search for ingredients
     const ingredients = await Ingredient.find({
-      name: { $regex: query, $options: "i" },
+      name: { $regex: regexQuery },
     });
 
     res.json({ recipes, users, ingredients });
@@ -27,14 +31,12 @@ export const search = async (req, res, next) => {
     next(error);
   }
 };
-
 //
 //
 //
 export const autoSearch = async (req, res, next) => {
   const query = req.query.q || "";
 
-  console.log("!!searched:", query);
   try {
     // Search for recipes
     const recipes = await Recipe.find({

@@ -25,8 +25,10 @@ export default function SearchResultsPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (query) {
+    if (query && query.trim().length > 0) {
+      setError(null); // Clear previous error
       setIsLoading(true);
+      console.log("query", query);
       api
         .get(`/search?search=${query}`)
         .then((response) => {
@@ -38,9 +40,10 @@ export default function SearchResultsPage() {
           console.error(err);
           setIsLoading(false);
         });
+    } else {
+      setResults({ recipes: [], users: [], ingredients: [] });
     }
   }, [query]);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
