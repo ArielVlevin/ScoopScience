@@ -49,18 +49,23 @@ export default function NutritionTable({
       </div>
       <div className="border-t border-black my-2" />
       <div className="flex justify-between">
-        <span className="font-bold">Total Fat 14g</span>
+        <span className="font-bold">Total Fat</span>
+        <span>17g</span>
         <span>17%</span>
       </div>
       <div className="flex justify-between pl-4">
-        <span>Saturated Fat 9g</span>
+        <span>Saturated Fat</span>
+        <span>9g</span>
         <span>11%</span>
       </div>
       <div className="flex justify-between pl-4">
-        <span>Trans Fat 0g</span>
+        <span>Trans Fat</span>
+        <span>0g</span>
+        <span>0%</span>
       </div>
       <div className="flex justify-between">
-        <span className="font-bold">Cholesterol 55mg</span>
+        <span className="font-bold">Cholesterol</span>
+        <span>55mg</span>
         <span>67%</span>
       </div>
       <div className="flex justify-between">
@@ -76,10 +81,13 @@ export default function NutritionTable({
         <span>1%</span>
       </div>
       <div className="flex justify-between pl-4">
-        <span>Sugars 14g</span>
+        <span>Sugars</span>
+        <span>14g</span>
+        <span>13%</span>
       </div>
       <div className="flex justify-between">
-        <span className="font-bold">Protein 3g</span>
+        <span className="font-bold">Protein</span>
+        <span>3g</span>
         <span>4%</span>
       </div>
       <div className="border-t border-black my-2" />

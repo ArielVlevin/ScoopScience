@@ -1,18 +1,18 @@
 import { Allergies, IngredientCategory, NewIngredient } from "@/types";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useAddIngredient } from "../hooks/useAddngredient";
-import IngredientSearch from "../components/newIngredient/searchIngredient";
-import { FoodItem } from "../types/searchInredientType";
+import { useAddIngredient } from "../../hooks/useAddngredient";
+import IngredientSearch from "../../components/newIngredient/searchIngredient";
+import { FoodItem } from "../../types/searchInredientType";
 import { Separator } from "@/components/ui/separator";
 
-import AllergyCheckboxes from "../components/newIngredient/allergyCheckBox";
-import CategorySelect from "../components/newIngredient/categorySelect";
+import AllergyCheckboxes from "../../components/newIngredient/allergyCheckBox";
+import CategorySelect from "../../components/newIngredient/categorySelect";
 import {
   NameInput,
   NutritionalInputs,
   WeightInput,
-} from "../components/newIngredient/newIngredientInputs";
+} from "../../components/newIngredient/newIngredientInputs";
 import PageCard from "@/components/pages/pageCard";
 import Page from "@/components/pages/page";
 

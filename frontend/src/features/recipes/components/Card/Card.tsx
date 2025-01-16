@@ -54,26 +54,3 @@ export function RecipeCard({ recipe, type = "recipe" }: cardInfo) {
     </div>
   );
 }
-
-/*
-        <div className="relative">
-          <div className=" w-full h-auto aspect-video	">
-            <img
-              loading="lazy"
-              src={`http://api.scoopscience.com${recipe.recipeData.photo}`}
-              alt={recipe.recipeData.description}
-              className="w-full h-full object-cover object-center"
-            />
-          </div>
-          <button
-            onClick={handleHeartClick}
-            className="absolute top-4 right-4 text-red-500"
-            aria-label="Favorite"
-          >
-            <HeartIcon
-              className="w-6 h-6"
-              fill={isHeartFilled ? "red" : "none"}
-            />
-          </button>
-        </div>
-        */

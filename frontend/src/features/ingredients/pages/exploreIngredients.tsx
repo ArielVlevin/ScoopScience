@@ -37,7 +37,7 @@ export default function ExploreIngredientsPage() {
       )}
     >
       {({ openDialog }) => (
-        <Grid gap={14}>
+        <Grid mdcols={2} gap={8} className="">
           {isLoading ? (
             <Loading />
           ) : (

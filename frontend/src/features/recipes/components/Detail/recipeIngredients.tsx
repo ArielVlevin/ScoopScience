@@ -1,6 +1,7 @@
 import Grid from "@/components/class/grid";
 import { Ingredient, Recipe } from "@/types";
 import PageBox from "@/components/pages/pageBox";
+import { TableDialog } from "./TableDialog";
 
 type RecipeIngredientsProps = {
   className?: string;
@@ -38,30 +39,34 @@ export default function RecipeIngredients({
 
   return (
     <PageBox className={className}>
-      <h2 className="text-xl font-bold mb-4">Ingredients</h2>
-      <Grid mdcols={2} gap={8} className="w-full">
-        {categories.map(({ title, filter }) => {
-          const filteredIngredients =
-            filter === "other"
-              ? ingredientsArray.filter(
-                  (ingredient) =>
-                    ingredient.category !== "dairy" &&
-                    ingredient.category !== "sugars" &&
-                    ingredient.category !== "stabilizer"
-                )
-              : ingredientsArray.filter(
-                  (ingredient) => ingredient.category === filter
-                );
+      <div className="flex flex-col justify-between h-full">
+        <h2 className="text-xl font-bold mb-4">Ingredients</h2>
+        <Grid mdcols={2} gap={8} className="w-full">
+          {categories.map(({ title, filter }) => {
+            const filteredIngredients =
+              filter === "other"
+                ? ingredientsArray.filter(
+                    (ingredient) =>
+                      ingredient.category !== "dairy" &&
+                      ingredient.category !== "sugars" &&
+                      ingredient.category !== "stabilizer"
+                  )
+                : ingredientsArray.filter(
+                    (ingredient) => ingredient.category === filter
+                  );
+            if (filteredIngredients.length === 0) return null;
 
-          return (
-            <IngredientList
-              key={title}
-              title={title}
-              ingredients={filteredIngredients}
-            />
-          );
-        })}
-      </Grid>
+            return (
+              <IngredientList
+                key={title}
+                title={title}
+                ingredients={filteredIngredients}
+              />
+            );
+          })}
+        </Grid>
+        <TableDialog recipe={recipe} />
+      </div>
     </PageBox>
   );
 }

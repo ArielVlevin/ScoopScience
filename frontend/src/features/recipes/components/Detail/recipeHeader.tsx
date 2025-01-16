@@ -60,61 +60,65 @@ export default function RecipeHeader({ recipe }: RecipeHeaderProps) {
   }, [user, recipe.recipeRating.ratingUsers]);
 
   return (
-    <PageBox>
-      <div className="flex justify-center text-xs font-bold uppercase mb-1  ">
-        {recipe?.recipeData.recipeKind}
-      </div>
-      <div className="flex justify-center text-3xl font-bold  ">
-        {recipe?.recipeData.recipeName}
-      </div>
-      <div className="flex justify-center text-muted-foreground mb-1">
-        by {recipe?.user_id?.username}
-      </div>
-      <div className="flex justify-center ">
-        <Rating
-          style={{ maxWidth: 100 }}
-          value={rating}
-          onChange={(star: number) => {
-            handleRating(star);
-          }}
-        />
-        <span className="text-muted-foreground text-sm">({ratingAmount})</span>
-      </div>
-      <div className="flex justify-center text-muted-foreground mb-4">
-        {recipe?.recipeData.description}
-      </div>
+    <PageBox className="	">
+      <div>
+        <div className="flex justify-center text-xs font-bold uppercase mb-1  ">
+          {recipe?.recipeData.recipeKind}
+        </div>
+        <div className="flex justify-center text-3xl font-bold  ">
+          {recipe?.recipeData.recipeName}
+        </div>
+        <div className="flex justify-center text-muted-foreground mb-1">
+          by {recipe?.user_id?.username}
+        </div>
+        <div className="flex justify-center ">
+          <Rating
+            style={{ maxWidth: 100 }}
+            value={rating}
+            onChange={(star: number) => {
+              handleRating(star);
+            }}
+          />
+          <span className="text-muted-foreground text-sm">
+            ({ratingAmount})
+          </span>
+        </div>
+        <div className="flex justify-center text-muted-foreground mb-4">
+          {recipe?.recipeData.description}
+        </div>
 
-      <div className="flex justify-center gap-4">
-        {recipe.recipeIngredient.allergies.nuts ? (
-          <div className="flex items-center gap-2">
-            <NutIcon className="w-5 h-5 text-orange-800" />
-            <span className="text-muted-foreground">Nuts</span>
-          </div>
-        ) : null}
-        {recipe.recipeIngredient.allergies.milk ? (
-          <div className="flex items-center gap-2">
-            <MilkIcon className="w-5 h-5 text-blue-200" />
-            <span className="text-muted-foreground">Milk</span>
-          </div>
-        ) : null}
-        {recipe.recipeIngredient.allergies.egg ? (
-          <div className="flex items-center gap-2">
-            <EggIcon className="w-5 h-5  " />
-            <span className="text-muted-foreground">eggs</span>
-          </div>
-        ) : null}
-        {recipe.recipeIngredient.allergies.soy ? (
-          <div className="flex items-center gap-2">
-            <BeanIcon className="w-5 h-5 text-green-500" />
-            <span className="text-muted-foreground">Soy</span>
-          </div>
-        ) : null}
-        {recipe.recipeIngredient.allergies.wheat ? (
-          <div className="flex items-center gap-2">
-            <WheatIcon className="w-5 h-5 text-yellow-300" />
-            <span className="text-muted-foreground">Dairy</span>
-          </div>
-        ) : null}
+        <div className="flex justify-center gap-4">
+          {recipe.recipeIngredient.allergies.nuts ? (
+            <div className="flex items-center gap-2">
+              <NutIcon className="w-5 h-5 text-orange-800" />
+              <span className="text-muted-foreground">Nuts</span>
+            </div>
+          ) : null}
+          {recipe.recipeIngredient.allergies.milk ? (
+            <div className="flex items-center gap-2">
+              <MilkIcon className="w-5 h-5 text-blue-200" />
+              <span className="text-muted-foreground">Milk</span>
+            </div>
+          ) : null}
+          {recipe.recipeIngredient.allergies.egg ? (
+            <div className="flex items-center gap-2">
+              <EggIcon className="w-5 h-5  " />
+              <span className="text-muted-foreground">eggs</span>
+            </div>
+          ) : null}
+          {recipe.recipeIngredient.allergies.soy ? (
+            <div className="flex items-center gap-2">
+              <BeanIcon className="w-5 h-5 text-green-500" />
+              <span className="text-muted-foreground">Soy</span>
+            </div>
+          ) : null}
+          {recipe.recipeIngredient.allergies.wheat ? (
+            <div className="flex items-center gap-2">
+              <WheatIcon className="w-5 h-5 text-yellow-300" />
+              <span className="text-muted-foreground">Dairy</span>
+            </div>
+          ) : null}
+        </div>
       </div>
     </PageBox>
   );

@@ -1,16 +1,28 @@
+import { useTheme } from "@/contexts/ThemeProvider";
 import { cn } from "@/utils/cn";
 import React from "react";
 
 interface PageBoxProps {
   children: React.ReactNode;
   className?: string;
+  pop?: boolean;
 }
 
-const BASE =
-  "bg-muted shadow-md rounded-lg p-4 mb-6  hover:scale-105 duration-500";
+const PageBox = ({ children, className = "", pop = false }: PageBoxProps) => {
+  const { settings } = useTheme();
 
-const PageBox = ({ children, className = "" }: PageBoxProps) => {
-  return <div className={cn(BASE, className)}>{children}</div>;
+  return (
+    <div
+      className={cn(
+        settings.pageBox,
+        "shadow-md rounded-lg p-4 mb-6 ",
+        pop && " hover:scale-105 duration-500",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default PageBox;

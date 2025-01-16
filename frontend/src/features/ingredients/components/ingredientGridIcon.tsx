@@ -17,10 +17,10 @@ const IngredientGridIcon: React.FC<IngredientGridIconProps> = ({
 }) => {
   return (
     <div
-      className="flex flex-col items-center size-48 cursor-pointer text-center"
+      className="flex flex-col items-center size-32 cursor-pointer text-center"
       onClick={() => onClick(id)}
     >
-      <div className="inline-block rounded-full bg-primary hover:bg-primary/70 p-12">
+      <div className="inline-block rounded-full bg-primary hover:bg-primary/70 p-8">
         {getCategoryIcon(category)}
       </div>
       <h3 className="text-lg font-medium group-hover:text-primary transition-colors hover:underline mt-2">

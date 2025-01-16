@@ -14,7 +14,6 @@ export function NewRecipeTableHeads({ isEditable }: NewRecipeTableHeadsProps) {
     "Fat",
     "Solid Percentage",
     "MSNF",
-    isEditable ? "Actions" : null,
   ];
   return (
     <TableRow>
@@ -23,6 +22,11 @@ export function NewRecipeTableHeads({ isEditable }: NewRecipeTableHeadsProps) {
           {header}
         </TableHead>
       ))}
+      {isEditable && (
+        <TableHead className="text-center text-white font-bold">
+          Actions
+        </TableHead>
+      )}
     </TableRow>
   );
 }

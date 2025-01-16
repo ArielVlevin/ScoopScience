@@ -12,8 +12,6 @@ const UserSchema = new mongoose.Schema({
   recipes: [{ type: Number, ref: "Recipe" }],
 });
 
-UserSchema.index({ userName: "text" });
-
 const User = mongoose.model("User", UserSchema, "Users");
 
 export default User;

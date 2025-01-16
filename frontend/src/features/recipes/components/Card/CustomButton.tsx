@@ -4,7 +4,7 @@ import React from "react";
 interface CustomButtonProps {
   onClick: () => void;
   children: React.ReactNode;
-  color?: "orange" | "green" | "blue" | "red"; // Add more colors as needed
+  color?: "orange" | "green" | "blue" | "red";
   className?: string;
 }
 
@@ -14,7 +14,6 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   color = "green", // Default color
   className = "",
 }) => {
-  // Define color classes based on the color prop
   const colorClasses = {
     orange:
       "bg-orange-700 hover:bg-orange-500 dark:bg-orange-900 dark:hover:bg-orange-700",

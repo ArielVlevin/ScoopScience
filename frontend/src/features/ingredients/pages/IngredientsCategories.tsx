@@ -8,7 +8,6 @@ import { isIngredientCategory } from "../utils/isIngredientCategory";
 import IngredientDialog from "../components/ingredientDialog";
 import PageWithDialog from "@/components/pages/pageWithDialog";
 import { useState } from "react";
-import { Button } from "@/components/ui";
 
 export default function IngredientsCategoryPage() {
   const { category } = useParams();
@@ -38,51 +37,44 @@ export default function IngredientsCategoryPage() {
     >
       {({ openDialog }) => (
         <>
-          <PageCard title={category}>
+          <PageCard
+            title={category}
+            titleBtn1onClick={() => setPage(page - 1)}
+            titleBtn1Title="prev"
+            titleBtn1Disable={
+              data?.totalIngredients === 0 ||
+              !data?.currentPage ||
+              !data?.totalPages ||
+              data.currentPage === 1
+            }
+            titleBtn2Title="next"
+            titleBtn2Disable={
+              data?.totalIngredients === 0 ||
+              !data?.currentPage ||
+              !data?.totalPages ||
+              data.currentPage >= data.totalPages
+            }
+            titleBtn2onClick={() => setPage(page + 1)}
+          >
             {isLoading ? (
               <div>Loading...</div>
             ) : !data || data.totalIngredients === 0 ? (
               <div className="text-center">No ingredients found</div>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {data?.ingredients.map((ingredient) => (
-                  <IngredientGridIcon
-                    key={ingredient._id}
-                    id={String(ingredient._id)}
-                    header={ingredient.name}
-                    category={category as IngredientCategory}
-                    onClick={openDialog}
-                  />
-                ))}
+              <div>
+                <div className="flex grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4  justify-between">
+                  {data?.ingredients.map((ingredient) => (
+                    <IngredientGridIcon
+                      key={ingredient._id}
+                      id={String(ingredient._id)}
+                      header={ingredient.name}
+                      category={category as IngredientCategory}
+                      onClick={openDialog}
+                    />
+                  ))}
+                </div>
               </div>
             )}
-            <div className="flex justify-end">
-              <Button
-                className="align-self-center w-52 h-16 text-xl bg-primary/85"
-                onClick={() => setPage(page - 1)}
-                disabled={
-                  data?.totalIngredients === 0 ||
-                  !data?.currentPage ||
-                  !data?.totalPages ||
-                  data.currentPage === 1
-                }
-              >
-                prev page
-              </Button>
-
-              <Button
-                className="align-self-center w-52 h-16 text-xl bg-primary/85"
-                onClick={() => setPage(page + 1)}
-                disabled={
-                  data?.totalIngredients === 0 ||
-                  !data?.currentPage ||
-                  !data?.totalPages ||
-                  data.currentPage >= data.totalPages
-                }
-              >
-                next page
-              </Button>
-            </div>
           </PageCard>
         </>
       )}

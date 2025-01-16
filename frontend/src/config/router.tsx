@@ -14,7 +14,7 @@ const IngredientsPage = lazy(
   () => import("@/features/ingredients/pages/exploreIngredients")
 );
 const AddIngredientForm = lazy(
-  () => import("@/features/ingredients/pages/newIngredients")
+  () => import("@/features/ingredients/pages/private/newIngredients")
 );
 const IngredientDetailPage = lazy(
   () => import("@/features/ingredients/pages/ingredientDetails")
@@ -23,42 +23,42 @@ const IngredientsCategoryPage = lazy(
   () => import("@/features/ingredients/pages/IngredientsCategories")
 );
 const ExploreRecipesPage = lazy(
-  () => import("@/features/recipes/pages/global/ExploreRecipes")
+  () => import("@/features/recipes/pages/public/ExploreRecipes")
 );
 
 const ExploreNewsetRecipesPage = lazy(
-  () => import("@/features/recipes/pages/global/newestRecipes")
+  () => import("@/features/recipes/pages/public/newestRecipes")
 );
 
 const NewRecipe = lazy(
-  () => import("@/features/recipes/pages/user/newRecipePage")
+  () => import("@/features/recipes/pages/private/newRecipePage")
 );
 
 const ExploreTopRatedRecipesPage = lazy(
-  () => import("@/features/recipes/pages/global/topRatedRecipes")
+  () => import("@/features/recipes/pages/public/topRatedRecipes")
 );
 
 const MakeRecipe = lazy(
-  () => import("@/features/recipes/pages/user/makeRecipe")
+  () => import("@/features/recipes/pages/private/makeRecipe")
 );
 
 const EditRecipeComponent = lazy(
-  () => import("@/features/recipes/components/Edit/editRecipe")
+  () => import("@/features/recipes/pages/private/editRecipe")
 );
 
 const RecipeDetailPage = lazy(
-  () => import("@/features/recipes/pages/global/recipeDetail")
+  () => import("@/features/recipes/pages/public/recipeDetail")
 );
 
 const FavoritesRecipesPage = lazy(
-  () => import("@/features/recipes/pages/user/favorites")
+  () => import("@/features/recipes/pages/private/favorites")
 );
 const UserRecipesPage = lazy(
-  () => import("@/features/recipes/pages/user/userRecipes")
+  () => import("@/features/recipes/pages/private/userRecipes")
 );
 
 const UserIngredients = lazy(
-  () => import("@/features/ingredients/pages/userIngredients")
+  () => import("@/features/ingredients/pages/private/userIngredients")
 );
 
 const AdminControllPanel = lazy(

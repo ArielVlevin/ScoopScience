@@ -10,7 +10,7 @@ interface PageWithDialogProps<T> {
     data: T | null;
     onClose: () => void;
   }) => ReactNode;
-  initialDialogData?: T;
+  initialDialogData?: T | null;
 }
 
 export default function PageWithDialog<T>({
@@ -32,7 +32,7 @@ export default function PageWithDialog<T>({
   };
 
   return (
-    <Page>
+    <Page className="flex items-center justify-center ">
       {/* Render children, passing openDialog if children is a function */}
       {typeof children === "function" ? children({ openDialog }) : children}
 

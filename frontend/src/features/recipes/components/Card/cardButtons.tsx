@@ -11,11 +11,11 @@ export const CardButtons: React.FC<CardButtonsProps> = ({
 }) => {
   const navigate = useNavigate();
   const goToMakePage = () => {
-    navigate(`/recipes/make?id=${recipeId}`, { state: { recipe } });
+    navigate(`/recipes/make?id=${recipeId}`);
   };
 
   const goToEditPage = () => {
-    navigate(`/recipes/edit?id=${recipeId}`, { state: { recipe } });
+    navigate(`/recipes/edit?id=${recipeId}`);
   };
 
   const goToRecipePage = () => {

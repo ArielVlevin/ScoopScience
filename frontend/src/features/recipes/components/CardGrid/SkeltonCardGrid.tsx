@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import SkeltonCard from "../Card/Skelton";
+import SkeltonCard from "../Card/SkeltonCard";
 
 type SkeltonCardGridProps = {
   length: number;

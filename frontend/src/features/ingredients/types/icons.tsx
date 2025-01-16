@@ -36,7 +36,7 @@ export const categoryIcons: Record<IngredientCategory, React.ReactNode> = {
 
 export const getCategoryIcon = (
   category: IngredientCategory,
-  className = "h-12 w-12 text-white"
+  className = "size-5 text-white"
 ): React.ReactNode => {
   const icons: Record<IngredientCategory, React.ReactNode> = {
     dairy: <MilkIcon className={cn(className, "text-white")} />,
