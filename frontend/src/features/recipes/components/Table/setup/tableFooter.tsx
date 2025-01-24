@@ -1,6 +1,6 @@
 import { TableRow } from "@/components/ui";
-import EditTotalWeight from "./editTotalWeight";
-import calculateTotals from "../../calc/calculateTotals";
+import EditTotalWeight from "../edit/editTotalWeight";
+import calculateTotals from "../../../calc/calculateTotals";
 import { Row } from "@/types";
 
 type TableFooterProps = {

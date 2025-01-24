@@ -8,7 +8,7 @@ import RecipeIngredients from "../Detail/recipeIngredients";
 import Recipecharts from "../Detail/recipeCharts";
 import RecipeInstructions from "../Detail/recipeInstructions";
 import { useState } from "react";
-import NewRecipeTable from "../Table/0table";
+import NewRecipeTable from "../Table/table";
 import {
   Dialog,
   DialogContent,

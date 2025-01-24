@@ -39,14 +39,29 @@ export const createIngredient = async (req, res, next) => {
     next(error);
   }
 };
-
 export const getIngredient = async (req, res, next) => {
-  const ingredientsID = req.params.id;
+  const ingredientID = req.params.id;
+  const weight = parseFloat(req.query.weight || 100); // Default to 100g if weight is not provided
+
   try {
-    const ingredient = await Ingredient.findById(ingredientsID).exec();
+    // Fetch the ingredient by ID
+    const ingredient = await Ingredient.findById(ingredientID).exec();
 
     if (ingredient) {
-      res.status(200).json(ingredient);
+      const ingredientObject = ingredient.toObject(); // Convert to plain object
+      const scaleFactor = weight / 100;
+
+      const calculatedData = {
+        ...ingredientObject, // Spread the original fields
+        weight: weight,
+        calories: ingredientObject.calories * scaleFactor,
+        sugar: ingredientObject.sugar * scaleFactor,
+        fat: ingredientObject.fat * scaleFactor,
+        protein: ingredientObject.protein * scaleFactor,
+        saturates: ingredientObject.saturates * scaleFactor,
+      };
+
+      res.status(200).json(calculatedData);
     } else {
       res.status(404).json({ message: "Ingredient not found" });
     }
@@ -89,6 +104,7 @@ export const fetchIngredients = async (req, res, next) => {
       minFat,
       maxFat,
       search,
+      namesOnly = false,
       ...allergies
     } = req.query;
 
@@ -119,7 +135,11 @@ export const fetchIngredients = async (req, res, next) => {
 
     const skip = (page - 1) * parseInt(limit, 10);
 
-    const ingredients = await Ingredient.find(filters)
+    const projection = namesOnly
+      ? { _id: 1, name: 1 } // If namesOnly is true, fetch only _id and name
+      : {}; // Otherwise, fetch all fields
+
+    const ingredients = await Ingredient.find(filters, projection)
       .sort({ [sortBy]: order === "asc" ? 1 : -1 })
       .skip(skip)
       .limit(parseInt(limit, 10))

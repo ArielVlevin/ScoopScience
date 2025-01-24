@@ -17,7 +17,7 @@ import {
   DialogDescription,
 } from "@/components/ui";
 import { Ingredient, Row } from "@/types";
-import useGetIngredient from "@/features/ingredients/hooks/useGetIngredient";
+import { useFetchIngredient } from "@/features/ingredients/hooks/useFetchIngredient";
 import { useFetchIngredientCategories } from "@/features/ingredients/hooks/useFetchCategories";
 import { useFetchIngredients } from "@/features/ingredients/hooks/useFetchingredients";
 
@@ -33,7 +33,9 @@ function AddIngredientToTable({
   setIsAddingIngredient: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [category, setCategory] = useState<string | null>(null);
-  const [selectedIngredient, setSelectedIngredient] = useState<string>("");
+  const [selectedIngredient, setSelectedIngredient] = useState<string | null>(
+    null
+  );
   const [weight, setWeight] = useState<number>(0);
   const [ingredient, setIngredient] = useState<Ingredient | null>(null);
 
@@ -65,11 +67,18 @@ function AddIngredientToTable({
     [ingredientsByCategory]
   );
 
-  const { ingredientData } = useGetIngredient(selectedIngredient);
+  const {
+    data: FetchedIngredient,
+    isLoading: isLoadingIngredient,
+    isError: isErrorIngredient,
+    error: errorIngredient,
+  } = useFetchIngredient(selectedIngredient!, weight);
 
   useEffect(() => {
-    if (selectedIngredient) setIngredient(ingredientData);
-  }, [selectedIngredient, ingredientData]);
+    if (FetchedIngredient && !isLoadingIngredient) {
+      setIngredient(FetchedIngredient);
+    }
+  }, [FetchedIngredient, isLoadingIngredient]);
 
   const handleDialogClose = useCallback(() => {
     setCategory(null);
@@ -81,17 +90,17 @@ function AddIngredientToTable({
 
   const handleSaveNewRow = useCallback(() => {
     if (!ingredient || !rows) return;
-    if (rows.some((row) => row._id === ingredient._id)) {
+    if (rows.some((row) => row._id === ingredient._id))
       return alert(
         `The ingredient "${ingredient.name}" already exists in the recipe.`
       );
-    }
-    if (weight <= 0) {
+
+    if (weight <= 0)
       return alert(
         `The ingredient "${ingredient.name}" must have a positive weight.`
       );
-    }
-    const newIngredientRow = { ...ingredient, weight };
+
+    const newIngredientRow = { ...ingredient };
     setRows([...rows, newIngredientRow]);
     handleDialogClose();
   }, [ingredient, rows, weight, setRows, handleDialogClose]);
@@ -144,38 +153,34 @@ function AddIngredientToTable({
               ) : isErrorIngredients && errorIngredients ? (
                 <div>{errorIngredients.message}</div>
               ) : (
-                <Select onValueChange={setSelectedIngredient}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select ingredients" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ingredients?.ingredients.map((ingredient, index) => (
-                      <SelectItem key={index} value={String(ingredient._id)}>
-                        {ingredient.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-
-              {ingredient ? (
                 <>
-                  <Label htmlFor="weight">Weight</Label>
-                  <Input
-                    id="weight"
-                    type="number"
-                    placeholder="Enter weight"
-                    onChange={(e) => setWeight(parseFloat(e.target.value))}
-                  />
+                  <Select onValueChange={setSelectedIngredient}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select ingredients" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ingredients?.ingredients.map((ingredient, index) => (
+                        <SelectItem key={index} value={String(ingredient._id)}>
+                          {ingredient.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {selectedIngredient && (
+                    <>
+                      <Label htmlFor="weight">Weight</Label>
+                      <Input
+                        id="weight"
+                        type="number"
+                        placeholder="Enter weight"
+                        onChange={(e) => setWeight(parseFloat(e.target.value))}
+                      />
+                    </>
+                  )}
                 </>
-              ) : null}
+              )}
               <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    handleDialogClose();
-                  }}
-                >
+                <Button variant="outline" onClick={handleDialogClose}>
                   Cancel
                 </Button>
                 <Button onClick={handleSaveNewRow}>Add</Button>

@@ -1,5 +1,6 @@
 import { fetchData } from "@/services/apiFunctions";
 import {
+  FetchIngredientsByCategoryParams,
   FetchIngredientsParams,
   FetchIngredientsResponse,
   Ingredient,
@@ -9,6 +10,8 @@ export async function fetchIngredients(
   params: FetchIngredientsParams
 ): Promise<FetchIngredientsResponse> {
   const query = new URLSearchParams();
+
+  if (params.namesOnly) query.append("limit", params.namesOnly.toString());
 
   if (params.limit) query.append("limit", params.limit.toString());
   if (params.page) query.append("page", params.page.toString());
@@ -37,15 +40,25 @@ export async function fetchIngredients(
 
 export interface IngredientByCategory {
   _id: string; // Category name
-  ingredients: Ingredient[]; // List of ingredients in the category
+  ingredients: Ingredient[] | { _id: string; name: string }[];
 }
 
-export async function fetchIngredientsByCategory(limit = 9) {
-  const endpoint = `/ingredients/fetchIngredientsByCategory?limit=${limit}`;
+export async function fetchIngredientsByCategory(
+  param: FetchIngredientsByCategoryParams
+) {
+  const endpoint = `/ingredients/fetchIngredientsByCategory?limit=${param.limit}&namesOnly=${param.namesOnly}`;
   return fetchData<IngredientByCategory[]>(endpoint);
 }
 
 export async function fetchIngredientCategories(): Promise<string[]> {
   const endpoint = `/ingredients/fetchCategories`;
   return fetchData<string[]>(endpoint);
+}
+
+export async function fetchIngredientById(
+  ingredientId: string,
+  weight: number = 100
+): Promise<Ingredient> {
+  const endpoint = `/ingredients/id/${ingredientId}?weight=${weight}`;
+  return fetchData<Ingredient>(endpoint);
 }

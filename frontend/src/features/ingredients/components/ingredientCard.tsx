@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui";
 import { getLevelColor } from "@/utils/level";
-import useGetIngredient from "../hooks/useGetIngredient";
+import useGetIngredient from "../hooks/useFetchIngredient";
 import { allergenIcons, categoryIcons } from "../types/icons";
 import { Separator } from "@/components/ui/separator";
 

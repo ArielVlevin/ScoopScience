@@ -1,4 +1,4 @@
-import NewRecipeTable from "../../components/Table/0table";
+import NewRecipeTable from "../Table/table";
 import {
   Button,
   Dialog,

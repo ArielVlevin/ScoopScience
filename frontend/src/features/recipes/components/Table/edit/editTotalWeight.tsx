@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { calculateAndRound } from "../../calc/calculateAndRound";
+import { calculateAndRound } from "../../../calc/calculateAndRound";
 
 import {
   Dialog,
@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, XIcon } from "@/components/icons/icon";
-import calculateTotals from "../../calc/calculateTotals";
+import calculateTotals from "../../../calc/calculateTotals";
 import { Row } from "@/types";
 
 type EditTotalWeightProps = {

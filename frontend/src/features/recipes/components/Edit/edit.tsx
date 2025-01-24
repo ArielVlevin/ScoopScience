@@ -4,7 +4,7 @@ import { useGetRecipe } from "../../hooks/useGetRecipe";
 import ErrorPage from "@/pages/error";
 import Loading from "@/pages/loading";
 import RecipeHeader from "../Detail/recipeHeader";
-import NewRecipeTable from "../Table/0table";
+import NewRecipeTable from "../Table/table";
 import { Row, Totals } from "@/types";
 import { useEffect, useState } from "react";
 import calculateTotals from "../../calc/calculateTotals";

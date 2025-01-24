@@ -1,7 +1,11 @@
 import { Ingredient } from "@/types";
 
+export interface FetchIngredientResponse {
+  ingredient: Ingredient;
+}
+
 export interface FetchIngredientsResponse {
-  ingredients: Ingredient[];
+  ingredients: Ingredient[] | { _id: string; name: string }[];
   totalIngredients: number;
   currentPage: number;
   totalPages: number;
@@ -24,4 +28,9 @@ export interface FetchIngredientsParams {
   allergies?: Partial<
     Record<"milk" | "nuts" | "egg" | "soy" | "wheat", boolean>
   >;
+}
+
+export interface FetchIngredientsByCategoryParams {
+  limit?: number;
+  namesOnly?: boolean;
 }

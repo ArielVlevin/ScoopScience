@@ -1,7 +1,7 @@
 import PageCard from "@/components/pages/pageCard";
 import { Row } from "@/types";
-import NewRecipeTable from "../Table/0table";
-import AddIngredientToTable from "../Table/AddIngredientToTable";
+import NewRecipeTable from "../Table/table";
+import AddIngredientToTable from "../Table/setup/AddIngredientToTable";
 import TotalsCard from "./totalsCard";
 import calculateTotals from "../../calc/calculateTotals";
 import RecipeBulletCharts from "../BulletChart/recipeBulletChart";
