@@ -6,10 +6,12 @@ type RecipeImgProps = {
   recipe: Recipe;
 };
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function RecipeImg({ className, recipe }: RecipeImgProps) {
   return (
     <img
-      src={`http://api.scoopscience.com${recipe.recipeData.photo}`}
+      src={`${apiUrl}${recipe.recipeData.photo}`}
       alt={recipe.recipeData.recipeName}
       loading="lazy"
       className={cn(className, "size-full rounded-lg object-cover")}

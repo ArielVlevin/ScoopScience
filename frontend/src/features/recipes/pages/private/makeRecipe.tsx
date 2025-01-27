@@ -4,9 +4,7 @@ import { useGetRecipe } from "../../hooks/useGetRecipe";
 import ErrorPage from "@/pages/error";
 import Loading from "@/pages/loading";
 import RecipeHeader from "../../components/Detail/recipeHeader";
-import { Row, Totals } from "@/types";
-import { useEffect, useState } from "react";
-import calculateTotals from "../../calc/calculateTotals";
+
 import PageCard from "@/components/pages/pageCard";
 import QuantitySelector from "../../components/Make/amountSelect";
 import PreparationSteps from "../../components/Make/prep";

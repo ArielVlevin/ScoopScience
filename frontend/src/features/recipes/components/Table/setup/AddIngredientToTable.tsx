@@ -94,16 +94,26 @@ function AddIngredientToTable({
       return alert(
         `The ingredient "${ingredient.name}" already exists in the recipe.`
       );
-
     if (weight <= 0)
       return alert(
         `The ingredient "${ingredient.name}" must have a positive weight.`
       );
 
+    if (isErrorIngredient && errorIngredient)
+      return alert(`Error fetching ingredient: ${errorIngredient.message}`);
+
     const newIngredientRow = { ...ingredient };
     setRows([...rows, newIngredientRow]);
     handleDialogClose();
-  }, [ingredient, rows, weight, setRows, handleDialogClose]);
+  }, [
+    ingredient,
+    rows,
+    weight,
+    isErrorIngredient,
+    errorIngredient,
+    setRows,
+    handleDialogClose,
+  ]);
 
   return (
     <Dialog

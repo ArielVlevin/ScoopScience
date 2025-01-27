@@ -2,7 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Ingredient } from "@/types";
 import { fetchIngredientById } from "../utils/fetchIngredients";
 
-export const useFetchIngredient = (ingredientId: string, weight: number) => {
+export const useFetchIngredient = (
+  ingredientId: string,
+  weight: number = 100
+) => {
   return useQuery<Ingredient, Error>({
     queryKey: ["ingredient", ingredientId, weight],
     queryFn: () => fetchIngredientById(ingredientId, weight || 100),

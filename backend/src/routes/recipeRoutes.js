@@ -5,7 +5,6 @@ import {
   deleteRecipe,
   getRecipe,
   setRate,
-  getAllRecipes,
   fetchRecipes,
 } from "../controllers/recipeController.js";
 import { upload } from "../middleware/staticFiles.js";
@@ -19,9 +18,8 @@ router.put("/id/:id", upload.single("photo"), authenticateUser, editRecipe);
 
 router.delete("/id/:id", authenticateUser, deleteRecipe);
 
-router.get("/id/:id", getRecipe);
-router.get("/recipesArray", getAllRecipes);
-router.get("/fetchRecipes", fetchRecipes);
+router.get("/id/:id", authenticateUser(false), getRecipe);
+router.get("/fetchRecipes", authenticateUser(false), fetchRecipes);
 
 router.post("/id/:id/rate", authenticateUser, setRate);
 

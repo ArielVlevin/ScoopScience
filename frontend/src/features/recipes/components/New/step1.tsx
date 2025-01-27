@@ -12,6 +12,7 @@ import { Recipe, typeOptions } from "@/types";
 import Grid from "@/components/class/grid";
 import RequiredLabel from "@/components/class/requiredLabel";
 import PageCard from "@/components/pages/pageCard";
+import { useTheme } from "@/contexts/ThemeProvider";
 
 type Step1Props = {
   formData: any;
@@ -32,27 +33,33 @@ export default function Step1({
   recipes,
   handleAdditionalSelectChange,
 }: Step1Props) {
+  const { settings } = useTheme();
+
   return (
     <>
       <PageCard title="Recipe Details" className="mb-6">
         <Grid gap={2}>
-          <RequiredLabel htmlFor="name">Recipe Name</RequiredLabel>
+          <RequiredLabel htmlFor="name" className={settings.inputTitle}>
+            Recipe Name
+          </RequiredLabel>
           <Input
             id="name"
-            className="bg-background dark:bg-gray-400"
+            className={settings.inputText}
             placeholder="Enter recipe name"
             value={formData.name}
             onChange={handleInputChange}
           />
         </Grid>
         <Grid gap={2}>
-          <RequiredLabel htmlFor="recipeKind">Recipe Category</RequiredLabel>
+          <RequiredLabel htmlFor="recipeKind" className={settings.inputTitle}>
+            Recipe Category
+          </RequiredLabel>
           <Select
             name="recipeKind"
             value={formData.recipeKind}
             onValueChange={handleSelectChange}
           >
-            <SelectTrigger className="bg-background dark:bg-gray-400">
+            <SelectTrigger className={settings.inputText}>
               <SelectValue placeholder="Select recipe kind" />
             </SelectTrigger>
             <SelectContent>
@@ -70,25 +77,25 @@ export default function Step1({
         <div className="flex items-center space-x-2">
           <Checkbox
             checked={isAdditionalSelectVisible}
-            className="bg-background dark:bg-gray-400"
+            className={settings.inputText}
             onCheckedChange={(checked) =>
               setIsAdditionalSelectVisible(checked as boolean)
             }
           />
-          <Label className="text-sm font-medium">
+          <Label className={settings.inputTitle}>
             Import ice cream base recipe
           </Label>
         </div>
         {isAdditionalSelectVisible && (
           <Grid gap={2}>
-            <Label htmlFor="additionalSelect" className="text-sm font-medium">
+            <Label htmlFor="additionalSelect" className={settings.inputTitle}>
               {formData.recipeKind} Recipes
             </Label>
             <Select
               name="additionalSelect"
               onValueChange={handleAdditionalSelectChange}
             >
-              <SelectTrigger className="bg-background dark:bg-gray-400">
+              <SelectTrigger className={settings.inputText}>
                 <SelectValue placeholder="Select additional option" />
               </SelectTrigger>
               <SelectContent>

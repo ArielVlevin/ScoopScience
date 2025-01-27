@@ -57,7 +57,7 @@ const PageCard = ({
               </div>
               <div>
                 {title && (
-                  <CardTitle className="text-2xl font-bold mt-2 mb-4 text-center">
+                  <CardTitle className="text-2xl font-bold mt-2 mb-4 text-center text-primary">
                     <Title> {title}</Title>
                   </CardTitle>
                 )}

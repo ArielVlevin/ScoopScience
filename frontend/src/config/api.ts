@@ -4,9 +4,13 @@ import axios, {
   AxiosError,
 } from "axios";
 
-const apiUrl = "http://127.0.0.1:3000/api"; //"https://api.scoopscience.com/api";
+const apiUrl = import.meta.env.VITE_API_URL;
+
+if (!apiUrl)
+  throw new Error("VITE_API_URL is not defined in the environment variables.");
+
 const api = axios.create({
-  baseURL: apiUrl,
+  baseURL: `${apiUrl}/api`,
 });
 
 api.interceptors.request.use(

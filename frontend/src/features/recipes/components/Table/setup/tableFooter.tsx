@@ -1,4 +1,4 @@
-import { TableRow } from "@/components/ui";
+import { Button, TableRow } from "@/components/ui";
 import EditTotalWeight from "../edit/editTotalWeight";
 import calculateTotals from "../../../calc/calculateTotals";
 import { Row } from "@/types";
@@ -25,7 +25,7 @@ export default function WeightTableFooter({
   isEditingTotalWeight,
 }: TableFooterProps) {
   return (
-    <TableRow>
+    <TableRow className="text-gray-800 hover:bg-white bg-white">
       <td className="font-bold text-left p-2 " colSpan={2}>
         Total Weight:
       </td>
@@ -41,13 +41,13 @@ export default function WeightTableFooter({
           totals={totals}
           setTotals={setTotals}
         />
-        <button
+        <Button
           type="button"
           onClick={handleEditTotalWeight}
-          className="bg-primary hover:bg-primary/90 text-white font-bold py-2 px-3 rounded "
+          className="bg-green-700 hover:bg-green-500 text-white font-bold py-2 px-3 rounded "
         >
           Adjust Weight
-        </button>
+        </Button>
       </td>
     </TableRow>
   );

@@ -24,20 +24,19 @@ import {
 import { MoveHorizontalIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import ErrorPage from "@/pages/error";
-import { useGetPaginatedRecipes } from "@/features/recipes/hooks/useGetPaginatedRecipes";
 import Title from "@/components/Text/title";
 import { createSwapy } from "swapy";
+import { useFetchRecipes } from "@/features/recipes/hooks/useFetchRecipes";
 
 export default function MainControl() {
   //
 
   const {
-    recipes,
-    totalRecipes,
+    data: recipes,
     isLoading: isLoadingRecipes,
     isError: isErrorRecipes,
     error: errorRecipes,
-  } = useGetPaginatedRecipes({ type: "getRecipesByDate", limit: 5 });
+  } = useFetchRecipes({ sortBy: "byDate", limit: 5 });
 
   const containerRef = useRef(null);
 
@@ -77,12 +76,14 @@ export default function MainControl() {
               </CardHeader>
               <CardContent className="flex-1">
                 {isErrorRecipes && errorRecipes ? (
-                  <ErrorPage error={errorRecipes?.message} />
+                  <ErrorPage error={errorRecipes} />
                 ) : isLoadingRecipes ? (
                   <p>Loading...</p>
                 ) : (
                   <div className="flex items-center justify-between">
-                    <span className="text-4xl font-bold">{totalRecipes}</span>
+                    <span className="text-4xl font-bold">
+                      {recipes?.totalRecipes}
+                    </span>
                     <Button variant="outline" size="sm">
                       View All
                     </Button>
@@ -101,7 +102,7 @@ export default function MainControl() {
               </CardHeader>
               <CardContent className="flex-1">
                 {isErrorRecipes && errorRecipes ? (
-                  <ErrorPage error={errorRecipes?.message} />
+                  <ErrorPage error={errorRecipes} />
                 ) : isLoadingRecipes ? (
                   <p>Loading...</p>
                 ) : (
@@ -115,7 +116,7 @@ export default function MainControl() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {recipes.map((recipe) => (
+                      {recipes?.recipes.map((recipe) => (
                         <TableRow key={recipe._id}>
                           <TableCell id="name" className="font-medium">
                             {recipe.recipeData.recipeName}

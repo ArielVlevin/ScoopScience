@@ -21,8 +21,11 @@ import {
   SelectValue,
 } from "@/components/ui";
 import PageCard from "@/components/pages/pageCard";
+import { useTheme } from "@/contexts/ThemeProvider";
+import { cn } from "@/utils/cn";
 
 export default function EditRecipeComponent() {
+  const { settings } = useTheme();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -113,23 +116,28 @@ export default function EditRecipeComponent() {
         <PageCard title="Edit Recipe">
           <form className="grid gap-12 w-5/6 mx-auto mb-8 mt-8 ">
             <div className="grid gap-2">
-              <Label htmlFor="name">Recipe Name</Label>
+              <Label htmlFor="name" className={settings.inputTitle}>
+                Recipe Name
+              </Label>
               <Input
                 id="name"
                 type="text"
                 placeholder="Enter recipe name"
                 value={recipeName}
                 onChange={(e) => setRecipeName(e.target.value)}
+                className={settings.inputText}
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="recipeKind">Recipe Kind</Label>
+            <div className="grid gap-2 ">
+              <Label htmlFor="recipeKind" className={settings.inputTitle}>
+                Recipe Kind
+              </Label>
               <Select
                 name="recipeKind"
                 value={recipeKind}
                 onValueChange={(value) => setRecipeKind(value as RecipeKind)}
               >
-                <SelectTrigger>
+                <SelectTrigger className={settings.inputText}>
                   <SelectValue placeholder="Select recipe kind" />
                 </SelectTrigger>
                 <SelectContent>
@@ -143,21 +151,25 @@ export default function EditRecipeComponent() {
             </div>
             <Separator />
             <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description" className={settings.inputTitle}>
+                Description
+              </Label>
               <Textarea
                 id="description"
                 placeholder="Enter description"
-                className="min-h-[150px]"
+                className={cn("min-h-[150px]", settings.inputText)}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="instructions">Instructions</Label>
+              <Label htmlFor="instructions" className={settings.inputTitle}>
+                Instructions
+              </Label>
               <Textarea
                 id="instructions"
                 placeholder="Enter instructions (one per step)"
-                className="min-h-[200px]"
+                className={cn("min-h-[200px]", settings.inputText)}
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
               />
@@ -167,30 +179,38 @@ export default function EditRecipeComponent() {
 
             <div className="flex justify-center items-center gap-20 ">
               <div className="grid gap-2 ">
-                <Label htmlFor="cookingTime">Cooking Time</Label>
+                <Label htmlFor="cookingTime" className={settings.inputTitle}>
+                  Cooking Time
+                </Label>
                 <Input
                   id="cookingTime"
                   type="text"
                   placeholder="Enter cooking time"
                   value={cookingTime}
                   onChange={(e) => setCookingTime(e.target.valueAsNumber)}
+                  className={settings.inputText}
                 />
               </div>
               <div className="grid gap-2 ">
-                <Label htmlFor="prepTime">Preparation Time</Label>
+                <Label htmlFor="prepTime" className={settings.inputTitle}>
+                  Preparation Time
+                </Label>
                 <Input
                   id="prepTime"
                   type="number"
                   placeholder="Enter preparation time"
                   value={prepTime}
                   onChange={(e) => setPrepTime(e.target.valueAsNumber)}
+                  className={settings.inputText}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="isPublic">Public Recipe</Label>
+                <Label htmlFor="isPublic" className={settings.inputTitle}>
+                  Public Recipe
+                </Label>
                 <Input
                   id="isPublic"
-                  className="w-4 h-4"
+                  className={cn("w-4 h-4", settings.inputText)}
                   type="checkbox"
                   checked={isPublic}
                   onChange={(e) => setIsPublic(e.target.checked)}
@@ -201,7 +221,9 @@ export default function EditRecipeComponent() {
             <Separator />
 
             <div className="grid gap-2">
-              <Label htmlFor="image">Image</Label>
+              <Label htmlFor="image" className={settings.inputTitle}>
+                Image
+              </Label>
               <div className="flex items-center gap-4">
                 <div className="flex-1">
                   {showDeleteButton ? (
@@ -225,7 +247,7 @@ export default function EditRecipeComponent() {
                     <Input
                       id="image"
                       type="file"
-                      className="w-1/3"
+                      className={cn("w-1/3", settings.inputText)}
                       onChange={handleImageUpload}
                     />
                   )}

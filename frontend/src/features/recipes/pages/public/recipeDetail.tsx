@@ -1,50 +1,35 @@
 import Grid from "@/components/class/grid";
 import Page from "@/components/pages/page";
 
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetRecipe } from "../../hooks/useGetRecipe";
-import Loading from "@/pages/loading";
 import ErrorPage from "@/pages/error";
 import NutritionTable from "../../components/Detail/nutritionTable";
 import RecipeHeader from "../../components/Detail/recipeHeader";
 import RecipeIngredients from "../../components/Detail/recipeIngredients";
 import Recipecharts from "../../components/Detail/recipeCharts";
 import RecipeInstructions from "../../components/Detail/recipeInstructions";
-import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
 import { CardButtons } from "../../components/Card/cardButtons";
 import PageCard from "@/components/pages/pageCard";
+import RecipeImg from "../../components/Detail/recipeImg";
+import SkeltonRecipeDetail from "../../components/Detail/SkeltonRecipeDetail";
 
 export default function RecipeDetailPage() {
-  const navigate = useNavigate();
-
-  const { user, isGuest, handleFavorite } = useAuth();
+  const { user } = useAuth();
 
   const { recipeId } = useParams<{ recipeId: string }>();
   const recipe_id = parseInt(recipeId!, 10);
 
   const { recipe, isLoading, isError, error } = useGetRecipe(recipe_id);
 
-  const [isButtonFilled, setIsButtonFilled] = useState(
-    user?.favorites?.includes(recipe_id)
-  );
-
   if (isNaN(recipe_id)) return <ErrorPage error="Invalid Recipe ID" />;
-
-  const handleAddToFavorite = async () => {
-    if (isGuest || !recipe._id)
-      return alert("You must be logged in to save recipes");
-
-    handleFavorite(recipe._id);
-
-    setIsButtonFilled(!isButtonFilled);
-  };
 
   return (
     <Page>
       {isLoading ? (
-        <Loading />
+        <SkeltonRecipeDetail />
       ) : isError && error ? (
         <ErrorPage error={error?.message} />
       ) : (
@@ -52,12 +37,7 @@ export default function RecipeDetailPage() {
           <RecipeHeader recipe={recipe} />
 
           <Grid mdcols={2} gap={6} className="w-full mb-6">
-            <img
-              src={`http://api.scoopscience.com${recipe.recipeData.photo}`}
-              alt={recipe.recipeData.recipeName}
-              loading="lazy"
-              className="size-full rounded-lg object-cover hover:scale-105 duration-500"
-            />
+            <RecipeImg recipe={recipe} />
             <div className="w-full flex flex-col gap-4 ">
               <RecipeIngredients
                 recipe={recipe}
@@ -77,7 +57,7 @@ export default function RecipeDetailPage() {
 
           <Recipecharts recipe={recipe} />
 
-          <Grid mdcols={2} gap={6} className="w-full  ">
+          <Grid mdcols={2} gap={6} className="w-full">
             <NutritionTable recipe={recipe} />
 
             <RecipeInstructions recipe={recipe} />

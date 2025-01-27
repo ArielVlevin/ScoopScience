@@ -6,6 +6,7 @@ import {
   Allergies,
   Totals,
   RecipeFormState,
+  FetchRecipesParams,
 } from "@/types";
 import calculateTotals from "../calc/calculateTotals";
 import { postRecipe } from "@/features/recipes/services/api";
@@ -29,7 +30,6 @@ import {
   saveToLocalStorage,
 } from "../utils/localStorage";
 import { useFetchRecipes } from "./useFetchRecipes";
-import { FetchRecipesParams } from "../utils/fetchRecipes";
 
 export function useRecipeForm(
   initialRecipeKind: RecipeKind | undefined = "gelato"

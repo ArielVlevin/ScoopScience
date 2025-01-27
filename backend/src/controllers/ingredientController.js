@@ -176,7 +176,7 @@ export const fetchIngredientsByCategory = async (req, res, next) => {
         $group: {
           _id: "$category", // Group by category
           ingredients: {
-            $push: namesOnly ? { _id: "$$_id", name: "$name" } : "$$ROOT",
+            $push: namesOnly ? { _id: "$_id", name: "$name" } : "$$ROOT",
           }, // Push the full document or just the name
         },
       },

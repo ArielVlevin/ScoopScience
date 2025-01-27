@@ -72,7 +72,7 @@ export default function StepsProgressBar({
     { title: "Step 3" },
     { title: "Step 4" },
   ],
-  colorScheme = "default",
+  colorScheme = "green",
 }: StepProgressBarProps) {
   const progress = 33.3 * (currentStep - 1);
   const colors = colorSchemes[colorScheme];

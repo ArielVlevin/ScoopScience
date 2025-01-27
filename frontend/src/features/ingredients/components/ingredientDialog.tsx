@@ -1,6 +1,5 @@
-import { Dialog, DialogContent } from "@/components/ui";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui";
 import IngredientCard from "./ingredientCard";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface IngredientDialogProps {
   isOpen: boolean;

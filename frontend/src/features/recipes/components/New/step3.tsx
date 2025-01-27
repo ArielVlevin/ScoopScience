@@ -2,6 +2,7 @@ import { Input, Textarea } from "@/components/ui";
 import Grid from "@/components/class/grid";
 import PageCard from "@/components/pages/pageCard";
 import RequiredLabel from "@/components/class/requiredLabel";
+import { useTheme } from "@/contexts/ThemeProvider";
 
 type Step3Props = {
   formData: {
@@ -21,13 +22,17 @@ export default function Step3({
   handleInputChange,
   handleFileChange,
 }: Step3Props) {
+  const { settings } = useTheme();
+
   return (
     <>
       <PageCard title="Recipe Description" className="mb-6">
         <Grid gap={2}>
-          <RequiredLabel htmlFor="description">Description</RequiredLabel>
+          <RequiredLabel htmlFor="description" className={settings.inputTitle}>
+            Description
+          </RequiredLabel>
           <Textarea
-            className="bg-background dark:bg-gray-400"
+            className={settings.inputText}
             id="description"
             placeholder="Enter a brief description of the recipe"
             rows={3}
@@ -36,9 +41,11 @@ export default function Step3({
           />
         </Grid>
         <Grid gap={2}>
-          <RequiredLabel htmlFor="instructions">Instructions</RequiredLabel>
+          <RequiredLabel htmlFor="instructions" className={settings.inputTitle}>
+            Instructions
+          </RequiredLabel>
           <Textarea
-            className="bg-background dark:bg-gray-400"
+            className={settings.inputText}
             id="instructions"
             placeholder="Enter step-by-step instructions"
             rows={6}
@@ -48,11 +55,14 @@ export default function Step3({
         </Grid>
         <div className="grid grid-cols-2 gap-4">
           <Grid gap={2}>
-            <RequiredLabel htmlFor="cookingTime">
+            <RequiredLabel
+              htmlFor="cookingTime"
+              className={settings.inputTitle}
+            >
               Cooking Time (minutes)
             </RequiredLabel>
             <Input
-              className="bg-background dark:bg-gray-400"
+              className={settings.inputText}
               id="cookingTime"
               type="number"
               placeholder="30"
@@ -61,11 +71,11 @@ export default function Step3({
             />
           </Grid>
           <Grid gap={2}>
-            <RequiredLabel htmlFor="prepTime">
+            <RequiredLabel htmlFor="prepTime" className={settings.inputTitle}>
               Preparation Time (minutes)
             </RequiredLabel>
             <Input
-              className="bg-background dark:bg-gray-400"
+              className={settings.inputText}
               id="prepTime"
               type="number"
               placeholder="15"
@@ -78,7 +88,7 @@ export default function Step3({
       <PageCard title="Photo">
         <Input
           type="file"
-          className="bg-background dark:bg-gray-400"
+          className={settings.inputText}
           onChange={handleFileChange}
         />
       </PageCard>

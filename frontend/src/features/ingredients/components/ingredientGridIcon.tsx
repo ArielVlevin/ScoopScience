@@ -1,6 +1,7 @@
 import React from "react";
 import { getCategoryIcon } from "../types/icons";
 import { IngredientCategory } from "../types";
+import { useTheme } from "@/contexts/ThemeProvider";
 
 interface IngredientGridIconProps {
   id: string;
@@ -15,17 +16,14 @@ const IngredientGridIcon: React.FC<IngredientGridIconProps> = ({
   category,
   onClick,
 }) => {
+  const { settings } = useTheme();
+
   return (
-    <div
-      className="flex flex-col items-center size-32 cursor-pointer text-center"
-      onClick={() => onClick(id)}
-    >
-      <div className="inline-block rounded-full bg-primary hover:bg-primary/70 p-8">
+    <div className={settings.IngredientGrid} onClick={() => onClick(id)}>
+      <div className={settings.IngredientGridIcon}>
         {getCategoryIcon(category)}
       </div>
-      <h3 className="text-lg font-medium group-hover:text-primary transition-colors hover:underline mt-2">
-        {header}
-      </h3>
+      <h3 className={settings.IngredientGridText}>{header}</h3>
     </div>
   );
 };

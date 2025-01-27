@@ -1,5 +1,6 @@
 import "@/App.css";
-import "@smastrom/react-rating/style.css";
+
+//import "@smastrom/react-rating/style.css";
 
 import { AuthProvider } from "@/contexts/AuthContext.tsx";
 

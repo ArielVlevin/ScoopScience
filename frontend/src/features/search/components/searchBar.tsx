@@ -1,5 +1,4 @@
 import { SearchIcon } from "@/components/icons/icon";
-import api from "@/config/api";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AutocompleteSection } from "../utils/autoComplete";
@@ -62,6 +61,8 @@ export default function SearchBar({ className }: SearchBarProps) {
             <div className="p-2">
               {isFetching ? (
                 <div>Loading...</div>
+              ) : isError && error ? (
+                <div>Error: {error.message}</div>
               ) : (
                 <>
                   <AutocompleteSection

@@ -78,6 +78,16 @@ export const editRecipe = async (req, res, next) => {
   const { id } = req.params;
   const recipeData = JSON.parse(req.body.recipeData);
 
+  // Check if the user is the creator or an admin
+  if (
+    recipe.user_id.toString() !== req.user._id.toString() &&
+    !req.user.isAdmin
+  ) {
+    return res.status(403).json({
+      message: "Access denied. You can only delete your own recipes.",
+    });
+  }
+
   const photoPath = req.file
     ? `/assets/${req.file.path.split("/assets/")[1]}`
     : null;
@@ -86,6 +96,16 @@ export const editRecipe = async (req, res, next) => {
     const recipe = await Recipe.findById(id);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    // Check if the user is the creator or an admin
+    if (
+      recipe.user_id.toString() !== req.user._id.toString() &&
+      !req.user.isAdmin
+    ) {
+      return res.status(403).json({
+        message: "Access denied. You can only delete your own recipes.",
+      });
     }
 
     // Update recipe fields
@@ -144,30 +164,30 @@ export const getRecipe = async (req, res, next) => {
     const recipe = await Recipe.findById(recipeID)
       .populate("user_id", "username")
       .exec();
-    if (recipe) {
-      res.status(200).json(recipe);
-    } else {
-      res.status(404).json({ message: "Recipe not found" });
-    }
-  } catch (error) {
-    next(error);
-  }
-};
+    if (!recipe) res.status(404).json({ message: "Recipe not found" });
 
-export const getAllRecipes = async (req, res, next) => {
-  try {
-    const recipes = await Recipe.find({})
-      .populate("user_id", "username")
-      .exec();
-    res.status(200).json(recipes);
+    // Check if the recipe is private and the user is not the creator
+    if (
+      !recipe.recipeData.isPublic &&
+      (!req.user || String(recipe.user_id) !== String(req.user._id))
+    ) {
+      return res.status(403).json({
+        message:
+          "Access denied. You do not have permission to view this recipe.",
+      });
+    }
+
+    res.status(200).json(recipe);
   } catch (error) {
     next(error);
   }
 };
 
 export const setRate = async (req, res, next) => {
-  const { user_id, ratingValue } = req.body;
+  const { ratingValue } = req.body;
   const recipeId = req.params.id;
+
+  const user_id = req.user._id;
 
   try {
     const recipe = await Recipe.findById(recipeId);
@@ -213,7 +233,15 @@ export const fetchRecipes = async (req, res, next) => {
       search, // Optional search by recipe name or description
     } = req.query;
 
-    const filters = {};
+    // Base filter to fetch public recipes
+    const filters = {
+      $or: [{ "recipeData.isPublic": true }],
+    };
+
+    // If user is signed in, include private recipes owned by the user
+    if (req.user) {
+      filters.$or.push({ user_id: req.user._id });
+    }
 
     // Apply filters
     if (userId) {
@@ -235,8 +263,6 @@ export const fetchRecipes = async (req, res, next) => {
     }
 
     const skip = (page - 1) * parseInt(limit, 10);
-
-    console.log("req.query: ", req.query);
 
     // Query the database with filters and sort options
     const recipes = await Recipe.find(filters)
@@ -260,6 +286,18 @@ export const fetchRecipes = async (req, res, next) => {
 };
 
 /*
+
+export const getAllRecipes = async (req, res, next) => {
+  try {
+    const recipes = await Recipe.find({})
+      .populate("user_id", "username")
+      .exec();
+    res.status(200).json(recipes);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const getRecipeSummaries = async (req, res, next) => {
   try {

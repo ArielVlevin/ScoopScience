@@ -10,10 +10,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import PageCard from "@/components/pages/pageCard";
-import { Separator } from "@/components/ui/separator";
-import { FetchRecipesParams } from "../../utils/fetchRecipes";
 import { useFetchRecipes } from "../../hooks/useFetchRecipes";
-import { CardGrid } from "../../components/CardGrid/CardGrid";
+import { FetchRecipesParams } from "@/types";
+import InfiniteCardGrid from "../../components/CardGrid/InfiniteCardGrid";
 
 export default function UserRecipesPage() {
   const { user } = useAuth();
@@ -56,16 +55,22 @@ export default function UserRecipesPage() {
                 New Recipe
               </Button>
             </Link>
-            <Separator />
 
             {/* ----Cards----- */}
-            <CardGrid
-              recipes={data?.recipes}
-              itemsPerPage={filters.limit!}
-              type="editable"
+
+            <InfiniteCardGrid
+              filters={filters}
+              setFilters={setFilters}
+              filterKey="recipeKind"
             />
           </PageCard>
         </Page>
       </>
     );
 }
+
+/*<CardGrid
+recipes={data?.recipes}
+itemsPerPage={filters.limit!}
+type="editable"
+/>*/

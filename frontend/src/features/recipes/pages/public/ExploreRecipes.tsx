@@ -8,9 +8,10 @@ import { useFetchRecipes } from "../../hooks/useFetchRecipes";
 import { RecipeFound } from "../../components/CardGrid/found";
 import { CardGrid } from "../../components/CardGrid/CardGrid";
 import { FetchRecipesParams } from "@/types";
+import Loading from "@/pages/loading";
 
 export default function ExploreRecipesPage() {
-  const [filters, setFilters] = useState<FetchRecipesParams>({
+  const [filters] = useState<FetchRecipesParams>({
     limit: 9,
     page: 1,
     order: "desc",
@@ -34,9 +35,9 @@ export default function ExploreRecipesPage() {
             <Separator className="mt-6 mb-6" />
 
             {/* Show the number of recipes found */}
+            {isLoading ? <Loading /> : null}
             <RecipeFound
               recipesLength={data?.totalRecipes || 0}
-              isShowRecipeFound={true}
               className="mb-4"
             />
 

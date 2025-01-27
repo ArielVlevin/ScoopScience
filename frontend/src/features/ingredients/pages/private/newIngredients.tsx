@@ -66,11 +66,13 @@ const AddIngredientForm = () => {
       ...ingredient,
       name: selectedIngredient.product_name || "",
       weight: 100,
-      calories: selectedIngredient.nutriments?.["energy-kcal_100g"] || 0,
-      sugar: selectedIngredient.nutriments?.sugars_100g || 0,
-      fat: selectedIngredient.nutriments?.fat_100g || 0,
-      saturates: selectedIngredient.nutriments?.["saturated-fat_100g"] || 0,
-      protein: selectedIngredient.nutriments?.proteins_100g || 0,
+      calories:
+        (selectedIngredient.nutriments?.["energy-kcal_100g"] as number) || 0,
+      sugar: (selectedIngredient.nutriments?.sugars_100g as number) || 0,
+      fat: (selectedIngredient.nutriments?.fat_100g as number) || 0,
+      saturates:
+        (selectedIngredient.nutriments?.["saturated-fat_100g"] as number) || 0,
+      protein: (selectedIngredient.nutriments?.proteins_100g as number) || 0,
       //todo: add totalSolids and msnf - use the calc
       totalSolids: 0,
       msnf: 0,

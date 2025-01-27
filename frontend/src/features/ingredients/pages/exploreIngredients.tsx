@@ -9,7 +9,7 @@ import { useFetchIngredientsByCategory } from "../hooks/useFetchIngredientsByCat
 import IngredientDialog from "../components/ingredientDialog";
 import PageWithDialog from "@/components/pages/pageWithDialog";
 
-const FETCH_LIMIT = 11;
+const FETCH_LIMIT = 8;
 
 export default function ExploreIngredientsPage() {
   const {
@@ -17,7 +17,7 @@ export default function ExploreIngredientsPage() {
     isLoading,
     isError,
     error,
-  } = useFetchIngredientsByCategory(FETCH_LIMIT);
+  } = useFetchIngredientsByCategory({ limit: FETCH_LIMIT, namesOnly: false });
 
   const navigate = useNavigate();
   const navToCategory = (category: string) => {
@@ -37,7 +37,7 @@ export default function ExploreIngredientsPage() {
       )}
     >
       {({ openDialog }) => (
-        <Grid mdcols={2} gap={8} className="">
+        <Grid mdcols={2} gap={12} className="">
           {isLoading ? (
             <Loading />
           ) : (

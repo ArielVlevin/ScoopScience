@@ -10,8 +10,11 @@ import PageBox from "@/components/pages/pageBox";
 
 const QuantitySelector = () => {
   const [quantity, setQuantity] = useState("1");
+  type IngredientType = {
+    [key: string]: { [ingredient: string]: string };
+  };
 
-  const ingredients = {
+  const ingredients: IngredientType = {
     "1": {
       "Heavy Cream": "500ml",
       "Vanilla Extract": "1 tsp",
@@ -52,7 +55,7 @@ const QuantitySelector = () => {
         <ul className="list-disc list-inside">
           {Object.entries(ingredients[quantity]).map(([ingredient, amount]) => (
             <li key={ingredient}>
-              {ingredient}: {amount}
+              {ingredient}: {amount as string}
             </li>
           ))}
         </ul>

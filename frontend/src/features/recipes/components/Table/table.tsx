@@ -13,6 +13,7 @@ import calculateTotals from "@/features/recipes/calc/calculateTotals";
 import EditWeightDialog from "./edit/editWeight";
 import { calculateAndRound } from "../../calc/calculateAndRound";
 import WeightTableFooter from "./setup/tableFooter";
+import { useTheme } from "@/contexts/ThemeProvider";
 
 type NewRecipeTableProops = {
   className?: string;
@@ -35,6 +36,8 @@ export default function NewRecipeTable({
   isEditable = true,
   isTotalsVisible = true,
 }: NewRecipeTableProops) {
+  const { settings } = useTheme();
+
   const [selectedRow, setSelectedRow] = useState<Row | null>(null);
   const [isEditingWeight, setIsEditingWeight] = useState<boolean>(false);
   const [isEditingTotalWeight, setIsEditingTotalWeight] =
@@ -91,7 +94,7 @@ export default function NewRecipeTable({
       />
       {/* ----- TABLE ----- */}
       <Table className="mx-auto w-full">
-        <TableHeader className="bg-primary hover:bg-primary/90 ">
+        <TableHeader className={settings.tableHeader}>
           <NewRecipeTableHeads isEditable={isEditable} />
         </TableHeader>
 
@@ -102,8 +105,8 @@ export default function NewRecipeTable({
               onClick={() => setSelectedRow(row)}
               className={`${
                 selectedRow && selectedRow._id === row._id
-                  ? "bg-muted/50 h-16 "
-                  : "hover:bg-muted/20 cursor-pointer h-12 "
+                  ? settings.tableBodySelected
+                  : settings.tableBody
               }`}
             >
               {/*---------Ingredients--------- */}
@@ -120,7 +123,7 @@ export default function NewRecipeTable({
 
         {/* ----- FOOTER FOR TOTAL WEIGHT ----- */}
         {isTotalsVisible && rows.length > 0 ? (
-          <TableFooter className="">
+          <TableFooter>
             <WeightTableFooter
               totals={totals}
               setRows={setRows}

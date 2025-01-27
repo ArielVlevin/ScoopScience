@@ -28,31 +28,18 @@ import { ArrowRightIcon, MenuIcon, MoveHorizontalIcon } from "lucide-react";
 import { ArrowLeftIcon, PlusIcon } from "@/components/icons/icon";
 import { Separator } from "@/components/ui/separator";
 import Title from "@/components/Text/title";
-import { usePaginatedRecipes } from "@/features/recipes/hooks/usePaginatedRecipes";
 import ErrorPage from "@/pages/error";
 import { useEffect, useRef } from "react";
+import { useFetchRecipes } from "@/features/recipes/hooks/useFetchRecipes";
 
 export default function RecipeControl() {
   const {
-    recipes,
-    page,
-    totalPages,
+    data: recipes,
+    isLoading: isLoading,
+    isError: isError,
+    error: error,
+  } = useFetchRecipes({ sortBy: "byDate", limit: 5 });
 
-    handleSetPage,
-    isError,
-    error,
-  } = usePaginatedRecipes({
-    type: "getRecipesByDate",
-    limit: 10,
-    showMore: false,
-  });
-
-  //
-  const handlePageChange = (newPage: number) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      handleSetPage(newPage);
-    }
-  };
   //
 
   const containerRef = useRef(null);
@@ -113,7 +100,7 @@ export default function RecipeControl() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {recipes.map((recipe) => (
+                  {recipes?.recipes.map((recipe) => (
                     <TableRow key={recipe._id}>
                       <TableCell id="name" className="font-medium">
                         {recipe.recipeData.recipeName}
@@ -123,9 +110,11 @@ export default function RecipeControl() {
                         {String(recipe.createdAt).slice(0, 10)}
                       </TableCell>
                       <TableCell className="text-xs">
-                        {recipe.recipeIngredient.ingredients
-                          .map((i) => i.name)
-                          .join(", ")}
+                        {isLoading
+                          ? "Loading..."
+                          : recipe.recipeIngredient.ingredients
+                              .map((i) => i.name)
+                              .join(", ")}
                       </TableCell>
                       <TableCell>
                         <DropdownMenu>
@@ -147,26 +136,13 @@ export default function RecipeControl() {
               </Table>
               <div className="flex justify-center mt-8">
                 <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => handlePageChange(page - 1)}
-                    disabled={page <= 1}
-                  >
+                  <Button>
                     <ArrowLeftIcon className="h-4 w-4" />
                   </Button>
-                  {[...Array(totalPages)].map((_, i) => (
-                    <Button
-                      key={i + 1}
-                      onClick={() => handlePageChange(i + 1)}
-                      className=""
-                      variant={i + 1 === page ? "default" : "outline"}
-                    >
-                      {i + 1}
-                    </Button>
+                  {[...Array(recipes?.totalPages)].map((_, i) => (
+                    <Button>{i + 1}</Button>
                   ))}
-                  <Button
-                    onClick={() => handlePageChange(page + 1)}
-                    disabled={page >= totalPages}
-                  >
+                  <Button>
                     <ArrowRightIcon className="h-4 w-4" />
                   </Button>
                 </div>

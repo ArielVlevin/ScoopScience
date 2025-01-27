@@ -32,7 +32,7 @@ export default function PageWithDialog<T>({
   };
 
   return (
-    <Page className="flex items-center justify-center ">
+    <Page className="flex items-center justify-center">
       {/* Render children, passing openDialog if children is a function */}
       {typeof children === "function" ? children({ openDialog }) : children}
 

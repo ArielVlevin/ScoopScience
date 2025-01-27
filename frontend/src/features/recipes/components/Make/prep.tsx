@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import PageCard from "@/components/pages/pageCard";
 import PageBox from "@/components/pages/pageBox";
-import { useTheme } from "@/contexts/ThemeProvider";
-import { cn } from "@/utils/cn";
 
 const steps = [
   {
@@ -35,8 +32,6 @@ const PreparationSteps = () => {
       setCurrentStep(currentStep - 1);
     }
   };
-
-  const { settings } = useTheme();
 
   return (
     <PageBox className="mb-8">

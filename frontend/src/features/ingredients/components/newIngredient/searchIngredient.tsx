@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import { useSearchIngredient } from "../../hooks/useSearchIngredient";
-import { Separator } from "@/components/ui/separator";
 import { FoodItem } from "../../types/searchInredientType";
 import {
   Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Select,
   SelectContent,

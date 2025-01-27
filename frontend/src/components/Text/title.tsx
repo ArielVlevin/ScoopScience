@@ -1,3 +1,4 @@
+import { useTheme } from "@/contexts/ThemeProvider";
 import { cn } from "@/utils/cn";
 import React from "react";
 
@@ -7,13 +8,9 @@ interface TitleProps {
 }
 
 const Title = ({ children, className }: TitleProps) => {
-  return (
-    <p
-      className={cn("text-3xl font-sans  font-medium text-primary", className)}
-    >
-      {children}
-    </p>
-  );
+  const { settings } = useTheme();
+
+  return <p className={cn(settings.title, className)}>{children}</p>;
 };
 
 export default Title;

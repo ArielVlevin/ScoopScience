@@ -73,7 +73,7 @@ export default function InfiniteCardGrid({
       {isLoading ? (
         <>
           <SkeletonCardGrid length={filters.limit || 9} />
-          <p className="text-center text-gray-500 mt-4">Loading recipes...</p>
+          <p className="text-center  text-gray-500 mt-4">Loading recipes...</p>
         </>
       ) : (
         <>

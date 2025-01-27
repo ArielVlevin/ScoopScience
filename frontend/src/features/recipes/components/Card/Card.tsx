@@ -9,6 +9,8 @@ import { RecipeData } from "./RecipeData";
 import { CardButtons } from "./cardButtons";
 import { cardClass } from "./style";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export type cardInfo = {
   recipe: Recipe;
   type?: "recipe" | "editable" | "favorite";
@@ -36,7 +38,7 @@ export function RecipeCard({ recipe, type = "recipe" }: cardInfo) {
     <div key={recipe._id!} className="w-full ">
       <Card className={cardClass}>
         <CardImg
-          src={`http://api.scoopscience.com${recipe.recipeData.photo}`}
+          src={`${apiUrl}${recipe.recipeData.photo}`}
           alt={recipe.recipeData.recipeName}
           onHeartClick={handleHeartClick}
           isHeartFilled={isHeartFilled}
